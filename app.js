@@ -1,6 +1,21 @@
 (function () {
 
 /* =========================================================
+   FIREBASE INIT
+   ========================================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyDy15PnvVYLuMnIVQLMH756rDumfgTVqSU",
+  authDomain: "dsa-tracker-c46a2.firebaseapp.com",
+  projectId: "dsa-tracker-c46a2",
+  storageBucket: "dsa-tracker-c46a2.firebasestorage.app",
+  messagingSenderId: "937532584620",
+  appId: "1:937532584620:web:32ea13439f601e69c42509"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const userDocRef = db.collection('users').doc('my_personal_tracker');
+
+/* =========================================================
    STATE
    ========================================================= */
 let ALL_PROBLEMS = [];
@@ -64,6 +79,26 @@ async function loadData() {
 
 async function loadFromStorage() {
   try {
+    // Try to load from Firebase first
+    const docSnap = await userDocRef.get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data.solved) solved = new Set(data.solved);
+      if (data.starred) starred = new Set(data.starred);
+      if (data.customNotes) customNotes = data.customNotes;
+      
+      // Update local storage as a backup/cache
+      localStorage.setItem(STORAGE_SOLVED, JSON.stringify([...solved]));
+      localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred]));
+      localStorage.setItem(STORAGE_NOTES, JSON.stringify(customNotes));
+      return;
+    }
+  } catch (e) {
+    console.warn("Failed to load from Firebase, falling back to localStorage", e);
+  }
+
+  // Fallback to localStorage if Firebase fails or is empty
+  try {
     const s = localStorage.getItem(STORAGE_SOLVED);
     if (s) solved = new Set(JSON.parse(s));
     const st = localStorage.getItem(STORAGE_STARRED);
@@ -75,9 +110,21 @@ async function loadFromStorage() {
   }
 }
 
-function saveSolved()  { localStorage.setItem(STORAGE_SOLVED,  JSON.stringify([...solved])); }
-function saveStarred() { localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred])); }
-function saveNotes()   { localStorage.setItem(STORAGE_NOTES,   JSON.stringify(customNotes)); }
+let syncTimeout = null;
+function syncToFirebase() {
+  clearTimeout(syncTimeout);
+  syncTimeout = setTimeout(() => {
+    userDocRef.set({
+      solved: [...solved],
+      starred: [...starred],
+      customNotes: customNotes
+    }, { merge: true }).catch(e => console.error("Firebase save error:", e));
+  }, 1000); // Debounce saves by 1 second to prevent spamming
+}
+
+function saveSolved()  { localStorage.setItem(STORAGE_SOLVED,  JSON.stringify([...solved])); syncToFirebase(); }
+function saveStarred() { localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred])); syncToFirebase(); }
+function saveNotes()   { localStorage.setItem(STORAGE_NOTES,   JSON.stringify(customNotes)); syncToFirebase(); }
 
 function populateTopicDropdown() {
   const sel = document.getElementById('topicFilter');
