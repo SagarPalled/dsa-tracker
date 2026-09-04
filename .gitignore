@@ -1,0 +1,2 @@
+# Ignore local user data (no longer needed, using Firebase)
+user_data.json

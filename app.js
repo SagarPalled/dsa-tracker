@@ -247,7 +247,14 @@ function showNotesPreview(markdownText) {
   const text = markdownText || '*No notes available.*';
   try {
     if (typeof marked !== 'undefined') {
-      notesPreview.innerHTML = marked.parse(text);
+      // Sanitize: strip raw HTML tags from markdown output to prevent XSS
+      const rawHtml = marked.parse(text);
+      const sanitized = rawHtml.replace(/<script[\s\S]*?<\/script>/gi, '')
+                               .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')
+                               .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+                               .replace(/<embed[\s\S]*?\/?>/gi, '')
+                               .replace(/<object[\s\S]*?<\/object>/gi, '');
+      notesPreview.innerHTML = sanitized;
     } else {
       notesPreview.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${escHtml(text)}</pre>`;
     }
