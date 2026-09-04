@@ -13,7 +13,44 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const userDocRef = db.collection('users').doc('my_personal_tracker');
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+
+let userDocRef = null;
+
+// Handle Sign In button
+document.getElementById('googleSignInBtn')?.addEventListener('click', () => {
+  auth.signInWithPopup(provider).catch(e => {
+    console.error("Sign in error:", e);
+    const err = document.getElementById('loginErrorMsg');
+    if (err) { err.textContent = e.message; err.style.display = 'block'; }
+  });
+});
+
+// Enforce strict email check and load app
+auth.onAuthStateChanged(user => {
+  const overlay = document.getElementById('loginOverlay');
+  const err = document.getElementById('loginErrorMsg');
+  
+  if (user) {
+    if (user.email === 'sgr.palled@gmail.com') {
+      // Authorized
+      overlay.style.display = 'none';
+      userDocRef = db.collection('users').doc(user.uid);
+      loadData(); // Start the app
+    } else {
+      // Unauthorized
+      auth.signOut();
+      if (err) {
+        err.textContent = `Access Denied: ${user.email} is not authorized to access this tracker.`;
+        err.style.display = 'block';
+      }
+    }
+  } else {
+    // Logged out
+    overlay.style.display = 'flex';
+  }
+});
 
 /* =========================================================
    STATE
@@ -739,6 +776,6 @@ function slugify(str) {
 /* =========================================================
    INIT
    ========================================================= */
-loadData();
+// loadData(); // Now handled by onAuthStateChanged
 
 })();

@@ -180,10 +180,18 @@
         <a class="btn-primary" id="modalLink" href="#" target="_blank" rel="noopener">Open Problem ↗</a>
         <button class="btn-secondary" id="modalReroll">Another Random →</button>
       </div>
+  <!-- ===== LOGIN OVERLAY ===== -->
+  <div class="modal-overlay open" id="loginOverlay" style="z-index: 10000; background: var(--bg-main); display: flex;">
+    <div class="modal-box" style="text-align: center;">
+      <h2 class="modal-title">DSA Tracker Login</h2>
+      <p class="modal-topic" style="margin-bottom: 20px;">Please sign in to access your tracker.</p>
+      <button class="btn-primary" id="googleSignInBtn">Sign in with Google</button>
+      <p id="loginErrorMsg" style="color: #ff4b4b; margin-top: 15px; font-weight: 500; display: none;"></p>
     </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
   <script src="app.js?v=2"></script>
 </body>
