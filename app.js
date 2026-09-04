@@ -63,21 +63,6 @@ async function loadData() {
 }
 
 async function loadFromStorage() {
-  // First, try to load from the Python server
-  try {
-    const res = await fetch('/load');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.solved) solved = new Set(data.solved);
-      if (data.starred) starred = new Set(data.starred);
-      if (data.customNotes) customNotes = data.customNotes;
-      return; // If server load is successful, we are done
-    }
-  } catch (e) {
-    console.warn("Could not load from server, falling back to localStorage", e);
-  }
-
-  // Fallback to localStorage if server isn't running or failed
   try {
     const s = localStorage.getItem(STORAGE_SOLVED);
     if (s) solved = new Set(JSON.parse(s));
@@ -85,29 +70,14 @@ async function loadFromStorage() {
     if (st) starred = new Set(JSON.parse(st));
     const n = localStorage.getItem(STORAGE_NOTES);
     if (n) customNotes = JSON.parse(n);
-  } catch (_) {}
-}
-
-async function syncToServer() {
-  const payload = {
-    solved: [...solved],
-    starred: [...starred],
-    customNotes: customNotes
-  };
-  try {
-    await fetch('/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
   } catch (e) {
-    console.error("Failed to sync to server", e);
+    console.error("Failed to load from localStorage", e);
   }
 }
 
-function saveSolved()  { localStorage.setItem(STORAGE_SOLVED,  JSON.stringify([...solved])); syncToServer(); }
-function saveStarred() { localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred])); syncToServer(); }
-function saveNotes()   { localStorage.setItem(STORAGE_NOTES,   JSON.stringify(customNotes)); syncToServer(); }
+function saveSolved()  { localStorage.setItem(STORAGE_SOLVED,  JSON.stringify([...solved])); }
+function saveStarred() { localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred])); }
+function saveNotes()   { localStorage.setItem(STORAGE_NOTES,   JSON.stringify(customNotes)); }
 
 function populateTopicDropdown() {
   const sel = document.getElementById('topicFilter');
