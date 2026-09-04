@@ -1,0 +1,3710 @@
+[
+  {
+    "serial": 1,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Largest Element",
+    "link": "https://takeuforward.org/data-structure/find-the-largest-element-in-an-array/",
+    "notes": "Fundamental operation (single pass max) \u2014 implement directly"
+  },
+  {
+    "serial": 2,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Second Largest Element",
+    "link": "https://www.geeksforgeeks.org/dsa/find-second-largest-element-array/",
+    "notes": "GFG \u2014 exact match"
+  },
+  {
+    "serial": 3,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Check if the Array is Sorted II",
+    "link": "https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/#:~:text=Input%3A%20nums%20%3D%20%5B2%2C,no%20rotation)%20to%20make%20nums.",
+    "notes": ""
+  },
+  {
+    "serial": 4,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Remove duplicates from Sorted array",
+    "link": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/#:~:text=Input%3A%20nums%20%3D%20%5B0%2C,%2C%203%2C%20and%204%20respectively.",
+    "notes": ""
+  },
+  {
+    "serial": 5,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Left Rotate Array by One",
+    "link": "https://leetcode.com/problems/rotate-array/",
+    "notes": ""
+  },
+  {
+    "serial": 6,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Left Rotate Array by K Places",
+    "link": "https://leetcode.com/problems/rotate-array/",
+    "notes": ""
+  },
+  {
+    "serial": 7,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Move Zeros to End",
+    "link": "https://leetcode.com/problems/move-zeroes/",
+    "notes": ""
+  },
+  {
+    "serial": 8,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Linear Search",
+    "link": "https://takeuforward.org/data-structure/linear-search-in-c/",
+    "notes": "Fundamental algorithm \u2014 implement directly"
+  },
+  {
+    "serial": 9,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Union of two sorted arrays",
+    "link": "https://takeuforward.org/data-structure/union-of-two-sorted-arrays/",
+    "notes": "GFG has the exact problem 'Union of Two Sorted Arrays' (search GFG)"
+  },
+  {
+    "serial": 10,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Find missing number",
+    "link": "https://leetcode.com/problems/missing-number/",
+    "notes": "LC 268 \u2014 exact match"
+  },
+  {
+    "serial": 11,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Easy",
+    "name": "Maximum Consecutive Ones",
+    "link": "https://leetcode.com/problems/max-consecutive-ones/",
+    "notes": ""
+  },
+  {
+    "serial": 12,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Medium",
+    "name": "Find the number that appears once, and other numbers twice.",
+    "link": "https://leetcode.com/problems/single-number/",
+    "notes": ""
+  },
+  {
+    "serial": 13,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Medium",
+    "name": "Longest subarray with given sum K(positives)",
+    "link": "https://takeuforward.org/data-structure/longest-subarray-with-given-sum-k/",
+    "notes": "Longest Sub-Array with Sum K' (search GFG)"
+  },
+  {
+    "serial": 14,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Easy",
+    "difficulty": "Medium",
+    "name": "Longest subarray with sum K",
+    "link": "https://takeuforward.org/data-structure/length-of-the-longest-subarray-with-zero-sum/",
+    "notes": "Longest Sub-Array with Sum K' (positives+negatives version, search GFG)"
+  },
+  {
+    "serial": 15,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Easy",
+    "name": "Two Sum",
+    "link": "https://leetcode.com/problems/two-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 16,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Sort an array of 0's 1's and 2's",
+    "link": "https://leetcode.com/problems/sort-colors/",
+    "notes": ""
+  },
+  {
+    "serial": 17,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Easy",
+    "name": "Majority Element-I",
+    "link": "https://leetcode.com/problems/majority-element/",
+    "notes": ""
+  },
+  {
+    "serial": 18,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Kadane's Algorithm",
+    "link": "https://leetcode.com/problems/maximum-subarray/",
+    "notes": ""
+  },
+  {
+    "serial": 19,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Print subarray with maximum subarray sum (extended version of above problem)",
+    "link": "https://takeuforward.org/data-structure/kadanes-algorithm-maximum-subarray-sum-in-an-array/",
+    "notes": "Print-version extension of Kadane's \u2014 no dedicated LC/GFG problem beyond the base Maximum Subarray"
+  },
+  {
+    "serial": 20,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Stock Buy and Sell",
+    "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
+    "notes": ""
+  },
+  {
+    "serial": 21,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Rearrange array elements by sign",
+    "link": "https://leetcode.com/problems/rearrange-array-elements-by-sign/",
+    "notes": ""
+  },
+  {
+    "serial": 22,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Next Permutation",
+    "link": "https://leetcode.com/problems/next-permutation/",
+    "notes": ""
+  },
+  {
+    "serial": 23,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Leaders in an Array",
+    "link": "https://takeuforward.org/data-structure/leaders-in-an-array/",
+    "notes": "Leaders in an array' (search GFG)"
+  },
+  {
+    "serial": 24,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Longest Consecutive Sequence in an Array",
+    "link": "https://leetcode.com/problems/longest-consecutive-sequence/solution/",
+    "notes": ""
+  },
+  {
+    "serial": 25,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Set Matrix Zeroes",
+    "link": "https://leetcode.com/problems/set-matrix-zeroes/",
+    "notes": ""
+  },
+  {
+    "serial": 26,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Rotate matrix by 90 degrees",
+    "link": "https://leetcode.com/problems/rotate-image/",
+    "notes": ""
+  },
+  {
+    "serial": 27,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Print the matrix in spiral manner",
+    "link": "https://leetcode.com/problems/spiral-matrix/",
+    "notes": ""
+  },
+  {
+    "serial": 28,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Medium",
+    "difficulty": "Medium",
+    "name": "Count subarrays with given sum",
+    "link": "https://leetcode.com/problems/subarray-sum-equals-k/",
+    "notes": ""
+  },
+  {
+    "serial": 29,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Easy",
+    "name": "Pascal's Triangle I",
+    "link": "https://leetcode.com/problems/pascals-triangle/",
+    "notes": ""
+  },
+  {
+    "serial": 30,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Hard",
+    "name": "Majority Element-II",
+    "link": "https://leetcode.com/problems/majority-element-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 31,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Medium",
+    "name": "3 Sum",
+    "link": "https://leetcode.com/problems/3sum/",
+    "notes": ""
+  },
+  {
+    "serial": 32,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Medium",
+    "name": "4 Sum",
+    "link": "https://leetcode.com/problems/4sum/",
+    "notes": ""
+  },
+  {
+    "serial": 33,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Medium",
+    "name": "Largest Subarray with Sum 0",
+    "link": "https://takeuforward.org/data-structure/length-of-the-longest-subarray-with-zero-sum/",
+    "notes": "Largest subarray with 0 sum' (search GFG)"
+  },
+  {
+    "serial": 34,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Hard",
+    "name": "Count subarrays with given xor K",
+    "link": "https://takeuforward.org/data-structure/count-the-number-of-subarrays-with-given-xor-k/",
+    "notes": "Count subarrays with given xor K' (search GFG); same prefix-hashmap trick as LC 560 Subarray Sum Equals K"
+  },
+  {
+    "serial": 35,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Medium",
+    "name": "Merge Overlapping Subintervals",
+    "link": "https://leetcode.com/problems/merge-intervals/",
+    "notes": ""
+  },
+  {
+    "serial": 36,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Medium",
+    "name": "Merge two sorted arrays without extra space",
+    "link": "https://leetcode.com/problems/merge-sorted-array/",
+    "notes": ""
+  },
+  {
+    "serial": 37,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Hard",
+    "name": "Find the repeating and missing number",
+    "link": "https://leetcode.com/problems/set-mismatch/",
+    "notes": "LC 645 (Set Mismatch) \u2014 exact match, same problem"
+  },
+  {
+    "serial": 38,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Hard",
+    "name": "Count Inversions",
+    "link": "https://takeuforward.org/data-structure/count-inversions-in-an-array",
+    "notes": "Count Inversions' (search GFG) \u2014 no standalone LC problem; same merge-sort technique as Reverse Pairs (already in your sheet)"
+  },
+  {
+    "serial": 39,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Hard",
+    "name": "Reverse Pairs",
+    "link": "https://leetcode.com/problems/reverse-pairs/",
+    "notes": ""
+  },
+  {
+    "serial": 40,
+    "heading": "Solve Problems on Arrays",
+    "subheading": "Hard",
+    "difficulty": "Hard",
+    "name": "Maximum Product Subarray in an Array",
+    "link": "https://leetcode.com/problems/maximum-product-subarray/",
+    "notes": ""
+  },
+  {
+    "serial": 41,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "Search X in sorted array",
+    "link": "https://leetcode.com/problems/binary-search/",
+    "notes": ""
+  },
+  {
+    "serial": 42,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "Lower Bound",
+    "link": "https://leetcode.com/problems/search-insert-position/",
+    "notes": "Same technique/problem as LC 35 Search Insert Position (already in your sheet under a different row)"
+  },
+  {
+    "serial": 43,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "Upper Bound",
+    "link": "https://takeuforward.org/arrays/implement-upper-bound/",
+    "notes": "Implement upper_bound()' (search GFG) \u2014 no standalone LC problem"
+  },
+  {
+    "serial": 44,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "Search insert position",
+    "link": "https://leetcode.com/problems/search-insert-position/#:~:text=Search%20Insert%20Position%20%2D%20LeetCode&text=Given%20a%20sorted%20array%20of,(log%20n)%20runtime%20complexity.",
+    "notes": ""
+  },
+  {
+    "serial": 45,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "Floor and Ceil in Sorted Array",
+    "link": "https://takeuforward.org/arrays/floor-and-ceil-in-sorted-array/",
+    "notes": "Floor and Ceil in a Sorted Array' (search GFG) \u2014 no standalone LC problem"
+  },
+  {
+    "serial": 46,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "First and last occurrence",
+    "link": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
+    "notes": ""
+  },
+  {
+    "serial": 47,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "Count Occurrences in a Sorted Array",
+    "link": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
+    "notes": "Solved directly with LC 34 (First/Last Occurrence, already in your sheet) via (last-first+1)"
+  },
+  {
+    "serial": 48,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Medium",
+    "name": "Search in rotated sorted array-I",
+    "link": "https://leetcode.com/problems/search-in-rotated-sorted-array/",
+    "notes": ""
+  },
+  {
+    "serial": 49,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Medium",
+    "name": "Search in rotated sorted array-II",
+    "link": "https://leetcode.com/problems/search-in-rotated-sorted-array-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 50,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "Find minimum in Rotated Sorted Array",
+    "link": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/",
+    "notes": ""
+  },
+  {
+    "serial": 51,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Easy",
+    "name": "Find out how many times the array is rotated",
+    "link": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/",
+    "notes": "Same technique/problem as LC 153 (already in your sheet) \u2014 index of minimum = rotation count"
+  },
+  {
+    "serial": 52,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Medium",
+    "name": "Single element in a Sorted Array",
+    "link": "https://leetcode.com/problems/single-element-in-a-sorted-array/",
+    "notes": ""
+  },
+  {
+    "serial": 53,
+    "heading": "Binary Search",
+    "subheading": "BS on 1D Arrays",
+    "difficulty": "Medium",
+    "name": "Find peak element",
+    "link": "https://leetcode.com/problems/find-peak-element/#:~:text=Find%20Peak%20Element%20%2D%20LeetCode&text=A%20peak%20element%20is%20an,to%20any%20of%20the%20peaks.",
+    "notes": ""
+  },
+  {
+    "serial": 54,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Find square root of a number",
+    "link": "https://leetcode.com/problems/sqrtx/",
+    "notes": "LC 69 (Sqrt(x)) \u2014 exact match"
+  },
+  {
+    "serial": 55,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Find Nth root of a number",
+    "link": "https://takeuforward.org/data-structure/nth-root-of-a-number-using-binary-search/",
+    "notes": "N-th root of a number' (search GFG) \u2014 generalization of LC 69 Sqrt(x)"
+  },
+  {
+    "serial": 56,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Koko eating bananas",
+    "link": "https://leetcode.com/problems/koko-eating-bananas/",
+    "notes": ""
+  },
+  {
+    "serial": 57,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Minimum days to make M bouquets",
+    "link": "https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/",
+    "notes": ""
+  },
+  {
+    "serial": 58,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Find the smallest divisor",
+    "link": "https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/",
+    "notes": ""
+  },
+  {
+    "serial": 59,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Capacity to Ship Packages Within D Days",
+    "link": "https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/",
+    "notes": ""
+  },
+  {
+    "serial": 60,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Kth Missing Positive Number",
+    "link": "https://leetcode.com/problems/kth-missing-positive-number/#:~:text=Given%20an%20array%20arr%20of,13%2C...%5D.",
+    "notes": ""
+  },
+  {
+    "serial": 61,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Hard",
+    "name": "Aggressive Cows",
+    "link": "https://leetcode.com/problems/magnetic-force-between-two-balls/",
+    "notes": "LC 1552 (Magnetic Force Between Two Balls) \u2014 exact match, identical binary-search-on-answer problem"
+  },
+  {
+    "serial": 62,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Hard",
+    "name": "Book Allocation Problem",
+    "link": "https://leetcode.com/problems/split-array-largest-sum/",
+    "notes": "Same technique/problem as LC 410 Split Array Largest Sum (already in your sheet)"
+  },
+  {
+    "serial": 63,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Hard",
+    "name": "Split array - largest sum",
+    "link": "https://leetcode.com/problems/split-array-largest-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 64,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Painter's Partition",
+    "link": "https://leetcode.com/problems/split-array-largest-sum/",
+    "notes": "Same technique/problem as LC 410 Split Array Largest Sum (already in your sheet)"
+  },
+  {
+    "serial": 65,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Hard",
+    "name": "Minimize Max Distance to Gas Station",
+    "link": "https://leetcode.com/problems/minimize-max-distance-to-gas-station/",
+    "notes": ""
+  },
+  {
+    "serial": 66,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Hard",
+    "name": "Median of 2 sorted arrays",
+    "link": "https://leetcode.com/problems/median-of-two-sorted-arrays/",
+    "notes": ""
+  },
+  {
+    "serial": 67,
+    "heading": "Binary Search",
+    "subheading": "BS on Answers",
+    "difficulty": "Medium",
+    "name": "Kth element of 2 sorted arrays",
+    "link": "https://takeuforward.org/data-structure/k-th-element-of-two-sorted-arrays/",
+    "notes": "K-th element of two sorted Arrays' (search GFG) \u2014 generalization of LC 4 Median of Two Sorted Arrays (already in your sheet)"
+  },
+  {
+    "serial": 68,
+    "heading": "Binary Search",
+    "subheading": "BS on 2D Arrays",
+    "difficulty": "Easy",
+    "name": "Find row with maximum 1's",
+    "link": "https://takeuforward.org/arrays/find-the-row-with-maximum-number-of-1s/",
+    "notes": "Find the row with maximum number of 1s' (search GFG) \u2014 no standalone LC problem"
+  },
+  {
+    "serial": 69,
+    "heading": "Binary Search",
+    "subheading": "BS on 2D Arrays",
+    "difficulty": "Hard",
+    "name": "Search in a 2D matrix",
+    "link": "https://leetcode.com/problems/search-a-2d-matrix/",
+    "notes": ""
+  },
+  {
+    "serial": 70,
+    "heading": "Binary Search",
+    "subheading": "BS on 2D Arrays",
+    "difficulty": "Hard",
+    "name": "Search in 2D matrix - II",
+    "link": "https://leetcode.com/problems/search-a-2d-matrix-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 71,
+    "heading": "Binary Search",
+    "subheading": "BS on 2D Arrays",
+    "difficulty": "Medium",
+    "name": "Find Peak Element - II",
+    "link": "https://leetcode.com/problems/find-a-peak-element-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 72,
+    "heading": "Binary Search",
+    "subheading": "BS on 2D Arrays",
+    "difficulty": "Hard",
+    "name": "Matrix Median",
+    "link": "https://takeuforward.org/data-structure/median-of-row-wise-sorted-matrix/",
+    "notes": "Median in a row-wise sorted Matrix' (search GFG) \u2014 no standalone LC problem"
+  },
+  {
+    "serial": 73,
+    "heading": "Strings",
+    "subheading": "Basic and Easy String Problems",
+    "difficulty": "Medium",
+    "name": "Remove Outermost Parentheses",
+    "link": "https://leetcode.com/problems/remove-outermost-parentheses/",
+    "notes": ""
+  },
+  {
+    "serial": 74,
+    "heading": "Strings",
+    "subheading": "Basic and Easy String Problems",
+    "difficulty": "Medium",
+    "name": "Reverse words in a given string / Palindrome Check",
+    "link": "https://leetcode.com/problems/reverse-words-in-a-string/",
+    "notes": ""
+  },
+  {
+    "serial": 75,
+    "heading": "Strings",
+    "subheading": "Basic and Easy String Problems",
+    "difficulty": "Easy",
+    "name": "Largest Odd Number in a String",
+    "link": "https://leetcode.com/problems/largest-odd-number-in-string/",
+    "notes": ""
+  },
+  {
+    "serial": 76,
+    "heading": "Strings",
+    "subheading": "Basic and Easy String Problems",
+    "difficulty": "Easy",
+    "name": "Longest Common Prefix",
+    "link": "https://leetcode.com/problems/longest-common-prefix/",
+    "notes": ""
+  },
+  {
+    "serial": 77,
+    "heading": "Strings",
+    "subheading": "Basic and Easy String Problems",
+    "difficulty": "Easy",
+    "name": "Isomorphic String",
+    "link": "https://leetcode.com/problems/isomorphic-strings/",
+    "notes": ""
+  },
+  {
+    "serial": 78,
+    "heading": "Strings",
+    "subheading": "Basic and Easy String Problems",
+    "difficulty": "Easy",
+    "name": "Rotate String",
+    "link": "https://leetcode.com/problems/rotate-string/",
+    "notes": ""
+  },
+  {
+    "serial": 79,
+    "heading": "Strings",
+    "subheading": "Basic and Easy String Problems",
+    "difficulty": "Easy",
+    "name": "Check if two strings are anagram of each other",
+    "link": "https://leetcode.com/problems/valid-anagram/#:~:text=Given%20two%20strings%20s%20and,the%20original%20letters%20exactly%20once.&text=Constraints%3A,.length%20%3C%3D%205%20*%2010",
+    "notes": ""
+  },
+  {
+    "serial": 80,
+    "heading": "Strings",
+    "subheading": "Medium String Problems",
+    "difficulty": "Easy",
+    "name": "Sort Characters by Frequency",
+    "link": "https://leetcode.com/problems/sort-characters-by-frequency/",
+    "notes": ""
+  },
+  {
+    "serial": 81,
+    "heading": "Strings",
+    "subheading": "Medium String Problems",
+    "difficulty": "Medium",
+    "name": "Maximum Nesting Depth of the Parentheses",
+    "link": "https://leetcode.com/problems/maximum-nesting-depth-of-the-parentheses/",
+    "notes": ""
+  },
+  {
+    "serial": 82,
+    "heading": "Strings",
+    "subheading": "Medium String Problems",
+    "difficulty": "Medium",
+    "name": "Roman to Integer",
+    "link": "https://leetcode.com/problems/roman-to-integer/",
+    "notes": ""
+  },
+  {
+    "serial": 83,
+    "heading": "Strings",
+    "subheading": "Medium String Problems",
+    "difficulty": "Medium",
+    "name": "String to Integer (atoi)",
+    "link": "https://leetcode.com/problems/string-to-integer-atoi/",
+    "notes": ""
+  },
+  {
+    "serial": 84,
+    "heading": "Strings",
+    "subheading": "Medium String Problems",
+    "difficulty": "Easy",
+    "name": "Count Number of Substrings",
+    "link": "https://takeuforward.org/data-structure/count-number-of-substrings",
+    "notes": "Count number of substrings with exactly K distinct characters' (search GFG) \u2014 same atMost(k)-atMost(k-1) trick as LC 992 (already in your sheet, array version)"
+  },
+  {
+    "serial": 85,
+    "heading": "Strings",
+    "subheading": "Medium String Problems",
+    "difficulty": "Medium",
+    "name": "Longest Palindromic Substring",
+    "link": "https://leetcode.com/problems/longest-palindromic-substring/",
+    "notes": ""
+  },
+  {
+    "serial": 86,
+    "heading": "Strings",
+    "subheading": "Medium String Problems",
+    "difficulty": "Medium",
+    "name": "Sum of Beauty of All Substrings",
+    "link": "https://leetcode.com/problems/sum-of-beauty-of-all-substrings/",
+    "notes": ""
+  },
+  {
+    "serial": 87,
+    "heading": "Strings",
+    "subheading": "Medium String Problems",
+    "difficulty": "Medium",
+    "name": "Reverse every word in a string",
+    "link": "https://leetcode.com/problems/reverse-words-in-a-string/",
+    "notes": ""
+  },
+  {
+    "serial": 88,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn 1D LinkedList",
+    "difficulty": "Easy",
+    "name": "Introduction to Singly LinkedList",
+    "link": "https://takeuforward.org/linked-list/linked-list-introduction",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 89,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn 1D LinkedList",
+    "difficulty": "Easy",
+    "name": "Insertion at the head of Linked List",
+    "link": "https://takeuforward.org/linked-list/insert-at-the-head-of-a-linked-list",
+    "notes": "Fundamental LL operation \u2014 implement directly"
+  },
+  {
+    "serial": 90,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn 1D LinkedList",
+    "difficulty": "Easy",
+    "name": "Deletion of the head of LL",
+    "link": "https://leetcode.com/problems/delete-node-in-a-linked-list/",
+    "notes": ""
+  },
+  {
+    "serial": 91,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn 1D LinkedList",
+    "difficulty": "Easy",
+    "name": "Find the length of the Linked List",
+    "link": "https://takeuforward.org/linked-list/find-the-length-of-a-linked-list",
+    "notes": "Fundamental LL operation \u2014 implement directly"
+  },
+  {
+    "serial": 92,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn 1D LinkedList",
+    "difficulty": "Medium",
+    "name": "Search in Linked List",
+    "link": "https://takeuforward.org/linked-list/search-an-element-in-a-linked-list",
+    "notes": "Fundamental LL operation \u2014 implement directly"
+  },
+  {
+    "serial": 93,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn Doubly LinkedList",
+    "difficulty": "Easy",
+    "name": "Introduction to Doubly LL",
+    "link": "https://takeuforward.org/linked-list/introduction-to-doubly-linked-list",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 94,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn Doubly LinkedList",
+    "difficulty": "Easy",
+    "name": "Insert node before head in Doubly Linked List",
+    "link": "https://takeuforward.org/data-structure/insert-at-end-of-doubly-linked-list/",
+    "notes": "Fundamental DLL operation \u2014 implement directly"
+  },
+  {
+    "serial": 95,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn Doubly LinkedList",
+    "difficulty": "Easy",
+    "name": "Delete head of Doubly Linked List",
+    "link": "https://takeuforward.org/data-structure/delete-last-node-of-a-doubly-linked-list/",
+    "notes": "Fundamental DLL operation \u2014 implement directly"
+  },
+  {
+    "serial": 96,
+    "heading": "Learn LinkedList",
+    "subheading": "Learn Doubly LinkedList",
+    "difficulty": "Medium",
+    "name": "Reverse a Doubly Linked List",
+    "link": "https://takeuforward.org/data-structure/reverse-a-doubly-linked-list/",
+    "notes": "Reverse a Doubly Linked List' (search GFG) \u2014 DLL analog of LC 206 (already in your sheet for singly LL)"
+  },
+  {
+    "serial": 97,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Easy",
+    "name": "Middle of a LinkedList [TortoiseHare Method]",
+    "link": "https://leetcode.com/problems/middle-of-the-linked-list/",
+    "notes": ""
+  },
+  {
+    "serial": 98,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Reverse a LinkedList [Iterative]",
+    "link": "https://leetcode.com/problems/reverse-linked-list/",
+    "notes": ""
+  },
+  {
+    "serial": 99,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Reverse a LL",
+    "link": "https://leetcode.com/problems/reverse-linked-list/",
+    "notes": ""
+  },
+  {
+    "serial": 100,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Detect a loop in LL",
+    "link": "https://leetcode.com/problems/linked-list-cycle/",
+    "notes": ""
+  },
+  {
+    "serial": 101,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Find the starting point in LL",
+    "link": "https://leetcode.com/problems/linked-list-cycle-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 102,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Length of loop in LL",
+    "link": "https://takeuforward.org/linked-list/length-of-loop-in-linked-list",
+    "notes": "Find length of loop in linked list' (search GFG) \u2014 builds on LC 141/142 (already in your sheet)"
+  },
+  {
+    "serial": 103,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Check if LL is palindrome or not",
+    "link": "https://leetcode.com/problems/palindrome-linked-list/",
+    "notes": ""
+  },
+  {
+    "serial": 104,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Segregate odd and even nodes in Linked List",
+    "link": "https://leetcode.com/problems/odd-even-linked-list/",
+    "notes": ""
+  },
+  {
+    "serial": 105,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Remove Nth node from the back of the LL",
+    "link": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+    "notes": ""
+  },
+  {
+    "serial": 106,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Delete the middle node in LL",
+    "link": "https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/#:~:text=You%20are%20given%20the%20head,than%20or%20equal%20to%20x%20.",
+    "notes": ""
+  },
+  {
+    "serial": 107,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Hard",
+    "name": "Sort LL",
+    "link": "https://leetcode.com/problems/sort-list/",
+    "notes": ""
+  },
+  {
+    "serial": 108,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Sort a Linked List of 0's 1's and 2's",
+    "link": "https://takeuforward.org/data-structure/sort-a-linked-list-of-0s-1s-and-2s-by-changing-links",
+    "notes": "Sort a linked list of 0s, 1s and 2s' (search GFG) \u2014 LL analog of LC 75 Sort Colors (already in your sheet)"
+  },
+  {
+    "serial": 109,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Find the intersection point of Y LL",
+    "link": "https://leetcode.com/problems/intersection-of-two-linked-lists/",
+    "notes": ""
+  },
+  {
+    "serial": 110,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Add one to a number represented by LL",
+    "link": "https://takeuforward.org/data-structure/add-1-to-a-number-represented-by-ll",
+    "notes": "Add 1 to a number represented as linked list' (search GFG) (LC's Plus One (66) is array-based)"
+  },
+  {
+    "serial": 111,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of LL",
+    "difficulty": "Medium",
+    "name": "Add two numbers in Linked List",
+    "link": "https://leetcode.com/problems/add-two-numbers/",
+    "notes": ""
+  },
+  {
+    "serial": 112,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of DLL",
+    "difficulty": "Hard",
+    "name": "Delete all occurrences of a key in DLL",
+    "link": "https://takeuforward.org/data-structure/delete-all-occurrences-of-a-key-in-dll",
+    "notes": "Delete all occurrences of a given key in a doubly linked list' (search GFG)"
+  },
+  {
+    "serial": 113,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of DLL",
+    "difficulty": "Medium",
+    "name": "Find Pairs with Given Sum in Doubly Linked List",
+    "link": "https://takeuforward.org/data-structure/find-pairs-with-given-sum-in-doubly-linked-list",
+    "notes": "Find pairs with given sum in doubly linked list' (search GFG) \u2014 two-pointer technique like LC 167 Two Sum II"
+  },
+  {
+    "serial": 114,
+    "heading": "Learn LinkedList",
+    "subheading": "Medium Problems of DLL",
+    "difficulty": "Hard",
+    "name": "Remove duplicates from sorted DLL",
+    "link": "https://takeuforward.org/data-structure/remove-duplicates-from-sorted-dll",
+    "notes": "Remove duplicates from a sorted doubly linked list' (search GFG)"
+  },
+  {
+    "serial": 115,
+    "heading": "Learn LinkedList",
+    "subheading": "Hard Problems of LL",
+    "difficulty": "Hard",
+    "name": "Reverse LL in group of given size K",
+    "link": "https://leetcode.com/problems/reverse-nodes-in-k-group/",
+    "notes": ""
+  },
+  {
+    "serial": 116,
+    "heading": "Learn LinkedList",
+    "subheading": "Hard Problems of LL",
+    "difficulty": "Hard",
+    "name": "Rotate a LL",
+    "link": "https://leetcode.com/problems/rotate-list/description/",
+    "notes": ""
+  },
+  {
+    "serial": 117,
+    "heading": "Learn LinkedList",
+    "subheading": "Hard Problems of LL",
+    "difficulty": "Hard",
+    "name": "Flattening of LL",
+    "link": "https://takeuforward.org/data-structure/flattening-a-linked-list/",
+    "notes": "Flattening a Linked List' (search GFG). Not the same as LC 430 Flatten Multilevel DLL \u2014 that's a different problem, so not forced here"
+  },
+  {
+    "serial": 118,
+    "heading": "Learn LinkedList",
+    "subheading": "Hard Problems of LL",
+    "difficulty": "Hard",
+    "name": "Clone a LL with random and next pointer",
+    "link": "https://leetcode.com/problems/copy-list-with-random-pointer/",
+    "notes": ""
+  },
+  {
+    "serial": 119,
+    "heading": "Recursion",
+    "subheading": "Get a Strong Hold",
+    "difficulty": "Medium",
+    "name": "Recursive Implementation of atoi()",
+    "link": "https://leetcode.com/problems/string-to-integer-atoi/",
+    "notes": ""
+  },
+  {
+    "serial": 120,
+    "heading": "Recursion",
+    "subheading": "Get a Strong Hold",
+    "difficulty": "Easy",
+    "name": "Pow(x, n)",
+    "link": "https://leetcode.com/problems/powx-n/",
+    "notes": ""
+  },
+  {
+    "serial": 121,
+    "heading": "Recursion",
+    "subheading": "Get a Strong Hold",
+    "difficulty": "Medium",
+    "name": "Count Good Numbers",
+    "link": "https://leetcode.com/problems/count-good-numbers/",
+    "notes": ""
+  },
+  {
+    "serial": 122,
+    "heading": "Recursion",
+    "subheading": "Get a Strong Hold",
+    "difficulty": "Medium",
+    "name": "Sort a stack using recursion",
+    "link": "https://takeuforward.org/data-structure/sort-a-stack",
+    "notes": "Sort a stack using recursion' (search GFG)"
+  },
+  {
+    "serial": 123,
+    "heading": "Recursion",
+    "subheading": "Get a Strong Hold",
+    "difficulty": "Medium",
+    "name": "Reverse a Stack",
+    "link": "https://takeuforward.org/data-structure/reverse-a-stack-using-recursion",
+    "notes": "Reverse a stack using recursion' (search GFG)"
+  },
+  {
+    "serial": 124,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Medium",
+    "name": "Generate Binary Strings Without Consecutive 1s",
+    "link": "https://takeuforward.org/data-structure/generate-all-binary-strings",
+    "notes": "Generate all binary strings without consecutive 1s' (search GFG)"
+  },
+  {
+    "serial": 125,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Medium",
+    "name": "Generate Parentheses",
+    "link": "https://leetcode.com/problems/generate-parentheses/",
+    "notes": ""
+  },
+  {
+    "serial": 126,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Medium",
+    "name": "Power Set",
+    "link": "https://leetcode.com/problems/subsets/",
+    "notes": "LC 78 (Subsets) \u2014 exact match, 'power set' is the same problem"
+  },
+  {
+    "serial": 127,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Easy",
+    "name": "Learn All Patterns of Subsequences (Theory)",
+    "link": "https://takeuforward.org/data-structure/learn-all-patterns-of-subsequences-theory",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 128,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Easy",
+    "name": "Count all subsequences with sum K",
+    "link": "https://takeuforward.org/data-structure/count-all-subsequences-with-sum-k",
+    "notes": "Count all subsets/subsequences with sum K' (search GFG) \u2014 same recursion pattern as LC 494 Target Sum / LC 416 (already in your sheet)"
+  },
+  {
+    "serial": 129,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Easy",
+    "name": "Check if there exists a subsequence with sum K",
+    "link": "https://takeuforward.org/data-structure/check-if-there-exists-a-subsequence-with-sum-k",
+    "notes": "Subset Sum Problem' (search GFG) \u2014 same technique as LC 416 Partition Equal Subset Sum (already in your sheet)"
+  },
+  {
+    "serial": 130,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Medium",
+    "name": "Combination Sum",
+    "link": "https://leetcode.com/problems/combination-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 131,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Medium",
+    "name": "Combination Sum II",
+    "link": "https://leetcode.com/problems/combination-sum-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 132,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Medium",
+    "name": "Subsets I",
+    "link": "https://leetcode.com/problems/subsets/",
+    "notes": "LC 78 (Subsets) \u2014 exact match"
+  },
+  {
+    "serial": 133,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Medium",
+    "name": "Subsets II",
+    "link": "https://leetcode.com/problems/subsets-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 134,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Medium",
+    "name": "Combination Sum III",
+    "link": "https://leetcode.com/problems/combination-sum-iii/",
+    "notes": ""
+  },
+  {
+    "serial": 135,
+    "heading": "Recursion",
+    "subheading": "Subsequences Pattern",
+    "difficulty": "Hard",
+    "name": "Letter Combinations of a Phone Number",
+    "link": "https://leetcode.com/problems/letter-combinations-of-a-phone-number/",
+    "notes": ""
+  },
+  {
+    "serial": 136,
+    "heading": "Recursion",
+    "subheading": "Trying out all Combos / Hard",
+    "difficulty": "Hard",
+    "name": "Palindrome partitioning",
+    "link": "https://leetcode.com/problems/palindrome-partitioning/",
+    "notes": "LC 131 \u2014 exact match"
+  },
+  {
+    "serial": 137,
+    "heading": "Recursion",
+    "subheading": "Trying out all Combos / Hard",
+    "difficulty": "Hard",
+    "name": "Word Search",
+    "link": "https://leetcode.com/problems/word-search/",
+    "notes": ""
+  },
+  {
+    "serial": 138,
+    "heading": "Recursion",
+    "subheading": "Trying out all Combos / Hard",
+    "difficulty": "Hard",
+    "name": "N Queen",
+    "link": "https://leetcode.com/problems/n-queens/",
+    "notes": ""
+  },
+  {
+    "serial": 139,
+    "heading": "Recursion",
+    "subheading": "Trying out all Combos / Hard",
+    "difficulty": "Hard",
+    "name": "Rat in a Maze",
+    "link": "https://takeuforward.org/data-structure/rat-in-a-maze/",
+    "notes": "Rat in a Maze Problem' (search GFG) \u2014 no direct LC equivalent"
+  },
+  {
+    "serial": 140,
+    "heading": "Recursion",
+    "subheading": "Trying out all Combos / Hard",
+    "difficulty": "Medium",
+    "name": "Word Break",
+    "link": "https://leetcode.com/problems/word-break/",
+    "notes": "LC 139 \u2014 exact match"
+  },
+  {
+    "serial": 141,
+    "heading": "Recursion",
+    "subheading": "Trying out all Combos / Hard",
+    "difficulty": "Hard",
+    "name": "M Coloring Problem",
+    "link": "https://takeuforward.org/data-structure/m-coloring-problem/",
+    "notes": "M-Coloring Problem' (search GFG) \u2014 no direct LC equivalent"
+  },
+  {
+    "serial": 142,
+    "heading": "Recursion",
+    "subheading": "Trying out all Combos / Hard",
+    "difficulty": "Hard",
+    "name": "Sudoku Solver",
+    "link": "https://leetcode.com/problems/sudoku-solver/",
+    "notes": ""
+  },
+  {
+    "serial": 143,
+    "heading": "Recursion",
+    "subheading": "Trying out all Combos / Hard",
+    "difficulty": "Hard",
+    "name": "Expression Add Operators",
+    "link": "https://leetcode.com/problems/expression-add-operators/",
+    "notes": ""
+  },
+  {
+    "serial": 144,
+    "heading": "Bit Manipulation",
+    "subheading": "Learn Bit Manipulation",
+    "difficulty": "Easy",
+    "name": "Introduction to Bits and Tricks",
+    "link": "https://takeuforward.org/data-structure/introduction-to-bit-manipulation-theory",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 145,
+    "heading": "Bit Manipulation",
+    "subheading": "Learn Bit Manipulation",
+    "difficulty": "Easy",
+    "name": "Check if the i-th bit is Set or Not",
+    "link": "https://takeuforward.org/data-structure/check-if-the-i-th-bit-is-set-or-not",
+    "notes": "Fundamental bit operation \u2014 one-liner (n>>i)&1"
+  },
+  {
+    "serial": 146,
+    "heading": "Bit Manipulation",
+    "subheading": "Learn Bit Manipulation",
+    "difficulty": "Easy",
+    "name": "Check if a Number is Odd or Not",
+    "link": "https://takeuforward.org/data-structure/check-if-a-number-is-odd-or-not",
+    "notes": "Fundamental bit operation \u2014 one-liner n&1"
+  },
+  {
+    "serial": 147,
+    "heading": "Bit Manipulation",
+    "subheading": "Learn Bit Manipulation",
+    "difficulty": "Easy",
+    "name": "Check if a Number is Power of 2 or Not",
+    "link": "https://leetcode.com/problems/power-of-two/",
+    "notes": ""
+  },
+  {
+    "serial": 148,
+    "heading": "Bit Manipulation",
+    "subheading": "Learn Bit Manipulation",
+    "difficulty": "Easy",
+    "name": "Count the Number of Set Bits",
+    "link": "https://leetcode.com/problems/number-of-1-bits/",
+    "notes": "LC 191 (Number of 1 Bits) \u2014 exact match"
+  },
+  {
+    "serial": 149,
+    "heading": "Bit Manipulation",
+    "subheading": "Learn Bit Manipulation",
+    "difficulty": "Easy",
+    "name": "Set/Unset the rightmost unset bit",
+    "link": "https://takeuforward.org/data-structure/set-the-rightmost-bit",
+    "notes": "Set the rightmost unset bit' (search GFG)"
+  },
+  {
+    "serial": 150,
+    "heading": "Bit Manipulation",
+    "subheading": "Learn Bit Manipulation",
+    "difficulty": "Easy",
+    "name": "Swap Two Numbers",
+    "link": "https://takeuforward.org/data-structure/swap-two-numbers",
+    "notes": "Fundamental bit-trick (XOR swap) \u2014 no dedicated LC/GFG problem"
+  },
+  {
+    "serial": 151,
+    "heading": "Bit Manipulation",
+    "subheading": "Learn Bit Manipulation",
+    "difficulty": "Medium",
+    "name": "Divide two numbers without multiplication and division",
+    "link": "https://leetcode.com/problems/divide-two-integers/",
+    "notes": ""
+  },
+  {
+    "serial": 152,
+    "heading": "Bit Manipulation",
+    "subheading": "Interview Problems",
+    "difficulty": "Medium",
+    "name": "Minimum Bit Flips to Convert Number",
+    "link": "https://leetcode.com/problems/minimum-bit-flips-to-convert-number/",
+    "notes": ""
+  },
+  {
+    "serial": 153,
+    "heading": "Bit Manipulation",
+    "subheading": "Interview Problems",
+    "difficulty": "Medium",
+    "name": "Single Number - I",
+    "link": "https://leetcode.com/problems/single-number/",
+    "notes": ""
+  },
+  {
+    "serial": 154,
+    "heading": "Bit Manipulation",
+    "subheading": "Interview Problems",
+    "difficulty": "Medium",
+    "name": "Power Set Bit Manipulation",
+    "link": "https://leetcode.com/problems/subsets/",
+    "notes": ""
+  },
+  {
+    "serial": 155,
+    "heading": "Bit Manipulation",
+    "subheading": "Interview Problems",
+    "difficulty": "Medium",
+    "name": "XOR of numbers in a given range",
+    "link": "https://takeuforward.org/data-structure/find-xor-of-numbers-from-l-to-r",
+    "notes": "XOR of numbers from L to R' (search GFG)"
+  },
+  {
+    "serial": 156,
+    "heading": "Bit Manipulation",
+    "subheading": "Interview Problems",
+    "difficulty": "Medium",
+    "name": "Single Number - III",
+    "link": "https://leetcode.com/problems/single-number-iii/",
+    "notes": "LC 260 \u2014 exact match"
+  },
+  {
+    "serial": 157,
+    "heading": "Bit Manipulation",
+    "subheading": "Advanced Maths",
+    "difficulty": "Hard",
+    "name": "Print Prime Factors of a Number",
+    "link": "https://takeuforward.org/data-structure/find-the-two-numbers-appearing-odd-number-of-times",
+    "notes": "Prime Factorization' (search GFG) \u2014 no dedicated LC problem"
+  },
+  {
+    "serial": 158,
+    "heading": "Bit Manipulation",
+    "subheading": "Advanced Maths",
+    "difficulty": "Easy",
+    "name": "Divisors of a Number",
+    "link": "https://takeuforward.org/data-structure/print-all-divisors-of-a-given-number/",
+    "notes": "Find all divisors of a number' (search GFG) \u2014 no dedicated LC problem"
+  },
+  {
+    "serial": 159,
+    "heading": "Bit Manipulation",
+    "subheading": "Advanced Maths",
+    "difficulty": "Hard",
+    "name": "Count primes in range L to R",
+    "link": "https://leetcode.com/problems/count-primes/",
+    "notes": ""
+  },
+  {
+    "serial": 160,
+    "heading": "Bit Manipulation",
+    "subheading": "Advanced Maths",
+    "difficulty": "Hard",
+    "name": "Prime factorisation of a Number",
+    "link": "https://takeuforward.org/data-structure/find-the-two-numbers-appearing-odd-number-of-times",
+    "notes": "Prime Factorization using Sieve' (search GFG) \u2014 no dedicated LC problem"
+  },
+  {
+    "serial": 161,
+    "heading": "Bit Manipulation",
+    "subheading": "Advanced Maths",
+    "difficulty": "Easy",
+    "name": "Pow(x,n)",
+    "link": "https://leetcode.com/problems/powx-n/",
+    "notes": ""
+  },
+  {
+    "serial": 162,
+    "heading": "Stack and Queues",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Implement Stack using Arrays",
+    "link": "https://takeuforward.org/data-structure/implement-stack-using-array/",
+    "notes": "Fundamental data-structure implementation \u2014 no dedicated LC problem; GFG has 'Stack using Array' if you want a checker"
+  },
+  {
+    "serial": 163,
+    "heading": "Stack and Queues",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Implement Queue using Arrays",
+    "link": "https://takeuforward.org/data-structure/implement-queue-using-array/",
+    "notes": "Fundamental data-structure implementation \u2014 no dedicated LC problem; GFG has 'Queue using Array' if you want a checker"
+  },
+  {
+    "serial": 164,
+    "heading": "Stack and Queues",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Implement Stack using Queue",
+    "link": "https://leetcode.com/problems/implement-stack-using-queues/",
+    "notes": ""
+  },
+  {
+    "serial": 165,
+    "heading": "Stack and Queues",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Implement Queue using Stack",
+    "link": "https://leetcode.com/problems/implement-queue-using-stacks/",
+    "notes": ""
+  },
+  {
+    "serial": 166,
+    "heading": "Stack and Queues",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Implement stack using Linkedlist",
+    "link": "https://takeuforward.org/data-structure/implement-stack-using-linked-list/",
+    "notes": "Fundamental data-structure implementation \u2014 no dedicated LC problem"
+  },
+  {
+    "serial": 167,
+    "heading": "Stack and Queues",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Implement queue using Linkedlist",
+    "link": "https://takeuforward.org/data-structure/implement-queue-using-linked-list/",
+    "notes": "Fundamental data-structure implementation \u2014 no dedicated LC problem"
+  },
+  {
+    "serial": 168,
+    "heading": "Stack and Queues",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Balanced Paranthesis",
+    "link": "https://leetcode.com/problems/valid-parentheses/",
+    "notes": ""
+  },
+  {
+    "serial": 169,
+    "heading": "Stack and Queues",
+    "subheading": "Learning",
+    "difficulty": "Hard",
+    "name": "Implement Min Stack",
+    "link": "https://leetcode.com/problems/min-stack/",
+    "notes": ""
+  },
+  {
+    "serial": 170,
+    "heading": "Stack and Queues",
+    "subheading": "Prefix, Infix, PostFix Conversion Problems",
+    "difficulty": "Medium",
+    "name": "Infix to Postfix Conversion",
+    "link": "https://takeuforward.org/data-structure/infix-to-postfix/",
+    "notes": "Infix to Postfix' (search GFG)"
+  },
+  {
+    "serial": 171,
+    "heading": "Stack and Queues",
+    "subheading": "Prefix, Infix, PostFix Conversion Problems",
+    "difficulty": "Medium",
+    "name": "Prefix to Infix Conversion",
+    "link": "https://takeuforward.org/data-structure/prefix-to-infix-conversion",
+    "notes": "Prefix to Infix Conversion' (search GFG)"
+  },
+  {
+    "serial": 172,
+    "heading": "Stack and Queues",
+    "subheading": "Prefix, Infix, PostFix Conversion Problems",
+    "difficulty": "Medium",
+    "name": "Prefix to Postfix Conversion",
+    "link": "https://takeuforward.org/data-structure/prefix-to-postfix-conversion",
+    "notes": "Prefix to Postfix Conversion' (search GFG)"
+  },
+  {
+    "serial": 173,
+    "heading": "Stack and Queues",
+    "subheading": "Prefix, Infix, PostFix Conversion Problems",
+    "difficulty": "Medium",
+    "name": "Postfix to Prefix Conversion",
+    "link": "https://takeuforward.org/data-structure/postfix-to-prefix-conversion",
+    "notes": "Postfix to Prefix Conversion' (search GFG)"
+  },
+  {
+    "serial": 174,
+    "heading": "Stack and Queues",
+    "subheading": "Prefix, Infix, PostFix Conversion Problems",
+    "difficulty": "Easy",
+    "name": "Postfix to Infix Conversion",
+    "link": "https://takeuforward.org/data-structure/postfix-to-infix",
+    "notes": "Postfix to Infix Conversion' (search GFG)"
+  },
+  {
+    "serial": 175,
+    "heading": "Stack and Queues",
+    "subheading": "Prefix, Infix, PostFix Conversion Problems",
+    "difficulty": "Medium",
+    "name": "Infix to Prefix Conversion",
+    "link": "https://takeuforward.org/data-structure/infix-to-prefix/",
+    "notes": "Infix to Prefix Conversion' (search GFG)"
+  },
+  {
+    "serial": 176,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Medium",
+    "name": "Next Greater Element",
+    "link": "https://leetcode.com/problems/next-greater-element-i/",
+    "notes": ""
+  },
+  {
+    "serial": 177,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Medium",
+    "name": "Next Greater Element - 2",
+    "link": "https://leetcode.com/problems/next-greater-element-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 178,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Medium",
+    "name": "Next Smaller Element",
+    "link": "https://takeuforward.org/data-structure/next-smaller-element",
+    "notes": "Next Smaller Element' (search GFG) \u2014 monotonic-stack counterpart to Next Greater Element (already in your sheet)"
+  },
+  {
+    "serial": 179,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Easy",
+    "name": "Number of Greater Elements to the Right",
+    "link": "https://takeuforward.org/data-structure/number-of-nges-to-the-right",
+    "notes": "Count Greater Elements to right' (search GFG)"
+  },
+  {
+    "serial": 180,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Hard",
+    "name": "Trapping Rainwater",
+    "link": "https://leetcode.com/problems/trapping-rain-water/",
+    "notes": ""
+  },
+  {
+    "serial": 181,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Medium",
+    "name": "Sum of Subarray Minimums",
+    "link": "https://leetcode.com/problems/sum-of-subarray-minimums/",
+    "notes": ""
+  },
+  {
+    "serial": 182,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Medium",
+    "name": "Asteroid Collision",
+    "link": "https://leetcode.com/problems/asteroid-collision/",
+    "notes": ""
+  },
+  {
+    "serial": 183,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Medium",
+    "name": "Sum of Subarray Ranges",
+    "link": "https://leetcode.com/problems/sum-of-subarray-ranges/",
+    "notes": ""
+  },
+  {
+    "serial": 184,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Medium",
+    "name": "Remove K Digits",
+    "link": "https://leetcode.com/problems/remove-k-digits/",
+    "notes": ""
+  },
+  {
+    "serial": 185,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Hard",
+    "name": "Largest rectangle in a histogram",
+    "link": "https://leetcode.com/problems/largest-rectangle-in-histogram/",
+    "notes": ""
+  },
+  {
+    "serial": 186,
+    "heading": "Stack and Queues",
+    "subheading": "Monotonic Stack/Queue Problems [VVV. Imp]",
+    "difficulty": "Hard",
+    "name": "Maximum Rectangles",
+    "link": "https://leetcode.com/problems/maximal-rectangle/",
+    "notes": ""
+  },
+  {
+    "serial": 187,
+    "heading": "Stack and Queues",
+    "subheading": "Implementation Problems",
+    "difficulty": "Hard",
+    "name": "Sliding Window Maximum",
+    "link": "https://leetcode.com/problems/sliding-window-maximum/",
+    "notes": ""
+  },
+  {
+    "serial": 188,
+    "heading": "Stack and Queues",
+    "subheading": "Implementation Problems",
+    "difficulty": "Hard",
+    "name": "Stock span problem",
+    "link": "https://leetcode.com/problems/online-stock-span/",
+    "notes": ""
+  },
+  {
+    "serial": 189,
+    "heading": "Stack and Queues",
+    "subheading": "Implementation Problems",
+    "difficulty": "Hard",
+    "name": "Celebrity Problem",
+    "link": "https://leetcode.com/accounts/login/?next=/problems/find-the-celebrity/",
+    "notes": ""
+  },
+  {
+    "serial": 190,
+    "heading": "Stack and Queues",
+    "subheading": "Implementation Problems",
+    "difficulty": "Medium",
+    "name": "LRU Cache",
+    "link": "https://leetcode.com/problems/lru-cache/",
+    "notes": "LC 146 \u2014 exact match"
+  },
+  {
+    "serial": 191,
+    "heading": "Stack and Queues",
+    "subheading": "Implementation Problems",
+    "difficulty": "Hard",
+    "name": "LFU Cache",
+    "link": "https://leetcode.com/problems/lfu-cache/",
+    "notes": ""
+  },
+  {
+    "serial": 192,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Longest Substring Without Repeating Characters",
+    "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+    "notes": ""
+  },
+  {
+    "serial": 193,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Max Consecutive Ones III",
+    "link": "https://leetcode.com/problems/max-consecutive-ones-iii/",
+    "notes": ""
+  },
+  {
+    "serial": 194,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Fruit Into Baskets",
+    "link": "https://leetcode.com/problems/fruit-into-baskets/description/",
+    "notes": ""
+  },
+  {
+    "serial": 195,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Medium Problems",
+    "difficulty": "Hard",
+    "name": "Longest Repeating Character Replacement",
+    "link": "https://leetcode.com/problems/longest-repeating-character-replacement/",
+    "notes": ""
+  },
+  {
+    "serial": 196,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Medium Problems",
+    "difficulty": "Hard",
+    "name": "Binary Subarrays With Sum",
+    "link": "https://leetcode.com/problems/binary-subarrays-with-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 197,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Medium Problems",
+    "difficulty": "Hard",
+    "name": "Count number of Nice subarrays",
+    "link": "https://leetcode.com/problems/count-number-of-nice-subarrays/",
+    "notes": ""
+  },
+  {
+    "serial": 198,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Medium Problems",
+    "difficulty": "Hard",
+    "name": "Number of Substrings Containing All Three Characters",
+    "link": "https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/",
+    "notes": ""
+  },
+  {
+    "serial": 199,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Maximum Points You Can Obtain from Cards",
+    "link": "https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/",
+    "notes": ""
+  },
+  {
+    "serial": 200,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Longest Substring With At Most K Distinct Characters",
+    "link": "https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/",
+    "notes": ""
+  },
+  {
+    "serial": 201,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Subarrays with K Different Integers",
+    "link": "https://leetcode.com/problems/subarrays-with-k-different-integers/",
+    "notes": ""
+  },
+  {
+    "serial": 202,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Minimum Window Substring",
+    "link": "https://leetcode.com/problems/minimum-window-substring/",
+    "notes": ""
+  },
+  {
+    "serial": 203,
+    "heading": "Sliding Window & Two Pointer Combined Problems",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Minimum Window Subsequence",
+    "link": "https://leetcode.com/problems/minimum-window-subsequence/",
+    "notes": ""
+  },
+  {
+    "serial": 204,
+    "heading": "Heaps",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Heaps (Theory Video)",
+    "link": "https://takeuforward.org/data-structure/introduction-to-priority-queues-using-binary-heaps",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 205,
+    "heading": "Heaps",
+    "subheading": "Learning",
+    "difficulty": "Medium",
+    "name": "Implement Min Heap",
+    "link": "",
+    "notes": "Implement a Min Heap' (search GFG)"
+  },
+  {
+    "serial": 206,
+    "heading": "Heaps",
+    "subheading": "Learning",
+    "difficulty": "Medium",
+    "name": "Check if an array represents a min heap",
+    "link": "https://takeuforward.org/data-structure/check-if-an-array-represents-a-min-heap",
+    "notes": "Check whether the given Array is a Min-Heap' (search GFG)"
+  },
+  {
+    "serial": 207,
+    "heading": "Heaps",
+    "subheading": "Learning",
+    "difficulty": "Medium",
+    "name": "Convert Min Heap to Max Heap",
+    "link": "",
+    "notes": "Convert Min Heap to Max Heap' (search GFG)"
+  },
+  {
+    "serial": 208,
+    "heading": "Heaps",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "K-th Largest element in an array",
+    "link": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+    "notes": "LC 215 \u2014 exact match"
+  },
+  {
+    "serial": 209,
+    "heading": "Heaps",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Kth smallest element in an array [use priority queue]",
+    "link": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+    "notes": "Same problem/technique as LC 215 (Kth Largest, already in your sheet) \u2014 just target k = n-k+1"
+  },
+  {
+    "serial": 210,
+    "heading": "Heaps",
+    "subheading": "Medium Problems",
+    "difficulty": "Easy",
+    "name": "Sort K sorted array",
+    "link": "https://takeuforward.org/data-structure/sort-k-sorted-array",
+    "notes": "Nearly sorted array' / 'Sort a k sorted array' (search GFG)"
+  },
+  {
+    "serial": 211,
+    "heading": "Heaps",
+    "subheading": "Medium Problems",
+    "difficulty": "Hard",
+    "name": "Merge K sorted Lists",
+    "link": "https://leetcode.com/problems/merge-k-sorted-lists/",
+    "notes": ""
+  },
+  {
+    "serial": 212,
+    "heading": "Heaps",
+    "subheading": "Medium Problems",
+    "difficulty": "Easy",
+    "name": "Replace Elements by Their Rank",
+    "link": "https://takeuforward.org/data-structure/replace-elements-by-its-rank-in-the-array/",
+    "notes": "Replace elements with rank' (search GFG)"
+  },
+  {
+    "serial": 213,
+    "heading": "Heaps",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Task Scheduler",
+    "link": "https://leetcode.com/problems/task-scheduler/",
+    "notes": ""
+  },
+  {
+    "serial": 214,
+    "heading": "Heaps",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Hand of Straights",
+    "link": "https://leetcode.com/problems/hand-of-straights/",
+    "notes": ""
+  },
+  {
+    "serial": 215,
+    "heading": "Heaps",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Design Twitter",
+    "link": "https://leetcode.com/problems/design-twitter/",
+    "notes": ""
+  },
+  {
+    "serial": 216,
+    "heading": "Heaps",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Minimum Cost to Connect Sticks",
+    "link": "https://leetcode.com/problems/minimum-cost-to-connect-sticks/",
+    "notes": "LC 1167 \u2014 exact match (premium)"
+  },
+  {
+    "serial": 217,
+    "heading": "Heaps",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Kth largest element in a stream of running integers",
+    "link": "https://leetcode.com/problems/kth-largest-element-in-a-stream/#:~:text=Implement%20KthLargest%20class%3A,largest%20element%20in%20the%20stream.",
+    "notes": ""
+  },
+  {
+    "serial": 218,
+    "heading": "Heaps",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Maximum Sum Combination",
+    "link": "https://takeuforward.org/data-structure/maximum-sum-combination",
+    "notes": "Maximum Sum Combination' (search GFG)"
+  },
+  {
+    "serial": 219,
+    "heading": "Heaps",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Find Median from Data Stream",
+    "link": "https://leetcode.com/problems/find-median-from-data-stream/",
+    "notes": ""
+  },
+  {
+    "serial": 220,
+    "heading": "Heaps",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Top K Frequent Elements",
+    "link": "https://leetcode.com/problems/top-k-frequent-elements/",
+    "notes": ""
+  },
+  {
+    "serial": 221,
+    "heading": "Greedy Algorithms",
+    "subheading": "Easy Problems",
+    "difficulty": "Easy",
+    "name": "Assign Cookies",
+    "link": "https://leetcode.com/problems/assign-cookies/",
+    "notes": ""
+  },
+  {
+    "serial": 222,
+    "heading": "Greedy Algorithms",
+    "subheading": "Easy Problems",
+    "difficulty": "Medium",
+    "name": "Fractional Knapsack",
+    "link": "https://takeuforward.org/data-structure/fractional-knapsack-problem-greedy-approach/",
+    "notes": "Fractional Knapsack' (search GFG)"
+  },
+  {
+    "serial": 223,
+    "heading": "Greedy Algorithms",
+    "subheading": "Easy Problems",
+    "difficulty": "Easy",
+    "name": "Lemonade Change",
+    "link": "https://leetcode.com/problems/lemonade-change/",
+    "notes": ""
+  },
+  {
+    "serial": 224,
+    "heading": "Greedy Algorithms",
+    "subheading": "Easy Problems",
+    "difficulty": "Hard",
+    "name": "Valid Paranthesis Checker",
+    "link": "https://leetcode.com/problems/valid-parenthesis-string/",
+    "notes": ""
+  },
+  {
+    "serial": 225,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "N meetings in one room",
+    "link": "https://leetcode.com/problems/non-overlapping-intervals/",
+    "notes": "Same activity-selection technique as LC 435 (already in your sheet); GFG has the exact 'N meetings in one room' problem too"
+  },
+  {
+    "serial": 226,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Easy",
+    "name": "Jump Game - I",
+    "link": "https://leetcode.com/problems/jump-game/",
+    "notes": ""
+  },
+  {
+    "serial": 227,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "Jump Game II",
+    "link": "https://leetcode.com/problems/jump-game-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 228,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "Minimum number of platforms required for a railway",
+    "link": "https://leetcode.com/problems/meeting-rooms-ii/",
+    "notes": "LC 253 (Meeting Rooms II, premium) \u2014 identical algorithm to 'minimum platforms'"
+  },
+  {
+    "serial": 229,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "Job sequencing Problem",
+    "link": "https://takeuforward.org/data-structure/job-sequencing-problem/",
+    "notes": "Job Sequencing Problem' (search GFG) \u2014 related family to LC 630 Course Schedule III (deadline scheduling with a heap), not identical so not forced"
+  },
+  {
+    "serial": 230,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Hard",
+    "name": "Candy",
+    "link": "https://leetcode.com/problems/candy/",
+    "notes": ""
+  },
+  {
+    "serial": 231,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "Shortest Job First",
+    "link": "https://takeuforward.org/Greedy/shortest-job-first-or-sjf-cpu-scheduling",
+    "notes": "OS scheduling algorithm \u2014 GFG has 'Shortest Job First (or SJF) CPU Scheduling' (search GFG); no LC equivalent"
+  },
+  {
+    "serial": 232,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "Program for Least Recently Used (LRU) Page Replacement Algorithm",
+    "link": "https://takeuforward.org/data-structure/program-for-least-recently-used-lru-page-replacement-algorithm",
+    "notes": "OS paging algorithm \u2014 GFG has 'LRU Page Replacement algorithm' (search GFG); different from LC 146 LRU Cache (that's a data-structure design problem)"
+  },
+  {
+    "serial": 233,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "Insert Interval",
+    "link": "https://leetcode.com/problems/insert-interval/",
+    "notes": ""
+  },
+  {
+    "serial": 234,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "Merge Intervals",
+    "link": "https://leetcode.com/problems/merge-intervals/",
+    "notes": ""
+  },
+  {
+    "serial": 235,
+    "heading": "Greedy Algorithms",
+    "subheading": "Medium/Hard",
+    "difficulty": "Medium",
+    "name": "Non-overlapping Intervals",
+    "link": "https://leetcode.com/problems/non-overlapping-intervals/",
+    "notes": ""
+  },
+  {
+    "serial": 236,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Introduction to Trees",
+    "link": "https://takeuforward.org/binary-tree/introduction-to-trees/",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 237,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Binary Tree Representation in Java",
+    "link": "https://takeuforward.org/binary-tree/binary-tree-representation-in-java/",
+    "notes": "Implementation/setup \u2014 no coding problem"
+  },
+  {
+    "serial": 238,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Pre, Post, Inorder in one traversal",
+    "link": "https://takeuforward.org/data-structure/preorder-inorder-postorder-traversals-in-one-traversal/",
+    "notes": "Preorder, Inorder and Postorder traversal of Binary Tree in one traversal' (search GFG)"
+  },
+  {
+    "serial": 239,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Preorder Traversal",
+    "link": "https://leetcode.com/problems/binary-tree-preorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 240,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Inorder Traversal of Binary Tree",
+    "link": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 241,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Postorder Traversal",
+    "link": "https://leetcode.com/problems/binary-tree-postorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 242,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Level Order Traversal",
+    "link": "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 243,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Iterative Preorder Traversal of Binary Tree",
+    "link": "https://leetcode.com/problems/binary-tree-preorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 244,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Iterative Inorder Traversal of Binary Tree",
+    "link": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 245,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Post-order Traversal of Binary Tree using 2 stack",
+    "link": "https://leetcode.com/problems/binary-tree-postorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 246,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Post-order Traversal of Binary Tree using 1 stack",
+    "link": "https://leetcode.com/problems/binary-tree-postorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 247,
+    "heading": "Binary Trees",
+    "subheading": "Traversals",
+    "difficulty": "Easy",
+    "name": "Preorder, Inorder, and Postorder Traversal in one Traversal",
+    "link": "https://takeuforward.org/data-structure/preorder-inorder-postorder-traversals-in-one-traversal/",
+    "notes": "Same as above \u2014 GFG exact match, no LC equivalent"
+  },
+  {
+    "serial": 248,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Maximum Depth in BT",
+    "link": "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 249,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Check for balanced binary tree",
+    "link": "https://leetcode.com/problems/balanced-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 250,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Easy",
+    "name": "Diameter of Binary Tree",
+    "link": "https://leetcode.com/problems/diameter-of-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 251,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Maximum path sum",
+    "link": "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 252,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Check if two trees are identical or not",
+    "link": "https://leetcode.com/problems/same-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 253,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Zig Zag or Spiral Traversal",
+    "link": "https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 254,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Boundary Traversal",
+    "link": "https://leetcode.com/problems/boundary-of-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 255,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Vertical Order Traversal",
+    "link": "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 256,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Top View of BT",
+    "link": "https://takeuforward.org/data-structure/top-view-of-a-binary-tree/",
+    "notes": "Top View of Binary Tree' (search GFG)"
+  },
+  {
+    "serial": 257,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Bottom view of BT",
+    "link": "https://takeuforward.org/data-structure/bottom-view-of-a-binary-tree/",
+    "notes": "Bottom View of Binary Tree' (search GFG)"
+  },
+  {
+    "serial": 258,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Right/Left View of Binary Tree",
+    "link": "https://leetcode.com/problems/binary-tree-right-side-view/",
+    "notes": ""
+  },
+  {
+    "serial": 259,
+    "heading": "Binary Trees",
+    "subheading": "Medium Problems",
+    "difficulty": "Medium",
+    "name": "Symmetric Binary Tree",
+    "link": "https://leetcode.com/problems/symmetric-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 260,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Print root to leaf path in BT",
+    "link": "https://leetcode.com/problems/binary-tree-paths/",
+    "notes": "LC 257 (Binary Tree Paths) \u2014 exact match"
+  },
+  {
+    "serial": 261,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "LCA in BT",
+    "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 262,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Maximum Width of BT",
+    "link": "https://leetcode.com/problems/maximum-width-of-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 263,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Children Sum Property in Binary Tree",
+    "link": "https://takeuforward.org/data-structure/check-for-children-sum-property-in-a-binary-tree/",
+    "notes": "Children Sum Parent Property in a Binary Tree' (search GFG)"
+  },
+  {
+    "serial": 264,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Print all nodes at a distance of K in BT",
+    "link": "https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 265,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Minimum time taken to burn the BT from a given Node",
+    "link": "https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/",
+    "notes": "LC 2385 \u2014 exact match, same 'burning tree' problem"
+  },
+  {
+    "serial": 266,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Easy",
+    "name": "Count total nodes in a complete BT",
+    "link": "https://leetcode.com/problems/count-complete-tree-nodes/",
+    "notes": ""
+  },
+  {
+    "serial": 267,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Requirements needed to construct a unique BT",
+    "link": "",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 268,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Construct a BT from Preorder and Inorder",
+    "link": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 269,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Construct the Binary Tree from Postorder and Inorder Traversal",
+    "link": "https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 270,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Serialize and De-serialize BT",
+    "link": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 271,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Morris Preorder Traversal of a Binary Tree",
+    "link": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 272,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Morris Inorder Traversal of a Binary Tree",
+    "link": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 273,
+    "heading": "Binary Trees",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Flatten Binary Tree to Linked List",
+    "link": "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/",
+    "notes": ""
+  },
+  {
+    "serial": 274,
+    "heading": "Binary Search Trees",
+    "subheading": "Concepts",
+    "difficulty": "Easy",
+    "name": "Introduction to BST",
+    "link": "https://takeuforward.org/binary-search-tree/introduction-to-binary-search-trees/",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 275,
+    "heading": "Binary Search Trees",
+    "subheading": "Concepts",
+    "difficulty": "Easy",
+    "name": "Search in a Binary Search Tree",
+    "link": "https://leetcode.com/problems/search-in-a-binary-search-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 276,
+    "heading": "Binary Search Trees",
+    "subheading": "Concepts",
+    "difficulty": "Easy",
+    "name": "Find Min/Max in BST",
+    "link": "https://takeuforward.org/data-structure/find-minmax-in-a-bst",
+    "notes": "Trivial (leftmost/rightmost node) \u2014 no dedicated LC/GFG problem"
+  },
+  {
+    "serial": 277,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Easy",
+    "name": "Floor and Ceil in a BST",
+    "link": "",
+    "notes": "Floor and Ceil from a BST' (search GFG)"
+  },
+  {
+    "serial": 278,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Easy",
+    "name": "Floor in a Binary Search Tree",
+    "link": "https://takeuforward.org/binary-search-tree/floor-in-a-binary-search-tree/",
+    "notes": "Floor in a Binary Search Tree' (search GFG)"
+  },
+  {
+    "serial": 279,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Medium",
+    "name": "Insert a given node in BST",
+    "link": "https://leetcode.com/problems/insert-into-a-binary-search-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 280,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Medium",
+    "name": "Delete a node in BST",
+    "link": "https://leetcode.com/problems/delete-node-in-a-bst/",
+    "notes": ""
+  },
+  {
+    "serial": 281,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Medium",
+    "name": "Kth Smallest and Largest element in BST",
+    "link": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",
+    "notes": ""
+  },
+  {
+    "serial": 282,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Medium",
+    "name": "Check if a tree is a BST or not",
+    "link": "https://leetcode.com/problems/validate-binary-search-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 283,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Medium",
+    "name": "LCA in BST",
+    "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 284,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Medium",
+    "name": "Construct a BST from a preorder traversal",
+    "link": "https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/",
+    "notes": ""
+  },
+  {
+    "serial": 285,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Medium",
+    "name": "Inorder Successor/Predecessor in BST",
+    "link": "https://leetcode.com/problems/inorder-successor-in-bst/",
+    "notes": ""
+  },
+  {
+    "serial": 286,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Hard",
+    "name": "Merge 2 BST's",
+    "link": "https://leetcode.com/problems/binary-search-tree-iterator/",
+    "notes": ""
+  },
+  {
+    "serial": 287,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Hard",
+    "name": "Two Sum In BST | Check if there exists a pair with Sum K",
+    "link": "https://leetcode.com/problems/two-sum-iv-input-is-a-bst/",
+    "notes": ""
+  },
+  {
+    "serial": 288,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Hard",
+    "name": "Correct BST with two nodes swapped",
+    "link": "https://leetcode.com/problems/recover-binary-search-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 289,
+    "heading": "Binary Search Trees",
+    "subheading": "Practice Problems",
+    "difficulty": "Hard",
+    "name": "Largest BST in Binary Tree",
+    "link": "https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 290,
+    "heading": "Graphs",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Introduction to Graph",
+    "link": "https://takeuforward.org/data-structure/graph-representation-in-java",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 291,
+    "heading": "Graphs",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Graph Representation | C++",
+    "link": "https://takeuforward.org/graph/graph-representation-in-c/",
+    "notes": "Implementation/setup \u2014 no coding problem"
+  },
+  {
+    "serial": 292,
+    "heading": "Graphs",
+    "subheading": "Learning",
+    "difficulty": "Easy",
+    "name": "Graph Representation | Java",
+    "link": "https://takeuforward.org/data-structure/graph-representation-in-java",
+    "notes": "Implementation/setup \u2014 no coding problem"
+  },
+  {
+    "serial": 293,
+    "heading": "Graphs",
+    "subheading": "Learning",
+    "difficulty": "Medium",
+    "name": "Connected Components",
+    "link": "https://leetcode.com/problems/number-of-provinces/",
+    "notes": "Concept underlying LC 547 Number of Provinces (already in your sheet)"
+  },
+  {
+    "serial": 294,
+    "heading": "Graphs",
+    "subheading": "Learning",
+    "difficulty": "Medium",
+    "name": "Traversal Techniques",
+    "link": "https://takeuforward.org/data-structure/depth-first-search-dfs/",
+    "notes": "Concept/theory video (BFS/DFS overview) \u2014 no coding problem"
+  },
+  {
+    "serial": 295,
+    "heading": "Graphs",
+    "subheading": "Learning",
+    "difficulty": "Medium",
+    "name": "DFS",
+    "link": "https://takeuforward.org/data-structure/depth-first-search-dfs/",
+    "notes": "Concept/theory video (DFS implementation) \u2014 no coding problem"
+  },
+  {
+    "serial": 296,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Medium",
+    "name": "Number of provinces",
+    "link": "https://leetcode.com/problems/number-of-provinces/#:~:text=A%20province%20is%20a%20group,the%20total%20number%20of%20provinces.",
+    "notes": ""
+  },
+  {
+    "serial": 297,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Medium",
+    "name": "Connected Components Problem in Matrix",
+    "link": "https://leetcode.com/problems/number-of-islands/",
+    "notes": "Same technique as LC 200 Number of Islands (already in your sheet)"
+  },
+  {
+    "serial": 298,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Medium",
+    "name": "Rotten Oranges",
+    "link": "https://leetcode.com/problems/rotting-oranges/",
+    "notes": ""
+  },
+  {
+    "serial": 299,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Medium",
+    "name": "Flood fill algorithm",
+    "link": "https://leetcode.com/problems/flood-fill/",
+    "notes": ""
+  },
+  {
+    "serial": 300,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Hard",
+    "name": "Cycle Detection in Undirected Graph (bfs)",
+    "link": "https://takeuforward.org/data-structure/detect-cycle-in-an-undirected-graph-using-bfs/",
+    "notes": "Detect Cycle in an Undirected Graph using BFS' (search GFG); LC 261 Graph Valid Tree (premium) is a related connectivity+cycle problem but not an identical task"
+  },
+  {
+    "serial": 301,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Hard",
+    "name": "Detect a cycle in an undirected graph",
+    "link": "https://leetcode.com/problems/course-schedule/",
+    "notes": ""
+  },
+  {
+    "serial": 302,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Medium",
+    "name": "Distance of nearest cell having one",
+    "link": "https://leetcode.com/problems/01-matrix/",
+    "notes": ""
+  },
+  {
+    "serial": 303,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Medium",
+    "name": "Surrounded Regions",
+    "link": "https://leetcode.com/problems/surrounded-regions/",
+    "notes": ""
+  },
+  {
+    "serial": 304,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Medium",
+    "name": "Number of enclaves",
+    "link": "https://leetcode.com/problems/number-of-enclaves/",
+    "notes": ""
+  },
+  {
+    "serial": 305,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Hard",
+    "name": "Word ladder I",
+    "link": "https://leetcode.com/problems/word-ladder/",
+    "notes": ""
+  },
+  {
+    "serial": 306,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Hard",
+    "name": "Word ladder II",
+    "link": "https://leetcode.com/problems/word-ladder-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 307,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Medium",
+    "name": "Number of islands",
+    "link": "https://leetcode.com/problems/number-of-islands/",
+    "notes": ""
+  },
+  {
+    "serial": 308,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Hard",
+    "name": "Bipartite Graph (DFS)",
+    "link": "https://leetcode.com/problems/is-graph-bipartite/",
+    "notes": ""
+  },
+  {
+    "serial": 309,
+    "heading": "Graphs",
+    "subheading": "Problems on BFS/DFS",
+    "difficulty": "Hard",
+    "name": "Cycle Detection in Directed Graph (DFS)",
+    "link": "https://leetcode.com/problems/course-schedule-ii/discuss/293048/detecting-cycle-in-directed-graph-problem",
+    "notes": ""
+  },
+  {
+    "serial": 310,
+    "heading": "Graphs",
+    "subheading": "Topo Sort and Problems",
+    "difficulty": "Hard",
+    "name": "Topo Sort",
+    "link": "https://takeuforward.org/data-structure/topological-sort-algorithm-dfs-g-21/",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 311,
+    "heading": "Graphs",
+    "subheading": "Topo Sort and Problems",
+    "difficulty": "Hard",
+    "name": "Topological sort or Kahn's algorithm",
+    "link": "https://leetcode.com/problems/course-schedule-ii/",
+    "notes": "Same technique (Kahn's BFS topo sort) as LC 210 Course Schedule II (already in your sheet)"
+  },
+  {
+    "serial": 312,
+    "heading": "Graphs",
+    "subheading": "Topo Sort and Problems",
+    "difficulty": "Hard",
+    "name": "Detect a cycle in a directed graph",
+    "link": "https://leetcode.com/problems/course-schedule/",
+    "notes": ""
+  },
+  {
+    "serial": 313,
+    "heading": "Graphs",
+    "subheading": "Topo Sort and Problems",
+    "difficulty": "Hard",
+    "name": "Course Schedule I",
+    "link": "https://leetcode.com/problems/course-schedule/",
+    "notes": ""
+  },
+  {
+    "serial": 314,
+    "heading": "Graphs",
+    "subheading": "Topo Sort and Problems",
+    "difficulty": "Medium",
+    "name": "Course Schedule II",
+    "link": "https://leetcode.com/problems/course-schedule-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 315,
+    "heading": "Graphs",
+    "subheading": "Topo Sort and Problems",
+    "difficulty": "Hard",
+    "name": "Find eventual safe states",
+    "link": "https://leetcode.com/problems/find-eventual-safe-states/",
+    "notes": ""
+  },
+  {
+    "serial": 316,
+    "heading": "Graphs",
+    "subheading": "Topo Sort and Problems",
+    "difficulty": "Hard",
+    "name": "Alien Dictionary",
+    "link": "https://leetcode.com/problems/alien-dictionary/solution/",
+    "notes": ""
+  },
+  {
+    "serial": 317,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Shortest path in undirected graph with unit weights",
+    "link": "https://takeuforward.org/data-structure/shortest-path-in-undirected-graph-with-unit-distance-g-28/",
+    "notes": "Shortest path in an unweighted graph' (search GFG) \u2014 same BFS idea as LC 1091/542 (already in your sheet)"
+  },
+  {
+    "serial": 318,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Shortest path in DAG",
+    "link": "https://takeuforward.org/data-structure/shortest-path-in-directed-acyclic-graph-topological-sort-g-27/",
+    "notes": "Shortest path in Directed Acyclic Graph' (search GFG)"
+  },
+  {
+    "serial": 319,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Djisktra's Algorithm",
+    "link": "https://leetcode.com/problems/network-delay-time/",
+    "notes": "Same algorithm applied directly in LC 743 Network Delay Time (already in your sheet)"
+  },
+  {
+    "serial": 320,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Why priority Queue is used in Djisktra's Algorithm",
+    "link": "https://takeuforward.org/data-structure/dijkstras-algorithm-using-priority-queue-g-32/",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 321,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Shortest Distance in a Binary Maze",
+    "link": "https://leetcode.com/problems/shortest-path-in-binary-matrix/",
+    "notes": ""
+  },
+  {
+    "serial": 322,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Path with minimum effort",
+    "link": "https://leetcode.com/problems/path-with-minimum-effort/",
+    "notes": ""
+  },
+  {
+    "serial": 323,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Cheapest flight within K stops",
+    "link": "https://leetcode.com/problems/cheapest-flights-within-k-stops/",
+    "notes": ""
+  },
+  {
+    "serial": 324,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Medium",
+    "name": "Network Delay Time",
+    "link": "https://leetcode.com/problems/network-delay-time/",
+    "notes": ""
+  },
+  {
+    "serial": 325,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Number of ways to arrive at destination",
+    "link": "https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/",
+    "notes": ""
+  },
+  {
+    "serial": 326,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Minimum multiplications to reach end",
+    "link": "https://takeuforward.org/graph/g-39-minimum-multiplications-to-reach-end/",
+    "notes": "Minimum multiplications to reach end' (search GFG) \u2014 BFS-shortest-path-on-implicit-graph problem"
+  },
+  {
+    "serial": 327,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Bellman Ford Algorithm",
+    "link": "https://takeuforward.org/data-structure/bellman-ford-algorithm-g-41/",
+    "notes": "Bellman-Ford Algorithm' (search GFG) \u2014 same relaxation idea as LC 787 Cheapest Flights Within K Stops (already in your sheet)"
+  },
+  {
+    "serial": 328,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Floyd warshall algorithm",
+    "link": "https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/",
+    "notes": "Same algorithm applied directly in LC 1334 (already in your sheet)"
+  },
+  {
+    "serial": 329,
+    "heading": "Graphs",
+    "subheading": "Shortest Path Algorithms and Problems",
+    "difficulty": "Hard",
+    "name": "Find the city with the smallest number of neighbors",
+    "link": "https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/",
+    "notes": ""
+  },
+  {
+    "serial": 330,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Easy",
+    "name": "MST theory",
+    "link": "https://takeuforward.org/data-structure/minimum-spanning-tree-theory-g-44/",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 331,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Hard",
+    "name": "Prim's Algorithm",
+    "link": "https://takeuforward.org/data-structure/prims-algorithm-minimum-spanning-tree-c-and-java-g-45/",
+    "notes": "Prim's Algorithm for Minimum Spanning Tree' (search GFG)"
+  },
+  {
+    "serial": 332,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Hard",
+    "name": "Disjoint Set",
+    "link": "https://takeuforward.org/data-structure/disjoint-set-union-by-rank-union-by-size-path-compression-g-46/",
+    "notes": "Disjoint Set (Union-Find)' (search GFG) \u2014 used throughout already-mapped graph problems in your sheet (Accounts Merge, Number of Islands II, etc.)"
+  },
+  {
+    "serial": 333,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Hard",
+    "name": "Find the MST weight",
+    "link": "https://takeuforward.org/data-structure/prims-algorithm-minimum-spanning-tree-c-and-java-g-45/",
+    "notes": "Minimum Spanning Tree' (search GFG)"
+  },
+  {
+    "serial": 334,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Hard",
+    "name": "Number of operations to make network connected",
+    "link": "https://leetcode.com/problems/number-of-operations-to-make-network-connected/",
+    "notes": ""
+  },
+  {
+    "serial": 335,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Medium",
+    "name": "Most stones removed with same row or column",
+    "link": "https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/",
+    "notes": ""
+  },
+  {
+    "serial": 336,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Hard",
+    "name": "Accounts merge",
+    "link": "https://leetcode.com/problems/accounts-merge/",
+    "notes": ""
+  },
+  {
+    "serial": 337,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Hard",
+    "name": "Number of islands II",
+    "link": "https://leetcode.com/problems/number-of-islands-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 338,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Hard",
+    "name": "Making a large island",
+    "link": "https://leetcode.com/problems/making-a-large-island/",
+    "notes": ""
+  },
+  {
+    "serial": 339,
+    "heading": "Graphs",
+    "subheading": "MinimumSpanningTree/Disjoint Set and Problems",
+    "difficulty": "Medium",
+    "name": "Swim in Rising Water",
+    "link": "https://leetcode.com/problems/swim-in-rising-water/",
+    "notes": ""
+  },
+  {
+    "serial": 340,
+    "heading": "Graphs",
+    "subheading": "Other Algorithms",
+    "difficulty": "Hard",
+    "name": "Bridges in graph",
+    "link": "https://leetcode.com/problems/critical-connections-in-a-network/discuss/382385/find-bridges-in-a-graph",
+    "notes": ""
+  },
+  {
+    "serial": 341,
+    "heading": "Graphs",
+    "subheading": "Other Algorithms",
+    "difficulty": "Hard",
+    "name": "Articulation point in graph",
+    "link": "https://takeuforward.org/data-structure/articulation-point-in-graph-g-56/",
+    "notes": "Articulation Points (or Cut Vertices) in a Graph' (search GFG) \u2014 no direct LC equivalent (LC 1192 Critical Connections, already in your sheet, is the related 'bridges' problem, not articulation points)"
+  },
+  {
+    "serial": 342,
+    "heading": "Graphs",
+    "subheading": "Other Algorithms",
+    "difficulty": "Hard",
+    "name": "Kosaraju's algorithm",
+    "link": "https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/discuss/766485/kosaraju-algorithm-on",
+    "notes": ""
+  },
+  {
+    "serial": 343,
+    "heading": "Dynamic Programming",
+    "subheading": "Introduction to DP",
+    "difficulty": "Easy",
+    "name": "Introduction to DP",
+    "link": "https://takeuforward.org/data-structure/dynamic-programming-introduction/",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 344,
+    "heading": "Dynamic Programming",
+    "subheading": "1D DP",
+    "difficulty": "Medium",
+    "name": "Climbing stairs",
+    "link": "https://leetcode.com/problems/climbing-stairs/",
+    "notes": ""
+  },
+  {
+    "serial": 345,
+    "heading": "Dynamic Programming",
+    "subheading": "1D DP",
+    "difficulty": "Medium",
+    "name": "Frog Jump",
+    "link": "https://leetcode.com/problems/min-cost-climbing-stairs/",
+    "notes": "Closest LC analog: LC 746 Min Cost Climbing Stairs (same 'min cost, jump 1 or 2 steps' DP shape). GFG has the exact problem as 'Geek Jump'"
+  },
+  {
+    "serial": 346,
+    "heading": "Dynamic Programming",
+    "subheading": "1D DP",
+    "difficulty": "Medium",
+    "name": "Frog jump with K distances",
+    "link": "https://takeuforward.org/data-structure/dynamic-programming-frog-jump-with-k-distances-dp-4/",
+    "notes": "Frog Jump with K distances' (search GFG) \u2014 generalization of Frog Jump"
+  },
+  {
+    "serial": 347,
+    "heading": "Dynamic Programming",
+    "subheading": "1D DP",
+    "difficulty": "Medium",
+    "name": "Maximum sum of non adjacent elements",
+    "link": "https://leetcode.com/problems/house-robber/",
+    "notes": ""
+  },
+  {
+    "serial": 348,
+    "heading": "Dynamic Programming",
+    "subheading": "1D DP",
+    "difficulty": "Medium",
+    "name": "House robber",
+    "link": "https://leetcode.com/problems/house-robber-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 349,
+    "heading": "Dynamic Programming",
+    "subheading": "2D/3D DP and DP on Grids",
+    "difficulty": "Medium",
+    "name": "Ninja's training",
+    "link": "https://takeuforward.org/data-structure/dynamic-programming-ninjas-training-dp-7/",
+    "notes": "Geek's Training' (search GFG) \u2014 no direct LC equivalent"
+  },
+  {
+    "serial": 350,
+    "heading": "Dynamic Programming",
+    "subheading": "2D/3D DP and DP on Grids",
+    "difficulty": "Medium",
+    "name": "Grid Unique Paths : DP on Grids (DP8)",
+    "link": "https://leetcode.com/problems/unique-paths/",
+    "notes": ""
+  },
+  {
+    "serial": 351,
+    "heading": "Dynamic Programming",
+    "subheading": "2D/3D DP and DP on Grids",
+    "difficulty": "Medium",
+    "name": "Unique paths II",
+    "link": "https://leetcode.com/problems/unique-paths-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 352,
+    "heading": "Dynamic Programming",
+    "subheading": "2D/3D DP and DP on Grids",
+    "difficulty": "Medium",
+    "name": "Minimum Falling Path Sum",
+    "link": "https://leetcode.com/problems/minimum-path-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 353,
+    "heading": "Dynamic Programming",
+    "subheading": "2D/3D DP and DP on Grids",
+    "difficulty": "Medium",
+    "name": "Triangle",
+    "link": "https://leetcode.com/problems/triangle/",
+    "notes": ""
+  },
+  {
+    "serial": 354,
+    "heading": "Dynamic Programming",
+    "subheading": "2D/3D DP and DP on Grids",
+    "difficulty": "Medium",
+    "name": "Ninja and his Friends",
+    "link": "https://leetcode.com/problems/cherry-pickup-ii/",
+    "notes": "LC 1463 (Cherry Pickup II) \u2014 exact match, identical two-robots-in-a-grid DP"
+  },
+  {
+    "serial": 355,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Subset sum equal to target (DP- 14)",
+    "link": "https://takeuforward.org/data-structure/subset-sum-equal-to-target-dp-14/",
+    "notes": "Subset Sum Problem' (search GFG) \u2014 same technique as LC 416 Partition Equal Subset Sum (already in your sheet)"
+  },
+  {
+    "serial": 356,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Partition equal subset sum",
+    "link": "https://leetcode.com/problems/partition-equal-subset-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 357,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Partition a set into two subsets with minimum absolute sum difference",
+    "link": "https://leetcode.com/problems/partition-array-into-two-arrays-to-minimize-sum-difference/",
+    "notes": ""
+  },
+  {
+    "serial": 358,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Count subsets with sum K",
+    "link": "https://takeuforward.org/data-structure/count-subsets-with-sum-k-dp-17/",
+    "notes": "Perfect Sum Problem' (search GFG) \u2014 same technique as LC 494 Target Sum (already in your sheet)"
+  },
+  {
+    "serial": 359,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Count partitions with given difference",
+    "link": "https://takeuforward.org/data-structure/count-partitions-with-given-difference-dp-18/",
+    "notes": "Partitions with Given Difference' (search GFG) \u2014 extension of Count Subsets with Sum K"
+  },
+  {
+    "serial": 360,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Minimum Coins (DP - 20)",
+    "link": "https://leetcode.com/problems/coin-change/",
+    "notes": ""
+  },
+  {
+    "serial": 361,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Target sum",
+    "link": "https://leetcode.com/problems/target-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 362,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Coin Change 2 (DP - 22)",
+    "link": "https://leetcode.com/problems/coin-change-2/",
+    "notes": ""
+  },
+  {
+    "serial": 363,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Unbounded knapsack",
+    "link": "https://takeuforward.org/data-structure/unbounded-knapsack-dp-23/",
+    "notes": "Unbounded Knapsack (Repetition of Items Allowed)' (search GFG) \u2014 related to LC 322 Coin Change (already in your sheet)"
+  },
+  {
+    "serial": 364,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Subsequences",
+    "difficulty": "Hard",
+    "name": "Rod Cutting Problem | (DP - 24)",
+    "link": "https://www.geeksforgeeks.org/problems/rod-cutting0840/1",
+    "notes": "GFG \u2014 exact match (a direct application of Unbounded Knapsack)"
+  },
+  {
+    "serial": 365,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Longest common subsequence",
+    "link": "https://leetcode.com/problems/longest-common-subsequence/",
+    "notes": "LC 1143 \u2014 exact match"
+  },
+  {
+    "serial": 366,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Print Longest Common Subsequence | (DP - 26)",
+    "link": "https://takeuforward.org/data-structure/print-longest-common-subsequence-dp-26/",
+    "notes": "Print Longest Common Subsequence' (search GFG) \u2014 print version; LC 1143 (already covered above) only returns the length"
+  },
+  {
+    "serial": 367,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Longest common substring",
+    "link": "https://takeuforward.org/data-structure/longest-common-substring-dp-27/",
+    "notes": "Longest Common Substring' (search GFG) \u2014 no standalone LC problem"
+  },
+  {
+    "serial": 368,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Longest palindromic subsequence",
+    "link": "https://leetcode.com/problems/longest-palindromic-subsequence/",
+    "notes": ""
+  },
+  {
+    "serial": 369,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Minimum insertions to make string palindrome | DP-29",
+    "link": "https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/",
+    "notes": ""
+  },
+  {
+    "serial": 370,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Minimum insertions or deletions to convert string A to B",
+    "link": "https://leetcode.com/problems/delete-operation-for-two-strings/",
+    "notes": ""
+  },
+  {
+    "serial": 371,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Shortest common supersequence",
+    "link": "https://leetcode.com/problems/shortest-common-supersequence/",
+    "notes": ""
+  },
+  {
+    "serial": 372,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Distinct subsequences",
+    "link": "https://leetcode.com/problems/distinct-subsequences/",
+    "notes": ""
+  },
+  {
+    "serial": 373,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Edit distance",
+    "link": "https://leetcode.com/problems/edit-distance/",
+    "notes": ""
+  },
+  {
+    "serial": 374,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Strings",
+    "difficulty": "Hard",
+    "name": "Wildcard matching",
+    "link": "https://leetcode.com/problems/wildcard-matching/",
+    "notes": ""
+  },
+  {
+    "serial": 375,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Stocks",
+    "difficulty": "Medium",
+    "name": "Best time to buy and sell stock",
+    "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
+    "notes": ""
+  },
+  {
+    "serial": 376,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Stocks",
+    "difficulty": "Medium",
+    "name": "Best time to buy and sell stock II",
+    "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 377,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Stocks",
+    "difficulty": "Medium",
+    "name": "Best time to buy and sell stock III",
+    "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/description/",
+    "notes": ""
+  },
+  {
+    "serial": 378,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Stocks",
+    "difficulty": "Medium",
+    "name": "Best time to buy and sell stock IV",
+    "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/",
+    "notes": ""
+  },
+  {
+    "serial": 379,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Stocks",
+    "difficulty": "Medium",
+    "name": "Best Time to Buy and Sell Stock with Cooldown",
+    "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/",
+    "notes": ""
+  },
+  {
+    "serial": 380,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Stocks",
+    "difficulty": "Medium",
+    "name": "Best time to buy and sell stock with transaction fees",
+    "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/",
+    "notes": ""
+  },
+  {
+    "serial": 381,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on LIS",
+    "difficulty": "Medium",
+    "name": "Longest Increasing Subsequence",
+    "link": "https://leetcode.com/problems/longest-increasing-subsequence/",
+    "notes": "LC 300 \u2014 exact match"
+  },
+  {
+    "serial": 382,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on LIS",
+    "difficulty": "Medium",
+    "name": "Print Longest Increasing Subsequence",
+    "link": "https://takeuforward.org/data-structure/printing-longest-increasing-subsequence-dp-42/",
+    "notes": "Printing Longest Increasing Subsequence' (search GFG) \u2014 print version; LC 300 only returns the length"
+  },
+  {
+    "serial": 383,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on LIS",
+    "difficulty": "Medium",
+    "name": "Longest Increasing Subsequence |(DP-43)",
+    "link": "https://leetcode.com/problems/longest-increasing-subsequence/",
+    "notes": "LC 300 \u2014 exact match (same problem revisited with a different technique here)"
+  },
+  {
+    "serial": 384,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on LIS",
+    "difficulty": "Medium",
+    "name": "Largest Divisible Subset",
+    "link": "https://leetcode.com/problems/largest-divisible-subset/",
+    "notes": ""
+  },
+  {
+    "serial": 385,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on LIS",
+    "difficulty": "Medium",
+    "name": "Longest String Chain",
+    "link": "https://leetcode.com/problems/longest-string-chain/",
+    "notes": ""
+  },
+  {
+    "serial": 386,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on LIS",
+    "difficulty": "Medium",
+    "name": "Longest Bitonic Subsequence",
+    "link": "https://takeuforward.org/data-structure/longest-bitonic-subsequence-dp-46/",
+    "notes": "Longest Bitonic Subsequence' (search GFG) \u2014 no standalone LC problem"
+  },
+  {
+    "serial": 387,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on LIS",
+    "difficulty": "Medium",
+    "name": "Number of Longest Increasing Subsequences",
+    "link": "https://leetcode.com/problems/number-of-longest-increasing-subsequence/",
+    "notes": ""
+  },
+  {
+    "serial": 388,
+    "heading": "Dynamic Programming",
+    "subheading": "MCM DP | Partition DP",
+    "difficulty": "Hard",
+    "name": "Matrix chain multiplication",
+    "link": "https://takeuforward.org/dynamic-programming/matrix-chain-multiplication-dp-48/",
+    "notes": "Matrix Chain Multiplication' (search GFG) \u2014 same interval-DP family as LC 312 Burst Balloons (already in your sheet)"
+  },
+  {
+    "serial": 389,
+    "heading": "Dynamic Programming",
+    "subheading": "MCM DP | Partition DP",
+    "difficulty": "Hard",
+    "name": "Matrix Chain Multiplication | Bottom-Up|(DP-49)",
+    "link": "https://takeuforward.org/data-structure/matrix-chain-multiplication-tabulation-method-dp-49/",
+    "notes": "Matrix Chain Multiplication (Bottom-Up)' (search GFG) \u2014 same problem as above"
+  },
+  {
+    "serial": 390,
+    "heading": "Dynamic Programming",
+    "subheading": "MCM DP | Partition DP",
+    "difficulty": "Hard",
+    "name": "Minimum cost to cut the stick",
+    "link": "https://leetcode.com/problems/minimum-cost-to-cut-a-stick/",
+    "notes": ""
+  },
+  {
+    "serial": 391,
+    "heading": "Dynamic Programming",
+    "subheading": "MCM DP | Partition DP",
+    "difficulty": "Hard",
+    "name": "Burst balloons",
+    "link": "https://leetcode.com/problems/burst-balloons/",
+    "notes": ""
+  },
+  {
+    "serial": 392,
+    "heading": "Dynamic Programming",
+    "subheading": "MCM DP | Partition DP",
+    "difficulty": "Medium",
+    "name": "Different Ways to Evaluate a Boolean Expression",
+    "link": "https://leetcode.com/problems/parsing-a-boolean-expression/",
+    "notes": ""
+  },
+  {
+    "serial": 393,
+    "heading": "Dynamic Programming",
+    "subheading": "MCM DP | Partition DP",
+    "difficulty": "Hard",
+    "name": "Palindrome partitioning II",
+    "link": "https://leetcode.com/problems/palindrome-partitioning-ii/",
+    "notes": ""
+  },
+  {
+    "serial": 394,
+    "heading": "Dynamic Programming",
+    "subheading": "MCM DP | Partition DP",
+    "difficulty": "Medium",
+    "name": "Partition Array for Maximum Sum",
+    "link": "https://leetcode.com/problems/partition-array-for-maximum-sum/",
+    "notes": ""
+  },
+  {
+    "serial": 395,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Squares",
+    "difficulty": "Hard",
+    "name": "Maximum Rectangle Area with all 1's|(DP-55)",
+    "link": "https://leetcode.com/problems/maximal-rectangle/",
+    "notes": ""
+  },
+  {
+    "serial": 396,
+    "heading": "Dynamic Programming",
+    "subheading": "DP on Squares",
+    "difficulty": "Easy",
+    "name": "Count Square Submatrices with All Ones|(DP-56)",
+    "link": "https://leetcode.com/problems/count-square-submatrices-with-all-ones/",
+    "notes": ""
+  },
+  {
+    "serial": 397,
+    "heading": "Tries",
+    "subheading": "Theory",
+    "difficulty": "Hard",
+    "name": "Trie Implementation and Operations",
+    "link": "https://leetcode.com/problems/implement-trie-prefix-tree/",
+    "notes": ""
+  },
+  {
+    "serial": 398,
+    "heading": "Tries",
+    "subheading": "Problems",
+    "difficulty": "Hard",
+    "name": "Trie Implementation and Advanced Operations",
+    "link": "https://leetcode.com/problems/implement-trie-prefix-tree/",
+    "notes": "Extension of LC 208 Implement Trie (already in your sheet)"
+  },
+  {
+    "serial": 399,
+    "heading": "Tries",
+    "subheading": "Problems",
+    "difficulty": "Medium",
+    "name": "Longest Word with All Prefixes",
+    "link": "https://leetcode.com/problems/longest-word-in-dictionary/",
+    "notes": "LC 720 (Longest Word in Dictionary) \u2014 exact match"
+  },
+  {
+    "serial": 400,
+    "heading": "Tries",
+    "subheading": "Problems",
+    "difficulty": "Medium",
+    "name": "Number of distinct substrings in a string",
+    "link": "https://leetcode.com/problems/number-of-distinct-substrings-in-a-string/",
+    "notes": "LC 1698 \u2014 exact match (premium)"
+  },
+  {
+    "serial": 401,
+    "heading": "Tries",
+    "subheading": "Problems",
+    "difficulty": "Easy",
+    "name": "Bit PreRequisites for TRIE Problems",
+    "link": "",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 402,
+    "heading": "Tries",
+    "subheading": "Problems",
+    "difficulty": "Hard",
+    "name": "Maximum XOR of two numbers in an array",
+    "link": "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/",
+    "notes": ""
+  },
+  {
+    "serial": 403,
+    "heading": "Tries",
+    "subheading": "Problems",
+    "difficulty": "Hard",
+    "name": "Maximum Xor with an element from an array",
+    "link": "https://leetcode.com/problems/maximum-xor-with-an-element-from-array/",
+    "notes": ""
+  },
+  {
+    "serial": 404,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Minimum number of bracket reversals to make an expression balanced",
+    "link": "https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/",
+    "notes": ""
+  },
+  {
+    "serial": 405,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Count and say",
+    "link": "https://leetcode.com/problems/count-and-say/",
+    "notes": ""
+  },
+  {
+    "serial": 406,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Easy",
+    "name": "Hashing In Strings | Theory",
+    "link": "https://takeuforward.org/data-structure/hashing-in-strings",
+    "notes": "Concept/theory video \u2014 no coding problem"
+  },
+  {
+    "serial": 407,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Rabin Karp Algorithm",
+    "link": "https://leetcode.com/problems/repeated-string-match/discuss/416144/Rabin-Karp-algorithm-C%2B%2B-implementation",
+    "notes": ""
+  },
+  {
+    "serial": 408,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Z function",
+    "link": "",
+    "notes": "Z algorithm (Linear time pattern searching Algorithm)' (search GFG) \u2014 algorithm itself, not a standalone problem"
+  },
+  {
+    "serial": 409,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "KMP Algorithm or LPS array",
+    "link": "https://leetcode.com/problems/implement-strstr/",
+    "notes": ""
+  },
+  {
+    "serial": 410,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Shortest Palindrome",
+    "link": "https://leetcode.com/problems/shortest-palindrome/",
+    "notes": "LC 214 \u2014 exact match"
+  },
+  {
+    "serial": 411,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Hard",
+    "name": "Longest happy prefix",
+    "link": "https://leetcode.com/problems/longest-happy-prefix/",
+    "notes": ""
+  },
+  {
+    "serial": 412,
+    "heading": "Strings",
+    "subheading": "Hard Problems",
+    "difficulty": "Medium",
+    "name": "Count Palindromic Subsequences",
+    "link": "https://leetcode.com/problems/count-palindromic-subsequences/",
+    "notes": ""
+  }
+]

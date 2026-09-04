@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSA Tracker</title>
+  <meta name="description" content="Track your A2Z DSA sheet progress. Search, filter, and solve 400+ problems." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=2" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">DSA Tracker</span>
+        <div class="mode-toggle-wrap">
+          <label class="toggle-switch">
+            <input type="checkbox" id="compactModeToggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label" id="modeLabel">Compact List</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== PAGE LAYOUT ===== -->
+  <div class="page-layout">
+
+    <!-- LEFT: main scroll area -->
+    <div class="page-main">
+
+      <!-- TOOLBAR -->
+      <div class="toolbar-wrap">
+        <div class="toolbar">
+          <div class="search-box" id="searchBox">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search Problems…" autocomplete="off" />
+            <button class="search-clear" id="searchClear" title="Clear">✕</button>
+          </div>
+
+          <div class="filter-wrap">
+            <button class="tool-btn" id="filterBtn" title="Filters">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              <span id="filterBadge" class="filter-badge hidden">0</span>
+            </button>
+            <div class="filter-panel" id="filterPanel">
+              <div class="filter-header">
+                <span class="filter-title">Match</span>
+                <select class="filter-match-sel" id="filterMatch">
+                  <option value="all">All</option>
+                  <option value="any">Any</option>
+                </select>
+                <span class="filter-title-rest">of the following filters:</span>
+              </div>
+              <div class="filter-body">
+                <div class="filter-row">
+                  <span class="filter-row-icon difficulty-icon">≡</span>
+                  <span class="filter-row-label">Difficulty</span>
+                  <span class="filter-is">is</span>
+                  <div class="multi-select" id="diffFilter">
+                    <button class="multi-opt" data-val="Easy">Easy</button>
+                    <button class="multi-opt" data-val="Medium">Medium</button>
+                    <button class="multi-opt" data-val="Hard">Hard</button>
+                  </div>
+                </div>
+                <div class="filter-row">
+                  <span class="filter-row-icon status-icon">✓</span>
+                  <span class="filter-row-label">Status</span>
+                  <span class="filter-is">is</span>
+                  <div class="multi-select" id="statusFilter">
+                    <button class="multi-opt" data-val="todo">To Do</button>
+                    <button class="multi-opt" data-val="solved">Solved</button>
+                    <button class="multi-opt" data-val="starred">Starred</button>
+                  </div>
+                </div>
+                <div class="filter-row">
+                  <span class="filter-row-icon topic-icon">◈</span>
+                  <span class="filter-row-label">Topic</span>
+                  <span class="filter-is">is</span>
+                  <select class="filter-select" id="topicFilter">
+                    <option value="">All Topics</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-footer">
+                <button class="filter-reset" id="filterReset">Reset Filters</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="tool-btn" id="randomBtn" title="Random Problem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+          </button>
+        </div>
+        <div class="active-filters" id="activeFilters"></div>
+      </div>
+
+      <!-- PROBLEM LIST -->
+      <main class="main" id="mainContent">
+        <p class="loading-msg" id="loadingMsg">Loading problems…</p>
+      </main>
+    </div>
+
+    <!-- RIGHT: sticky progress sidebar -->
+    <aside class="progress-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-title">Progress</div>
+        <div class="stat-list">
+          <div class="stat-item">
+            <span class="stat-dot easy-dot"></span>
+            <span class="stat-label">Easy</span>
+            <span class="stat-count" id="stat-easy">0 / 0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-dot medium-dot"></span>
+            <span class="stat-label">Medium</span>
+            <span class="stat-count" id="stat-medium">0 / 0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-dot hard-dot"></span>
+            <span class="stat-label">Hard</span>
+            <span class="stat-count" id="stat-hard">0 / 0</span>
+          </div>
+        </div>
+        <div class="ring-wrap">
+          <canvas id="ringCanvas" width="140" height="140"></canvas>
+          <div class="ring-label">
+            <span class="ring-count" id="ring-total">0</span>
+            <span class="ring-sub" id="ring-denom">/ 0</span>
+            <span class="ring-txt">SOLVED</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- /page-layout -->
+
+  <!-- ===== NOTES POPOVER ===== -->
+  <div class="notes-popover" id="notesPopover">
+    <div class="notes-popover-title" id="notesPopoverTitle"></div>
+    <div class="notes-popover-body" id="notesPopoverBody"></div>
+  </div>
+
+  <!-- ===== NOTES EDITOR MODAL ===== -->
+  <div class="modal-overlay" id="notesEditorModal">
+    <div class="modal-box notes-modal-box">
+      <button class="modal-close" id="notesEditorClose">✕</button>
+      <h2 class="modal-title" id="notesEditorTitle">Problem Notes</h2>
+      
+      <div class="notes-tabs">
+        <button class="notes-tab active" id="notesTabPreview">Preview</button>
+        <button class="notes-tab" id="notesTabEdit">Edit</button>
+      </div>
+      
+      <div class="notes-content-area">
+        <div class="notes-preview markdown-body" id="notesPreview"></div>
+        <textarea class="notes-textarea hidden" id="notesTextarea" placeholder="Type your markdown notes here..."></textarea>
+      </div>
+      
+      <div class="modal-actions notes-actions">
+        <button class="btn-primary" id="notesSaveBtn">Save Notes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RANDOM MODAL ===== -->
+  <div class="modal-overlay" id="randomModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-tag" id="modalDiff"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-topic" id="modalTopic"></p>
+      <div class="modal-actions">
+        <a class="btn-primary" id="modalLink" href="#" target="_blank" rel="noopener">Open Problem ↗</a>
+        <button class="btn-secondary" id="modalReroll">Another Random →</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=2"></script>
+</body>
+</html>
