@@ -70,7 +70,7 @@ let filterTopic    = '';
 let filterMatch    = 'all';
 
 let openHeadings = new Set();
-let openSubs     = new Set();
+let allExpanded = false;
 
 let isCompactMode = true;
 
@@ -391,6 +391,7 @@ function render() {
       const isOpen = card.classList.toggle('open');
       if (isOpen) openHeadings.add(heading);
       else openHeadings.delete(heading);
+      syncExpandAllBtn();
     });
 
     const body = card.querySelector('.section-body');
@@ -412,35 +413,17 @@ function render() {
       if (sub !== lastSub) {
         lastSub = sub;
         const subRow = document.createElement('tr');
-        const subKey = heading + '|' + sub;
-        const isSubOpen = openSubs.has(subKey);
-        subRow.className = isSubOpen ? 'subheading-row open' : 'subheading-row';
-        subRow.innerHTML = `<td colspan="5"><div class="subheading"><span class="sub-chevron">▶</span> ${escHtml(sub)}</div></td>`;
-        
-        subRow.addEventListener('click', () => {
-          const isOpen = subRow.classList.toggle('open');
-          if (isOpen) openSubs.add(subKey);
-          else openSubs.delete(subKey);
-          
-          let next = subRow.nextElementSibling;
-          while(next && next.classList.contains('prob-row')) {
-            next.style.display = isOpen ? '' : 'none';
-            next = next.nextElementSibling;
-          }
-        });
-        
+        subRow.className = 'subheading-row';
+        subRow.innerHTML = `<td colspan="5"><div class="subheading"><span class="sub-label">${escHtml(sub)}</span><span class="sub-divider-line"></span></div></td>`;
         tbody.appendChild(subRow);
       }
-
-      const subKey = heading + '|' + sub;
-      const isSubOpen = openSubs.has(subKey);
 
       probs.forEach(p => {
         const isSolved  = solved.has(p.serial);
         const isStarred = starred.has(p.serial);
         const tr = document.createElement('tr');
         tr.className = `prob-row${isSolved ? ' solved' : ''}`;
-        tr.style.display = isSubOpen ? '' : 'none';
+        // always visible — no collapse by difficulty
 
         const url = (p.link || '').trim();
         const diffClass = `diff-${p.difficulty.toLowerCase()}`;
@@ -525,6 +508,9 @@ function render() {
     body.appendChild(table);
     main.appendChild(card);
   });
+
+  // Sync expand-all button state
+  syncExpandAllBtn();
 }
 
 function updateSectionProgress(card, heading) {
@@ -638,6 +624,47 @@ function animateRing(tE, tM, tH) {
   }
   requestAnimationFrame(frame);
 }
+
+/* =========================================================
+   EXPAND / COLLAPSE ALL
+   ========================================================= */
+function syncExpandAllBtn() {
+  const btn   = document.getElementById('expandAllBtn');
+  const label = document.getElementById('expandAllLabel');
+  const icon  = document.getElementById('expandAllIcon');
+  if (!btn) return;
+  const cards = document.querySelectorAll('.section-card');
+  const anyOpen = [...cards].some(c => c.classList.contains('open'));
+  allExpanded = anyOpen;
+  if (anyOpen) {
+    btn.classList.add('all-open');
+    label.textContent = 'Collapse All';
+    // up chevron
+    icon.innerHTML = '<polyline points="6 15 12 9 18 15"/>';
+  } else {
+    btn.classList.remove('all-open');
+    label.textContent = 'Expand All';
+    // down chevron
+    icon.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
+  }
+}
+
+document.getElementById('expandAllBtn')?.addEventListener('click', () => {
+  const cards = document.querySelectorAll('.section-card');
+  const anyOpen = [...cards].some(c => c.classList.contains('open'));
+  // if any open → collapse all; otherwise → expand all
+  cards.forEach(card => {
+    const heading = card.dataset.heading;
+    if (anyOpen) {
+      card.classList.remove('open');
+      openHeadings.delete(heading);
+    } else {
+      card.classList.add('open');
+      openHeadings.add(heading);
+    }
+  });
+  syncExpandAllBtn();
+});
 
 /* =========================================================
    SEARCH
