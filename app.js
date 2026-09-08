@@ -14,6 +14,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
+const storage = firebase.storage();
 const provider = new firebase.auth.GoogleAuthProvider();
 
 let userDocRef = null;
@@ -58,9 +59,11 @@ auth.onAuthStateChanged(user => {
 let ALL_PROBLEMS = [];
 let solved  = new Set();
 let starred = new Set();
+let coded   = new Set();
 let customNotes = {};
 const STORAGE_SOLVED   = 'dsa-tracker-solved';
 const STORAGE_STARRED  = 'dsa-tracker-starred';
+const STORAGE_CODED    = 'dsa-tracker-coded';
 const STORAGE_NOTES    = 'dsa-tracker-custom-notes';
 
 let searchQ = '';
@@ -68,6 +71,10 @@ let filterDiffs    = new Set();
 let filterStatuses = new Set();
 let filterTopic    = '';
 let filterMatch    = 'all';
+let filterHasNotes = false;
+
+let showLogicCol = true;
+let showCodedCol = true;
 
 let openHeadings = new Set();
 let allExpanded = false;
@@ -122,11 +129,13 @@ async function loadFromStorage() {
       const data = docSnap.data();
       if (data.solved) solved = new Set(data.solved);
       if (data.starred) starred = new Set(data.starred);
+      if (data.coded) coded = new Set(data.coded);
       if (data.customNotes) customNotes = data.customNotes;
       
       // Update local storage as a backup/cache
       localStorage.setItem(STORAGE_SOLVED, JSON.stringify([...solved]));
       localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred]));
+      localStorage.setItem(STORAGE_CODED, JSON.stringify([...coded]));
       localStorage.setItem(STORAGE_NOTES, JSON.stringify(customNotes));
       return;
     }
@@ -140,6 +149,8 @@ async function loadFromStorage() {
     if (s) solved = new Set(JSON.parse(s));
     const st = localStorage.getItem(STORAGE_STARRED);
     if (st) starred = new Set(JSON.parse(st));
+    const cd = localStorage.getItem(STORAGE_CODED);
+    if (cd) coded = new Set(JSON.parse(cd));
     const n = localStorage.getItem(STORAGE_NOTES);
     if (n) customNotes = JSON.parse(n);
   } catch (e) {
@@ -154,6 +165,7 @@ function syncToFirebase() {
     userDocRef.set({
       solved: [...solved],
       starred: [...starred],
+      coded: [...coded],
       customNotes: customNotes
     }, { merge: true }).catch(e => console.error("Firebase save error:", e));
   }, 1000); // Debounce saves by 1 second to prevent spamming
@@ -161,6 +173,7 @@ function syncToFirebase() {
 
 function saveSolved()  { localStorage.setItem(STORAGE_SOLVED,  JSON.stringify([...solved])); syncToFirebase(); }
 function saveStarred() { localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred])); syncToFirebase(); }
+function saveCoded()   { localStorage.setItem(STORAGE_CODED,   JSON.stringify([...coded])); syncToFirebase(); }
 function saveNotes()   { localStorage.setItem(STORAGE_NOTES,   JSON.stringify(customNotes)); syncToFirebase(); }
 
 function populateTopicDropdown() {
@@ -193,6 +206,7 @@ function filterProblems() {
       checks.push(sub.some(Boolean));
     }
     if (filterTopic) checks.push(p.heading === filterTopic);
+    if (filterHasNotes) checks.push(!!(customNotes[p.serial] && customNotes[p.serial].trim()));
     if (checks.length === 0) return true;
     return filterMatch === 'all' ? checks.every(Boolean) : checks.some(Boolean);
   });
@@ -201,14 +215,17 @@ function filterProblems() {
 /* =========================================================
    NOTES MODAL
    ========================================================= */
-const notesModal    = document.getElementById('notesEditorModal');
-const notesClose    = document.getElementById('notesEditorClose');
-const notesTitle    = document.getElementById('notesEditorTitle');
-const tabPreview    = document.getElementById('notesTabPreview');
-const tabEdit       = document.getElementById('notesTabEdit');
-const notesPreview  = document.getElementById('notesPreview');
-const notesTextarea = document.getElementById('notesTextarea');
-const notesSaveBtn  = document.getElementById('notesSaveBtn');
+const notesModal      = document.getElementById('notesEditorModal');
+const notesClose      = document.getElementById('notesEditorClose');
+const notesTitle      = document.getElementById('notesEditorTitle');
+const tabPreview      = document.getElementById('notesTabPreview');
+const tabEdit         = document.getElementById('notesTabEdit');
+const notesPreview    = document.getElementById('notesPreview');
+const notesTextarea   = document.getElementById('notesTextarea');
+const notesSaveBtn    = document.getElementById('notesSaveBtn');
+const notesImgStatus  = document.getElementById('notesImgStatus');
+const notesImgBtn     = document.getElementById('notesImgUploadBtn');
+const notesImgInput   = document.getElementById('notesImgFileInput');
 
 let currentEditingSerial = null;
 
@@ -270,6 +287,114 @@ function showNotesEdit() {
   notesTextarea.classList.remove('hidden');
   notesPreview.classList.add('hidden');
   notesTextarea.focus();
+}
+
+/* ---- Shared image uploader ---- */
+async function uploadImageToNotes(file) {
+  const user = auth.currentUser;
+  if (!user) {
+    showImgStatus('error', '⚠ You must be signed in to upload images.');
+    return null;
+  }
+  if (!file || !file.type.startsWith('image/')) {
+    showImgStatus('error', '⚠ Only image files are supported.');
+    return null;
+  }
+
+  const placeholder = `\n![Uploading image...]()\n`;
+  const startPos = notesTextarea.selectionStart;
+  const endPos   = notesTextarea.selectionEnd;
+  const val      = notesTextarea.value;
+  notesTextarea.value = val.substring(0, startPos) + placeholder + val.substring(endPos);
+  notesTextarea.selectionStart = startPos + placeholder.length;
+  notesTextarea.selectionEnd   = startPos + placeholder.length;
+
+  showImgStatus('uploading', '⏫ Uploading image…');
+
+  // 30-second timeout — Firebase Storage hangs forever when rules block the upload
+  const TIMEOUT_MS = 30000;
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('storage/timeout — Upload timed out after 30s. Check Firebase Storage rules.')), TIMEOUT_MS)
+  );
+
+  try {
+    const ext = (file.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+    const fileName = `notes_images/${user.uid}_${Date.now()}.${ext}`;
+    const storageRef = storage.ref().child(fileName);
+
+    const uploadTask = storageRef.put(file);
+    await Promise.race([uploadTask, timeoutPromise]);
+
+    const downloadURL = await storageRef.getDownloadURL();
+    notesTextarea.value = notesTextarea.value.replace(placeholder, `\n![Image](${downloadURL})\n`);
+    showImgStatus('success', '✓ Image uploaded!');
+    setTimeout(() => hideImgStatus(), 2500);
+    return downloadURL;
+  } catch (err) {
+    console.error('Image upload failed:', err);
+    // Clean up the stuck placeholder text
+    notesTextarea.value = notesTextarea.value.replace(placeholder, '');
+    const isTimeout = err.message.includes('timeout');
+    const isRules   = err.code === 'storage/unauthorized';
+    let msg = `⚠ ${err.code || err.message}`;
+    if (isTimeout || isRules) {
+      msg = '⚠ Upload blocked — fix Firebase Storage rules (see console for details).';
+      console.error('FIX: Go to Firebase Console → Storage → Rules and allow writes for your UID.\n' +
+        "Example rule:\n  allow read, write: if request.auth != null && request.auth.token.email == 'sgr.palled@gmail.com';");
+    }
+    showImgStatus('error', msg);
+    return null;
+  }
+}
+
+function showImgStatus(type, msg) {
+  if (!notesImgStatus) return;
+  notesImgStatus.textContent = msg;
+  notesImgStatus.className   = `notes-img-status ${type}`;
+  notesImgStatus.style.display = 'flex';
+}
+function hideImgStatus() {
+  if (!notesImgStatus) return;
+  notesImgStatus.style.display = 'none';
+}
+
+/* Paste handler */
+notesTextarea.addEventListener('paste', async (e) => {
+  const items = (e.clipboardData || e.originalEvent.clipboardData)?.items;
+  if (!items) return;
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    if (item.kind === 'file' && item.type.startsWith('image/')) {
+      e.preventDefault();
+      await uploadImageToNotes(item.getAsFile());
+      break;
+    }
+  }
+});
+
+/* Drag-and-drop handler on the textarea */
+notesTextarea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  notesTextarea.classList.add('drag-over');
+});
+notesTextarea.addEventListener('dragleave', () => notesTextarea.classList.remove('drag-over'));
+notesTextarea.addEventListener('drop', async (e) => {
+  e.preventDefault();
+  notesTextarea.classList.remove('drag-over');
+  const file = e.dataTransfer?.files?.[0];
+  if (file && file.type.startsWith('image/')) await uploadImageToNotes(file);
+});
+
+/* File picker button */
+if (notesImgBtn && notesImgInput) {
+  notesImgBtn.addEventListener('click', () => notesImgInput.click());
+  notesImgInput.addEventListener('change', async () => {
+    const file = notesImgInput.files?.[0];
+    if (file) {
+      await uploadImageToNotes(file);
+      notesImgInput.value = ''; // reset so same file can be re-selected
+    }
+  });
 }
 
 tabPreview.addEventListener('click', () => showNotesPreview(notesTextarea.value));
@@ -399,13 +524,12 @@ function render() {
     // Table
     const table = document.createElement('table');
     table.className = 'prob-table';
-    table.innerHTML = `<thead><tr>
-      <th class="th-status">STATUS</th>
-      <th class="th-star">STAR</th>
-      <th>PROBLEM</th>
-      <th class="th-notes">NOTES</th>
-      <th class="th-diff">DIFFICULTY</th>
-    </tr></thead>`;
+    const colCount = 3 + (showLogicCol ? 1 : 0) + (showCodedCol ? 1 : 0); // star + problem + notes + diff + optional logic/coded
+    let theadHtml = '<thead><tr>';
+    if (showLogicCol) theadHtml += '<th class="th-status" title="Logic solved">🧠</th>';
+    if (showCodedCol) theadHtml += '<th class="th-status" title="Coded solution">💻</th>';
+    theadHtml += '<th class="th-star">STAR</th><th>PROBLEM</th><th class="th-notes">NOTES</th><th class="th-diff">DIFFICULTY</th></tr></thead>';
+    table.innerHTML = theadHtml;
     const tbody = document.createElement('tbody');
 
     let lastSub = null;
@@ -414,7 +538,7 @@ function render() {
         lastSub = sub;
         const subRow = document.createElement('tr');
         subRow.className = 'subheading-row';
-        subRow.innerHTML = `<td colspan="5"><div class="subheading"><span class="sub-label">${escHtml(sub)}</span><span class="sub-divider-line"></span></div></td>`;
+        subRow.innerHTML = `<td colspan="${colCount}"><div class="subheading"><span class="sub-label">${escHtml(sub)}</span><span class="sub-divider-line"></span></div></td>`;
         tbody.appendChild(subRow);
       }
 
@@ -442,11 +566,12 @@ function render() {
 
         const activeNotes = customNotes[p.serial] !== undefined ? customNotes[p.serial] : '';
         const hasNotesClass = activeNotes.trim() ? 'has-notes' : '';
+        const isCoded = coded.has(p.serial);
 
-        tr.innerHTML = `
-          <td class="td-check">
-            <input type="checkbox" class="prob-checkbox" data-serial="${p.serial}" ${isSolved ? 'checked' : ''}>
-          </td>
+        let rowHtml = '';
+        if (showLogicCol) rowHtml += `<td class="td-check"><input type="checkbox" class="prob-checkbox" data-serial="${p.serial}" ${isSolved ? 'checked' : ''}></td>`;
+        if (showCodedCol) rowHtml += `<td class="td-check"><input type="checkbox" class="coded-checkbox" data-serial="${p.serial}" ${isCoded ? 'checked' : ''}></td>`;
+        rowHtml += `
           <td class="td-star">
             <button class="star-btn ${isStarred ? 'starred' : ''}" data-serial="${p.serial}" title="${isStarred ? 'Unstar' : 'Star'}">${starIcon(isStarred)}</button>
           </td>
@@ -456,6 +581,7 @@ function render() {
           </td>
           <td><span class="diff-badge ${diffClass}">${escHtml(p.difficulty)}</span></td>
         `;
+        tr.innerHTML = rowHtml;
 
         // Note button
         tr.querySelector('.note-btn').addEventListener('click', (e) => {
@@ -474,14 +600,27 @@ function render() {
           }
         }
 
-        // Checkbox
-        tr.querySelector('.prob-checkbox').addEventListener('change', (e) => {
-          if (e.target.checked) { solved.add(p.serial); tr.classList.add('solved'); }
-          else                  { solved.delete(p.serial); tr.classList.remove('solved'); }
-          saveSolved();
-          updateStats();
-          updateSectionProgress(card, heading);
-        });
+        // Logic Checkbox
+        const logicCb = tr.querySelector('.prob-checkbox');
+        if (logicCb) {
+          logicCb.addEventListener('change', (e) => {
+            if (e.target.checked) { solved.add(p.serial); tr.classList.add('solved'); }
+            else                  { solved.delete(p.serial); tr.classList.remove('solved'); }
+            saveSolved();
+            updateStats();
+            updateSectionProgress(card, heading);
+          });
+        }
+
+        // Coded Checkbox
+        const codedCb = tr.querySelector('.coded-checkbox');
+        if (codedCb) {
+          codedCb.addEventListener('change', (e) => {
+            if (e.target.checked) coded.add(p.serial);
+            else                  coded.delete(p.serial);
+            saveCoded();
+          });
+        }
 
         // Star button
         tr.querySelector('.star-btn').addEventListener('click', (e) => {
@@ -727,15 +866,16 @@ document.getElementById('topicFilter').addEventListener('change', e => {
 document.getElementById('filterReset').addEventListener('click', resetFilters);
 
 function resetFilters() {
-  filterDiffs.clear(); filterStatuses.clear(); filterTopic = ''; filterMatch = 'all';
+  filterDiffs.clear(); filterStatuses.clear(); filterTopic = ''; filterMatch = 'all'; filterHasNotes = false;
   document.getElementById('filterMatch').value = 'all';
   document.getElementById('topicFilter').value = '';
-  document.querySelectorAll('.multi-opt.active').forEach(b => b.classList.remove('active'));
+  // Deactivate all filter buttons (but NOT the Columns toggles — those persist)
+  document.querySelectorAll('#diffFilter .multi-opt, #statusFilter .multi-opt, #notesFilter .multi-opt').forEach(b => b.classList.remove('active'));
   updateFilterBadge(); updateActiveChips(); render();
 }
 
 function updateFilterBadge() {
-  const count = filterDiffs.size + filterStatuses.size + (filterTopic ? 1 : 0);
+  const count = filterDiffs.size + filterStatuses.size + (filterTopic ? 1 : 0) + (filterHasNotes ? 1 : 0);
   const badge = document.getElementById('filterBadge');
   if (count > 0) { badge.textContent = count; badge.classList.remove('hidden'); filterBtn.classList.add('active'); }
   else           { badge.classList.add('hidden'); if (!filterPanel.classList.contains('open')) filterBtn.classList.remove('active'); }
@@ -765,7 +905,32 @@ function updateActiveChips() {
     filterTopic = ''; document.getElementById('topicFilter').value = '';
     updateFilterBadge(); updateActiveChips(); render();
   });
+  if (filterHasNotes) addChip('Notes', 'Has Notes', () => {
+    filterHasNotes = false;
+    document.querySelector('#notesFilter .multi-opt[data-val="has-notes"]')?.classList.remove('active');
+    updateFilterBadge(); updateActiveChips(); render();
+  });
 }
+
+// Has-Notes filter
+document.querySelectorAll('#notesFilter .multi-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('active');
+    filterHasNotes = btn.classList.contains('active');
+    updateFilterBadge(); updateActiveChips(); render();
+  });
+});
+
+// Column visibility toggles
+document.querySelectorAll('#columnsFilter .multi-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('active');
+    const col = btn.dataset.col;
+    if (col === 'logic') showLogicCol = btn.classList.contains('active');
+    if (col === 'coded') showCodedCol = btn.classList.contains('active');
+    render();
+  });
+});
 
 /* =========================================================
    RANDOM PROBLEM

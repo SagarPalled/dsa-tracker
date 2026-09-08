@@ -87,6 +87,24 @@
                     <option value="">All Topics</option>
                   </select>
                 </div>
+                <div class="filter-row">
+                  <span class="filter-row-icon notes-filter-icon">📝</span>
+                  <span class="filter-row-label">Notes</span>
+                  <span class="filter-is">has</span>
+                  <div class="multi-select" id="notesFilter">
+                    <button class="multi-opt" data-val="has-notes">Has Notes</button>
+                  </div>
+                </div>
+                <div class="filter-row filter-row-divider"></div>
+                <div class="filter-row">
+                  <span class="filter-row-icon col-vis-icon">⊞</span>
+                  <span class="filter-row-label">Columns</span>
+                  <span class="filter-is"></span>
+                  <div class="multi-select" id="columnsFilter">
+                    <button class="multi-opt active" data-col="logic">🧠 Logic</button>
+                    <button class="multi-opt active" data-col="coded">💻 Coded</button>
+                  </div>
+                </div>
               </div>
               <div class="filter-footer">
                 <button class="filter-reset" id="filterReset">Reset Filters</button>
@@ -169,6 +187,14 @@
       </div>
       
       <div class="modal-actions notes-actions">
+        <div class="notes-img-upload-row">
+          <button class="btn-img-upload" id="notesImgUploadBtn" title="Upload image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Insert Image
+          </button>
+          <input type="file" id="notesImgFileInput" accept="image/*" style="display:none">
+          <div class="notes-img-status" id="notesImgStatus" style="display:none"></div>
+        </div>
         <button class="btn-primary" id="notesSaveBtn">Save Notes</button>
       </div>
     </div>
@@ -201,6 +227,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-storage-compat.js"></script>
   <script src="app.js?v=2"></script>
 </body>
 </html>

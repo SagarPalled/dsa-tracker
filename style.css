@@ -240,6 +240,16 @@ input:checked ~ .toggle-label { color: var(--brand); }
 .filter-reset { font-family: var(--font); font-size: 12px; color: var(--text-muted); background: none; border: none; cursor: pointer; text-decoration: underline; transition: color var(--transition); }
 .filter-reset:hover { color: var(--text); }
 
+/* Filter panel divider row */
+.filter-row-divider { height: 1px; background: var(--border); margin: 4px 0; min-height: unset; padding: 0; }
+
+.notes-filter-icon { color: var(--brand); }
+.col-vis-icon { color: var(--text-muted); font-size: 17px; }
+
+/* Column toggle buttons — always shown as active by default, de-activating hides column */
+#columnsFilter .multi-opt.active[data-col="logic"] { background: rgba(63,255,176,.1); border-color: var(--brand); color: var(--brand); }
+#columnsFilter .multi-opt.active[data-col="coded"] { background: rgba(124,58,237,.15); border-color: #a78bfa; color: #a78bfa; }
+
 .active-filters { display: flex; gap: 6px; flex-wrap: wrap; }
 .chip { display: flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 20px; background: var(--surface-2); border: 1px solid var(--border); font-size: 11px; color: var(--text-muted); }
 .chip-label { font-weight: 500; color: var(--text); }
@@ -341,7 +351,19 @@ input:checked ~ .toggle-label { color: var(--brand); }
 }
 .prob-checkbox:hover { border-color: var(--brand); }
 .prob-checkbox:checked { background: var(--brand); border-color: var(--brand); }
-.prob-checkbox:checked::after { content: '✓'; color: #000; font-size: 10px; font-weight: 900; position: absolute; }
+.prob-checkbox:checked::after { content: '\2713'; color: #000; font-size: 10px; font-weight: 900; position: absolute; }
+
+/* Coded checkbox — distinct purple style */
+.coded-checkbox {
+  appearance: none; -webkit-appearance: none;
+  width: 17px; height: 17px; border-radius: 4px;
+  border: 2px solid var(--text-dim); background: transparent;
+  cursor: pointer; transition: all var(--transition);
+  display: inline-flex; align-items: center; justify-content: center; position: relative;
+}
+.coded-checkbox:hover { border-color: #a78bfa; }
+.coded-checkbox:checked { background: #7c3aed; border-color: #a78bfa; }
+.coded-checkbox:checked::after { content: '\2713'; color: #fff; font-size: 10px; font-weight: 900; position: absolute; }
 
 /* Note button */
 .note-btn {
@@ -393,7 +415,6 @@ input:checked ~ .toggle-label { color: var(--brand); }
 /* =============================================
    MODALS & NOTES
    ============================================= */
-.notes-modal-box { max-width: 640px; text-align: left; }
 
 /* Tabs */
 .notes-tabs {
@@ -433,7 +454,7 @@ input:checked ~ .toggle-label { color: var(--brand); }
 /* =============================================
    NOTES MODAL & MARKDOWN
    ============================================= */
-.notes-modal-box { max-width: 900px; text-align: left; }
+.modal-box.notes-modal-box { max-width: 900px; width: 92%; text-align: left; padding: 24px 32px; }
 
 /* Tabs */
 .notes-tabs {
@@ -452,7 +473,7 @@ input:checked ~ .toggle-label { color: var(--brand); }
 .notes-content-area {
   background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 16px;
-  height: 60vh; min-height: 400px; display: flex; flex-direction: column;
+  height: 75vh; min-height: 500px; display: flex; flex-direction: column;
   margin-bottom: 20px; overflow: hidden;
 }
 .notes-textarea {
@@ -474,6 +495,7 @@ input:checked ~ .toggle-label { color: var(--brand); }
 .notes-preview code { font-family: monospace; font-size: 12px; background: var(--surface); padding: 2px 4px; border-radius: 4px; color: var(--brand); }
 .notes-preview pre code { background: none; padding: 0; color: inherit; }
 .notes-preview a { color: var(--brand); }
+.notes-preview img { max-width: 100%; border-radius: 8px; margin-top: 10px; display: block; border: 1px solid var(--border); }
 
 .notes-actions { display: flex; justify-content: flex-end; }
 .hidden { display: none !important; }
@@ -529,6 +551,83 @@ input:checked ~ .toggle-label { color: var(--brand); }
   cursor: pointer; transition: all var(--transition);
 }
 .btn-secondary:hover { border-color: var(--border-hover); background: var(--surface-2); }
+
+/* =============================================
+   IMAGE UPLOAD IN NOTES
+   ============================================= */
+.notes-actions {
+  flex-direction: column;
+  gap: 10px;
+}
+.notes-img-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.btn-img-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--surface-3);
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.btn-img-upload:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: rgba(63, 255, 176, 0.06);
+}
+.btn-img-upload svg { flex-shrink: 0; }
+
+.notes-img-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.notes-img-status.uploading {
+  background: rgba(63, 255, 176, 0.08);
+  color: var(--brand);
+  border: 1px solid rgba(63, 255, 176, 0.2);
+  animation: pulse-status 1.2s ease-in-out infinite;
+}
+.notes-img-status.success {
+  background: rgba(0, 210, 106, 0.1);
+  color: var(--easy);
+  border: 1px solid rgba(0, 210, 106, 0.2);
+}
+.notes-img-status.error {
+  background: rgba(232, 64, 64, 0.1);
+  color: var(--hard);
+  border: 1px solid rgba(232, 64, 64, 0.2);
+}
+@keyframes pulse-status {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* Drag-over highlight */
+.notes-textarea.drag-over {
+  border-color: var(--brand) !important;
+  background: rgba(63, 255, 176, 0.04) !important;
+  box-shadow: 0 0 0 2px rgba(63, 255, 176, 0.15);
+}
 
 /* =============================================
    RESPONSIVE
