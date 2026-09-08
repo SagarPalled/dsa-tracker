@@ -7,7 +7,7 @@
   <meta name="description" content="Track your A2Z DSA sheet progress. Search, filter, and solve 400+ problems." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=2" />
+  <link rel="stylesheet" href="style.css?v=7" />
   <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js" integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -120,6 +120,14 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="expandAllIcon"><polyline points="6 9 12 15 18 9"/></svg>
             <span id="expandAllLabel">Expand All</span>
           </button>
+
+          <button class="anki-export-btn" id="ankiExportBtn" title="Export problems to Anki flashcards">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+              <rect x="3" y="6" width="18" height="13" rx="2"/>
+              <path d="M7 6V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2"/>
+            </svg>
+            <span>Anki</span>
+          </button>
         </div>
         <div class="active-filters" id="activeFilters"></div>
       </div>
@@ -175,28 +183,63 @@
     <div class="modal-box notes-modal-box">
       <button class="modal-close" id="notesEditorClose">✕</button>
       <h2 class="modal-title" id="notesEditorTitle">Problem Notes</h2>
-      
-      <div class="notes-tabs">
-        <button class="notes-tab active" id="notesTabPreview">Preview</button>
-        <button class="notes-tab" id="notesTabEdit">Edit</button>
-      </div>
-      
-      <div class="notes-content-area">
-        <div class="notes-preview markdown-body" id="notesPreview"></div>
-        <textarea class="notes-textarea hidden" id="notesTextarea" placeholder="Type your markdown notes here..."></textarea>
-      </div>
-      
-      <div class="modal-actions notes-actions">
-        <div class="notes-img-upload-row">
-          <button class="btn-img-upload" id="notesImgUploadBtn" title="Upload image">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            Insert Image
-          </button>
-          <input type="file" id="notesImgFileInput" accept="image/*" style="display:none">
-          <div class="notes-img-status" id="notesImgStatus" style="display:none"></div>
+
+      <div class="notes-modal-layout">
+        <!-- Top-level note type tabs (Vertical) -->
+        <div class="note-type-tabs">
+          <button class="note-type-tab active" id="noteTypeTabApproach"><span>🧠 Approach</span></button>
+          <button class="note-type-tab" id="noteTypeTabCode"><span>&lt;/&gt; Code Tricks</span></button>
         </div>
-        <button class="btn-primary" id="notesSaveBtn">Save Notes</button>
+
+        <!-- Panels Container -->
+        <div class="notes-modal-panels">
+          <!-- === APPROACH PANEL === -->
+          <div id="approachNotePanel">
+            <div class="notes-tabs">
+              <button class="notes-tab active" id="notesTabPreview">Preview</button>
+              <button class="notes-tab" id="notesTabEdit">Edit</button>
+            </div>
+            <div class="notes-content-area">
+              <div class="notes-preview markdown-body" id="notesPreview"></div>
+              <textarea class="notes-textarea hidden" id="notesTextarea" placeholder="Write your approach and logic notes here (markdown supported)..."></textarea>
+            </div>
+            <div class="modal-actions notes-actions">
+              <div class="notes-img-upload-row">
+                <button class="btn-img-upload" id="approachImgUploadBtn" title="Upload image">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  Insert Image
+                </button>
+                <input type="file" id="notesImgFileInput" accept="image/*" style="display:none">
+                <div class="notes-img-status" id="notesImgStatusApproach" style="display:none"></div>
+              </div>
+              <button class="btn-primary" id="notesSaveBtn">Save Notes</button>
+            </div>
+          </div>
+
+          <!-- === CODE TRICKS PANEL === -->
+          <div id="codeNotePanel" class="hidden">
+            <div class="notes-tabs">
+              <button class="notes-tab active" id="codeTabPreview">Preview</button>
+              <button class="notes-tab" id="codeTabEdit">Edit</button>
+            </div>
+            <div class="notes-content-area">
+              <div class="notes-preview markdown-body" id="codePreview"></div>
+              <textarea class="notes-textarea hidden" id="codeTextarea" placeholder="Note STL functions, language tricks, libraries used, templates... (markdown supported)"></textarea>
+            </div>
+            <div class="modal-actions notes-actions">
+              <div class="notes-img-upload-row">
+                <button class="btn-img-upload" id="codeImgUploadBtn" title="Upload image">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  Insert Image
+                </button>
+                <div class="notes-img-status" id="notesImgStatusCode" style="display:none"></div>
+              </div>
+              <button class="btn-primary code-save-btn" id="codeSaveBtn">Save Notes</button>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -210,6 +253,68 @@
       <div class="modal-actions">
         <a class="btn-primary" id="modalLink" href="#" target="_blank" rel="noopener">Open Problem ↗</a>
         <button class="btn-secondary" id="modalReroll">Another Random →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ANKI SELECTOR MODAL ===== -->
+  <div class="modal-overlay" id="ankiSelectorModal">
+    <div class="modal-box anki-selector-box">
+      <div class="anki-modal-header">
+        <div class="anki-modal-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 6V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2"/></svg>
+          Export to Anki
+        </div>
+        <button class="modal-close" id="ankiSelectorClose">✕</button>
+      </div>
+
+      <div class="anki-modal-toolbar">
+        <div class="search-box anki-search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" class="search-input" id="ankiSearch" placeholder="Search problems…" autocomplete="off">
+        </div>
+        <div class="anki-filter-row">
+          <button class="anki-filter-btn" data-filter="solved">✓ Solved</button>
+          <button class="anki-filter-btn" data-filter="starred">★ Starred</button>
+          <button class="anki-filter-btn" data-filter="has-notes">📝 Has Notes</button>
+          <div class="anki-sel-divider"></div>
+          <button class="anki-sel-btn" id="ankiSelectAll">Select All</button>
+          <button class="anki-sel-btn" id="ankiSelectNone">Clear</button>
+        </div>
+      </div>
+
+      <div class="anki-problem-list" id="ankiProblemList">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="anki-modal-footer">
+        <span class="anki-selected-count" id="ankiSelectedCount">No problems selected</span>
+        <button class="anki-generate-btn" id="ankiGenerateBtn" disabled>Generate Export Text →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ANKI OUTPUT MODAL ===== -->
+  <div class="modal-overlay" id="ankiOutputModal">
+    <div class="modal-box anki-output-box">
+      <div class="anki-modal-header">
+        <div class="anki-modal-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Anki Export — Copy &amp; Paste to LLM
+        </div>
+        <button class="modal-close" id="ankiOutputClose">✕</button>
+      </div>
+
+      <div class="anki-output-instruction">
+        <span class="anki-instr-icon">💡</span>
+        <span>Copy this text and paste it into <strong>ChatGPT, Gemini, or Claude</strong>. The LLM will produce a CSV you can import directly into Anki via <em>File → Import</em>.</span>
+      </div>
+
+      <textarea class="anki-output-textarea" id="ankiOutputText" readonly spellcheck="false"></textarea>
+
+      <div class="anki-output-footer">
+        <button class="anki-back-btn" id="ankiBackBtn">← Back to Selection</button>
+        <button class="anki-copy-btn" id="ankiCopyBtn">Copy to Clipboard</button>
       </div>
     </div>
   </div>
@@ -228,6 +333,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-storage-compat.js"></script>
-  <script src="app.js?v=2"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

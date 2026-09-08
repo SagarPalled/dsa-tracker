@@ -61,10 +61,12 @@ let solved  = new Set();
 let starred = new Set();
 let coded   = new Set();
 let customNotes = {};
-const STORAGE_SOLVED   = 'dsa-tracker-solved';
-const STORAGE_STARRED  = 'dsa-tracker-starred';
-const STORAGE_CODED    = 'dsa-tracker-coded';
-const STORAGE_NOTES    = 'dsa-tracker-custom-notes';
+let customCodeNotes = {};
+const STORAGE_SOLVED      = 'dsa-tracker-solved';
+const STORAGE_STARRED     = 'dsa-tracker-starred';
+const STORAGE_CODED       = 'dsa-tracker-coded';
+const STORAGE_NOTES       = 'dsa-tracker-custom-notes';
+const STORAGE_CODE_NOTES  = 'dsa-tracker-code-notes';
 
 let searchQ = '';
 let filterDiffs    = new Set();
@@ -131,12 +133,14 @@ async function loadFromStorage() {
       if (data.starred) starred = new Set(data.starred);
       if (data.coded) coded = new Set(data.coded);
       if (data.customNotes) customNotes = data.customNotes;
+      if (data.customCodeNotes) customCodeNotes = data.customCodeNotes;
       
       // Update local storage as a backup/cache
       localStorage.setItem(STORAGE_SOLVED, JSON.stringify([...solved]));
       localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred]));
       localStorage.setItem(STORAGE_CODED, JSON.stringify([...coded]));
       localStorage.setItem(STORAGE_NOTES, JSON.stringify(customNotes));
+      localStorage.setItem(STORAGE_CODE_NOTES, JSON.stringify(customCodeNotes));
       return;
     }
   } catch (e) {
@@ -153,6 +157,8 @@ async function loadFromStorage() {
     if (cd) coded = new Set(JSON.parse(cd));
     const n = localStorage.getItem(STORAGE_NOTES);
     if (n) customNotes = JSON.parse(n);
+    const cn = localStorage.getItem(STORAGE_CODE_NOTES);
+    if (cn) customCodeNotes = JSON.parse(cn);
   } catch (e) {
     console.error("Failed to load from localStorage", e);
   }
@@ -166,15 +172,17 @@ function syncToFirebase() {
       solved: [...solved],
       starred: [...starred],
       coded: [...coded],
-      customNotes: customNotes
+      customNotes: customNotes,
+      customCodeNotes: customCodeNotes
     }, { merge: true }).catch(e => console.error("Firebase save error:", e));
   }, 1000); // Debounce saves by 1 second to prevent spamming
 }
 
-function saveSolved()  { localStorage.setItem(STORAGE_SOLVED,  JSON.stringify([...solved])); syncToFirebase(); }
-function saveStarred() { localStorage.setItem(STORAGE_STARRED, JSON.stringify([...starred])); syncToFirebase(); }
-function saveCoded()   { localStorage.setItem(STORAGE_CODED,   JSON.stringify([...coded])); syncToFirebase(); }
-function saveNotes()   { localStorage.setItem(STORAGE_NOTES,   JSON.stringify(customNotes)); syncToFirebase(); }
+function saveSolved()     { localStorage.setItem(STORAGE_SOLVED,     JSON.stringify([...solved])); syncToFirebase(); }
+function saveStarred()    { localStorage.setItem(STORAGE_STARRED,    JSON.stringify([...starred])); syncToFirebase(); }
+function saveCoded()      { localStorage.setItem(STORAGE_CODED,      JSON.stringify([...coded])); syncToFirebase(); }
+function saveNotes()      { localStorage.setItem(STORAGE_NOTES,      JSON.stringify(customNotes)); syncToFirebase(); }
+function saveCodeNotes()  { localStorage.setItem(STORAGE_CODE_NOTES, JSON.stringify(customCodeNotes)); syncToFirebase(); }
 
 function populateTopicDropdown() {
   const sel = document.getElementById('topicFilter');
@@ -206,7 +214,10 @@ function filterProblems() {
       checks.push(sub.some(Boolean));
     }
     if (filterTopic) checks.push(p.heading === filterTopic);
-    if (filterHasNotes) checks.push(!!(customNotes[p.serial] && customNotes[p.serial].trim()));
+    if (filterHasNotes) checks.push(
+      !!(customNotes[p.serial] && customNotes[p.serial].trim()) ||
+      !!(customCodeNotes[p.serial] && customCodeNotes[p.serial].trim())
+    );
     if (checks.length === 0) return true;
     return filterMatch === 'all' ? checks.every(Boolean) : checks.some(Boolean);
   });
@@ -218,31 +229,44 @@ function filterProblems() {
 const notesModal      = document.getElementById('notesEditorModal');
 const notesClose      = document.getElementById('notesEditorClose');
 const notesTitle      = document.getElementById('notesEditorTitle');
-const tabPreview      = document.getElementById('notesTabPreview');
-const tabEdit         = document.getElementById('notesTabEdit');
-const notesPreview    = document.getElementById('notesPreview');
-const notesTextarea   = document.getElementById('notesTextarea');
-const notesSaveBtn    = document.getElementById('notesSaveBtn');
-const notesImgStatus  = document.getElementById('notesImgStatus');
-const notesImgBtn     = document.getElementById('notesImgUploadBtn');
 const notesImgInput   = document.getElementById('notesImgFileInput');
 
-let currentEditingSerial = null;
+// Top-level note type tabs
+const noteTypeTabApproach = document.getElementById('noteTypeTabApproach');
+const noteTypeTabCode     = document.getElementById('noteTypeTabCode');
 
-function openNotesModal(serial, name) {
+// Per-panel elements (approach)
+const tabPreviewApproach  = document.getElementById('notesTabPreview');
+const tabEditApproach     = document.getElementById('notesTabEdit');
+const notesPreviewApproach = document.getElementById('notesPreview');
+const notesTextareaApproach = document.getElementById('notesTextarea');
+const notesSaveBtnApproach  = document.getElementById('notesSaveBtn');
+
+// Per-panel elements (code)
+const tabPreviewCode  = document.getElementById('codeTabPreview');
+const tabEditCode     = document.getElementById('codeTabEdit');
+const notesPreviewCode = document.getElementById('codePreview');
+const notesTextareaCode = document.getElementById('codeTextarea');
+const notesSaveBtnCode  = document.getElementById('codeSaveBtn');
+
+let currentEditingSerial = null;
+let activeNoteType = 'approach'; // 'approach' | 'code'
+
+function openNotesModal(serial, name, noteType = 'approach') {
   try {
     currentEditingSerial = serial;
     notesTitle.textContent = name;
-    const currentNote = customNotes[serial] || '';
-    notesTextarea.value = currentNote;
-    
-    // Default to Preview if there is content, else Edit
-    if (String(currentNote).trim()) {
-      showNotesPreview(currentNote);
-    } else {
-      showNotesEdit();
-    }
-    
+    activeNoteType = noteType;
+
+    // Load both panels
+    const approachNote = customNotes[serial] || '';
+    const codeNote = customCodeNotes[serial] || '';
+    notesTextareaApproach.value = approachNote;
+    notesTextareaCode.value = codeNote;
+
+    // Switch to the requested tab
+    switchNoteTypeTab(noteType);
+
     notesModal.classList.add('open');
   } catch (err) {
     alert("Error opening notes: " + err.message);
@@ -255,41 +279,91 @@ function closeNotesModal() {
   currentEditingSerial = null;
 }
 
-function showNotesPreview(markdownText) {
-  tabPreview.classList.add('active');
-  tabEdit.classList.remove('active');
-  notesPreview.classList.remove('hidden');
-  notesTextarea.classList.add('hidden');
-  
-  const text = markdownText || '*No notes available.*';
+function switchNoteTypeTab(type) {
+  activeNoteType = type;
+  const approachPanel = document.getElementById('approachNotePanel');
+  const codePanel     = document.getElementById('codeNotePanel');
+
+  if (type === 'approach') {
+    noteTypeTabApproach.classList.add('active');
+    noteTypeTabCode.classList.remove('active');
+    approachPanel.classList.remove('hidden');
+    codePanel.classList.add('hidden');
+    // Default to Preview if content, else Edit
+    if (notesTextareaApproach.value.trim()) {
+      showNotesPreview('approach', notesTextareaApproach.value);
+    } else {
+      showNotesEdit('approach');
+    }
+  } else {
+    noteTypeTabCode.classList.add('active');
+    noteTypeTabApproach.classList.remove('active');
+    codePanel.classList.remove('hidden');
+    approachPanel.classList.add('hidden');
+    if (notesTextareaCode.value.trim()) {
+      showNotesPreview('code', notesTextareaCode.value);
+    } else {
+      showNotesEdit('code');
+    }
+  }
+}
+
+function renderMarkdown(text, targetEl) {
+  const src = text || '*No notes yet.*';
   try {
     if (typeof marked !== 'undefined') {
-      // Sanitize: strip raw HTML tags from markdown output to prevent XSS
-      const rawHtml = marked.parse(text);
+      const rawHtml = marked.parse(src);
       const sanitized = rawHtml.replace(/<script[\s\S]*?<\/script>/gi, '')
                                .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')
                                .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
                                .replace(/<embed[\s\S]*?\/?>/gi, '')
                                .replace(/<object[\s\S]*?<\/object>/gi, '');
-      notesPreview.innerHTML = sanitized;
+      targetEl.innerHTML = sanitized;
     } else {
-      notesPreview.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${escHtml(text)}</pre>`;
+      targetEl.innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit">${escHtml(src)}</pre>`;
     }
   } catch (e) {
-    notesPreview.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${escHtml(text)}</pre>`;
-    console.error("Markdown parsing failed:", e);
+    targetEl.innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit">${escHtml(src)}</pre>`;
   }
 }
 
-function showNotesEdit() {
-  tabEdit.classList.add('active');
-  tabPreview.classList.remove('active');
-  notesTextarea.classList.remove('hidden');
-  notesPreview.classList.add('hidden');
-  notesTextarea.focus();
+function showNotesPreview(panel, markdownText) {
+  if (panel === 'approach') {
+    tabPreviewApproach.classList.add('active');
+    tabEditApproach.classList.remove('active');
+    notesPreviewApproach.classList.remove('hidden');
+    notesTextareaApproach.classList.add('hidden');
+    renderMarkdown(markdownText, notesPreviewApproach);
+  } else {
+    tabPreviewCode.classList.add('active');
+    tabEditCode.classList.remove('active');
+    notesPreviewCode.classList.remove('hidden');
+    notesTextareaCode.classList.add('hidden');
+    renderMarkdown(markdownText, notesPreviewCode);
+  }
+}
+
+function showNotesEdit(panel) {
+  if (panel === 'approach') {
+    tabEditApproach.classList.add('active');
+    tabPreviewApproach.classList.remove('active');
+    notesTextareaApproach.classList.remove('hidden');
+    notesPreviewApproach.classList.add('hidden');
+    notesTextareaApproach.focus();
+  } else {
+    tabEditCode.classList.add('active');
+    tabPreviewCode.classList.remove('active');
+    notesTextareaCode.classList.remove('hidden');
+    notesPreviewCode.classList.add('hidden');
+    notesTextareaCode.focus();
+  }
 }
 
 /* ---- Shared image uploader ---- */
+function activeTextarea() {
+  return activeNoteType === 'approach' ? notesTextareaApproach : notesTextareaCode;
+}
+
 async function uploadImageToNotes(file) {
   const user = auth.currentUser;
   if (!user) {
@@ -301,17 +375,17 @@ async function uploadImageToNotes(file) {
     return null;
   }
 
+  const ta = activeTextarea();
   const placeholder = `\n![Uploading image...]()\n`;
-  const startPos = notesTextarea.selectionStart;
-  const endPos   = notesTextarea.selectionEnd;
-  const val      = notesTextarea.value;
-  notesTextarea.value = val.substring(0, startPos) + placeholder + val.substring(endPos);
-  notesTextarea.selectionStart = startPos + placeholder.length;
-  notesTextarea.selectionEnd   = startPos + placeholder.length;
+  const startPos = ta.selectionStart;
+  const endPos   = ta.selectionEnd;
+  const val      = ta.value;
+  ta.value = val.substring(0, startPos) + placeholder + val.substring(endPos);
+  ta.selectionStart = startPos + placeholder.length;
+  ta.selectionEnd   = startPos + placeholder.length;
 
   showImgStatus('uploading', '⏫ Uploading image…');
 
-  // 30-second timeout — Firebase Storage hangs forever when rules block the upload
   const TIMEOUT_MS = 30000;
   const timeoutPromise = new Promise((_, reject) =>
     setTimeout(() => reject(new Error('storage/timeout — Upload timed out after 30s. Check Firebase Storage rules.')), TIMEOUT_MS)
@@ -321,91 +395,114 @@ async function uploadImageToNotes(file) {
     const ext = (file.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
     const fileName = `notes_images/${user.uid}_${Date.now()}.${ext}`;
     const storageRef = storage.ref().child(fileName);
-
     const uploadTask = storageRef.put(file);
     await Promise.race([uploadTask, timeoutPromise]);
-
     const downloadURL = await storageRef.getDownloadURL();
-    notesTextarea.value = notesTextarea.value.replace(placeholder, `\n![Image](${downloadURL})\n`);
+    ta.value = ta.value.replace(placeholder, `\n![Image](${downloadURL})\n`);
     showImgStatus('success', '✓ Image uploaded!');
     setTimeout(() => hideImgStatus(), 2500);
     return downloadURL;
   } catch (err) {
     console.error('Image upload failed:', err);
-    // Clean up the stuck placeholder text
-    notesTextarea.value = notesTextarea.value.replace(placeholder, '');
+    ta.value = ta.value.replace(placeholder, '');
     const isTimeout = err.message.includes('timeout');
     const isRules   = err.code === 'storage/unauthorized';
     let msg = `⚠ ${err.code || err.message}`;
     if (isTimeout || isRules) {
       msg = '⚠ Upload blocked — fix Firebase Storage rules (see console for details).';
-      console.error('FIX: Go to Firebase Console → Storage → Rules and allow writes for your UID.\n' +
-        "Example rule:\n  allow read, write: if request.auth != null && request.auth.token.email == 'sgr.palled@gmail.com';");
+      console.error('FIX: Go to Firebase Console → Storage → Rules and allow writes for your UID.');
     }
     showImgStatus('error', msg);
     return null;
   }
 }
 
+function getActiveStatusEl() {
+  return activeNoteType === 'approach' ? document.getElementById('notesImgStatusApproach') : document.getElementById('notesImgStatusCode');
+}
+
 function showImgStatus(type, msg) {
-  if (!notesImgStatus) return;
-  notesImgStatus.textContent = msg;
-  notesImgStatus.className   = `notes-img-status ${type}`;
-  notesImgStatus.style.display = 'flex';
+  const el = getActiveStatusEl();
+  if (!el) return;
+  el.textContent = msg;
+  el.className   = `notes-img-status ${type}`;
+  el.style.display = 'flex';
 }
 function hideImgStatus() {
-  if (!notesImgStatus) return;
-  notesImgStatus.style.display = 'none';
+  const el = getActiveStatusEl();
+  if (!el) return;
+  el.style.display = 'none';
 }
 
-/* Paste handler */
-notesTextarea.addEventListener('paste', async (e) => {
-  const items = (e.clipboardData || e.originalEvent.clipboardData)?.items;
-  if (!items) return;
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    if (item.kind === 'file' && item.type.startsWith('image/')) {
-      e.preventDefault();
-      await uploadImageToNotes(item.getAsFile());
-      break;
+/* Paste handler — applies to whichever textarea is active */
+[notesTextareaApproach, notesTextareaCode].forEach(ta => {
+  ta.addEventListener('paste', async (e) => {
+    const items = (e.clipboardData || e.originalEvent.clipboardData)?.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file' && item.type.startsWith('image/')) {
+        e.preventDefault();
+        await uploadImageToNotes(item.getAsFile());
+        break;
+      }
     }
-  }
+  });
+  ta.addEventListener('dragover', (e) => { e.preventDefault(); ta.classList.add('drag-over'); });
+  ta.addEventListener('dragleave', () => ta.classList.remove('drag-over'));
+  ta.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    ta.classList.remove('drag-over');
+    const file = e.dataTransfer?.files?.[0];
+    if (file && file.type.startsWith('image/')) await uploadImageToNotes(file);
+  });
 });
 
-/* Drag-and-drop handler on the textarea */
-notesTextarea.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  notesTextarea.classList.add('drag-over');
-});
-notesTextarea.addEventListener('dragleave', () => notesTextarea.classList.remove('drag-over'));
-notesTextarea.addEventListener('drop', async (e) => {
-  e.preventDefault();
-  notesTextarea.classList.remove('drag-over');
-  const file = e.dataTransfer?.files?.[0];
-  if (file && file.type.startsWith('image/')) await uploadImageToNotes(file);
-});
-
-/* File picker button */
-if (notesImgBtn && notesImgInput) {
-  notesImgBtn.addEventListener('click', () => notesImgInput.click());
+/* File picker buttons */
+if (notesImgInput) {
+  const approachBtn = document.getElementById('approachImgUploadBtn');
+  const codeBtn     = document.getElementById('codeImgUploadBtn');
+  if (approachBtn) approachBtn.addEventListener('click', () => notesImgInput.click());
+  if (codeBtn) codeBtn.addEventListener('click', () => notesImgInput.click());
+  
   notesImgInput.addEventListener('change', async () => {
     const file = notesImgInput.files?.[0];
     if (file) {
       await uploadImageToNotes(file);
-      notesImgInput.value = ''; // reset so same file can be re-selected
+      notesImgInput.value = '';
     }
   });
 }
 
-tabPreview.addEventListener('click', () => showNotesPreview(notesTextarea.value));
-tabEdit.addEventListener('click', () => showNotesEdit());
+/* Note type tab clicks */
+noteTypeTabApproach.addEventListener('click', () => switchNoteTypeTab('approach'));
+noteTypeTabCode.addEventListener('click',     () => switchNoteTypeTab('code'));
+
+/* Approach sub-tabs */
+tabPreviewApproach.addEventListener('click', () => showNotesPreview('approach', notesTextareaApproach.value));
+tabEditApproach.addEventListener('click',   () => showNotesEdit('approach'));
+
+/* Code sub-tabs */
+tabPreviewCode.addEventListener('click', () => showNotesPreview('code', notesTextareaCode.value));
+tabEditCode.addEventListener('click',   () => showNotesEdit('code'));
+
 notesClose.addEventListener('click', closeNotesModal);
 
-notesSaveBtn.addEventListener('click', () => {
+/* Save buttons */
+notesSaveBtnApproach.addEventListener('click', () => {
   if (currentEditingSerial !== null) {
-    customNotes[currentEditingSerial] = notesTextarea.value;
+    customNotes[currentEditingSerial] = notesTextareaApproach.value;
     saveNotes();
-    render(); // Re-render to update the icon color
+    render();
+    closeNotesModal();
+  }
+});
+
+notesSaveBtnCode.addEventListener('click', () => {
+  if (currentEditingSerial !== null) {
+    customCodeNotes[currentEditingSerial] = notesTextareaCode.value;
+    saveCodeNotes();
+    render();
     closeNotesModal();
   }
 });
@@ -524,11 +621,11 @@ function render() {
     // Table
     const table = document.createElement('table');
     table.className = 'prob-table';
-    const colCount = 3 + (showLogicCol ? 1 : 0) + (showCodedCol ? 1 : 0); // star + problem + notes + diff + optional logic/coded
+    const colCount = 5 + (showLogicCol ? 1 : 0) + (showCodedCol ? 1 : 0); // checkboxes + star + problem + 2 notes + diff
     let theadHtml = '<thead><tr>';
     if (showLogicCol) theadHtml += '<th class="th-status" title="Logic solved">🧠</th>';
     if (showCodedCol) theadHtml += '<th class="th-status" title="Coded solution">💻</th>';
-    theadHtml += '<th class="th-star">STAR</th><th>PROBLEM</th><th class="th-notes">NOTES</th><th class="th-diff">DIFFICULTY</th></tr></thead>';
+    theadHtml += '<th class="th-star">STAR</th><th>PROBLEM</th><th class="th-notes" title="Approach Notes">🧠 Notes</th><th class="th-notes" title="Code Tricks">&lt;/&gt; Code</th><th class="th-diff">DIFFICULTY</th></tr></thead>';
     table.innerHTML = theadHtml;
     const tbody = document.createElement('tbody');
 
@@ -564,8 +661,10 @@ function render() {
           nameCell += `<div class="prob-notes-inline" data-notes="true">${escHtml(p.notes)}</div>`;
         }
 
-        const activeNotes = customNotes[p.serial] !== undefined ? customNotes[p.serial] : '';
-        const hasNotesClass = activeNotes.trim() ? 'has-notes' : '';
+        const approachNote = customNotes[p.serial] || '';
+        const codeNote = customCodeNotes[p.serial] || '';
+        const hasApproachNotes = approachNote.trim() ? 'has-notes' : '';
+        const hasCodeNotes = codeNote.trim() ? 'has-notes has-code-notes' : '';
         const isCoded = coded.has(p.serial);
 
         let rowHtml = '';
@@ -577,16 +676,21 @@ function render() {
           </td>
           <td class="td-name">${nameCell}</td>
           <td class="td-notes">
-            <button class="note-btn ${hasNotesClass}" data-serial="${p.serial}" title="Notes">📝</button>
+            <button class="note-btn approach-note-btn ${hasApproachNotes}" data-serial="${p.serial}" data-note-type="approach" title="Approach Notes">📝</button>
+          </td>
+          <td class="td-notes">
+            <button class="note-btn code-note-btn ${hasCodeNotes}" data-serial="${p.serial}" data-note-type="code" title="Code Tricks & STL">&lt;/&gt;</button>
           </td>
           <td><span class="diff-badge ${diffClass}">${escHtml(p.difficulty)}</span></td>
         `;
         tr.innerHTML = rowHtml;
 
-        // Note button
-        tr.querySelector('.note-btn').addEventListener('click', (e) => {
-          e.stopPropagation();
-          openNotesModal(p.serial, p.name);
+        // Note buttons
+        tr.querySelectorAll('.note-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openNotesModal(p.serial, p.name, btn.dataset.noteType || 'approach');
+          });
         });
 
         // Notes popover
@@ -973,8 +1077,296 @@ function slugify(str) {
 }
 
 /* =========================================================
+   ANKI EXPORT
+   ========================================================= */
+let ankiSelectedSerials = new Set();
+let ankiSearchQ = '';
+let ankiFilterSolved  = false;
+let ankiFilterStarred = false;
+let ankiFilterHasNotes = false;
+
+const ANKI_LLM_PROMPT = [
+  '===== ANKI CARD GENERATION INSTRUCTIONS =====',
+  '',
+  'You are creating Anki flashcards for DSA spaced repetition practice.',
+  '',
+  'WORKFLOW CONTEXT:',
+  'The learner sees the card front, tries to mentally solve the problem completely from scratch,',
+  'then flips to check the back. They rate themselves Again/Hard/Good/Easy.',
+  'The card is a scheduling trigger — NOT a quiz.',
+  '',
+  'FRONT — EXACTLY this, nothing more:',
+  '  <b>Problem Name</b>',
+  '  Example: <b>Two Sum</b>',
+  '  Do NOT add questions, hints, complexity, tags, or any other text to the front.',
+  '',
+  'BACK — include all sections that have content (skip empty ones):',
+  '  <b>Difficulty:</b> Easy/Medium/Hard &nbsp;|&nbsp; <b>Topic:</b> ...<br>',
+  '  <b>Approach:</b> ...<br>',
+  '  <b>Key Insight:</b> ...<br>',
+  '  <b>Code Tricks / STL:</b> ...<br>',
+  '  <b>Edge Cases:</b> <ul><li>...</li><li>...</li></ul>',
+  '',
+  '  CRITICAL RULE: Do NOT include the Problem Link or Curator Notes anywhere in the Anki card.',
+  '',
+  '  FORMAT: HTML only. Use <b>, <br>, <ul>, <li>. No markdown at all.',
+  '  Be thorough — the back is the complete reference.',
+  '',
+  'CSV FORMAT:',
+  '  - Columns in this exact order: Front,Back,Tags',
+  '  - Do NOT generate a header row. Start immediately with the first problem.',
+  '  - One data row per problem',
+  '  - Wrap every field in double quotes',
+  '  - Escape any double-quote inside a field by doubling it: ""',
+  '  - Never put a raw newline inside a quoted field — use <br> instead',
+  '  - Tags: space-separated lowercase words from Topic + Difficulty',
+  '    Example: "arrays easy"  or  "binary-search medium"  or  "graphs hard"',
+  '',
+  'OUTPUT: CSV only. No explanation, no code fences, nothing outside the CSV.'
+].join('\n');
+
+function buildAnkiProblemBlock(p) {
+  const approachNote = (customNotes[p.serial] || '').trim();
+  const codeNote     = (customCodeNotes[p.serial] || '').trim();
+  return [
+    `===== PROBLEM: ${p.name} =====`,
+    `Serial   : ${p.serial}`,
+    `Difficulty: ${p.difficulty}`,
+    `Topic    : ${p.heading} > ${p.subheading}`,
+    `Link     : ${(p.link || '').trim() || 'N/A'}`,
+    `Curator Notes: ${p.notes || '(none)'}`,
+    ``,
+    `--- Approach Notes ---`,
+    approachNote || '(none)',
+    ``,
+    `--- Code Tricks / STL Notes ---`,
+    codeNote || '(none)',
+    ``
+  ].join('\n');
+}
+
+function buildAnkiExportText(serials) {
+  const blocks = serials
+    .map(s => ALL_PROBLEMS.find(p => p.serial === s))
+    .filter(Boolean)
+    .map(p => buildAnkiProblemBlock(p));
+  return blocks.join('\n') + '\n\n' + ANKI_LLM_PROMPT;
+}
+
+function getAnkiFilteredProblems() {
+  return ALL_PROBLEMS.filter(p => {
+    if (isCompactMode && !CURATED_LIST.has(p.serial)) return false;
+    if (ankiSearchQ && !p.name.toLowerCase().includes(ankiSearchQ.toLowerCase())) return false;
+    if (ankiFilterSolved  && !solved.has(p.serial))  return false;
+    if (ankiFilterStarred && !starred.has(p.serial)) return false;
+    if (ankiFilterHasNotes) {
+      const has = !!(customNotes[p.serial]?.trim()) || !!(customCodeNotes[p.serial]?.trim());
+      if (!has) return false;
+    }
+    return true;
+  });
+}
+
+function renderAnkiSelector() {
+  const list = document.getElementById('ankiProblemList');
+  const problems = getAnkiFilteredProblems();
+
+  list.innerHTML = '';
+
+  if (problems.length === 0) {
+    list.innerHTML = '<div class="anki-empty">No problems match your filters.</div>';
+    return;
+  }
+
+  // Group by heading
+  const grouped = {};
+  problems.forEach(p => {
+    if (!grouped[p.heading]) grouped[p.heading] = [];
+    grouped[p.heading].push(p);
+  });
+
+  Object.entries(grouped).forEach(([heading, probs]) => {
+    const groupEl = document.createElement('div');
+    groupEl.className = 'anki-group';
+
+    // Group header with checkbox
+    const groupHeader = document.createElement('div');
+    groupHeader.className = 'anki-group-header';
+    const allSel = probs.every(p => ankiSelectedSerials.has(p.serial));
+    const someSel = probs.some(p => ankiSelectedSerials.has(p.serial));
+    groupHeader.innerHTML = `
+      <label class="anki-group-label">
+        <input type="checkbox" class="anki-group-cb" ${allSel ? 'checked' : ''}>
+        <span class="anki-group-name">${escHtml(heading)}</span>
+        <span class="anki-group-count">${probs.filter(p => ankiSelectedSerials.has(p.serial)).length}/${probs.length}</span>
+      </label>`;
+    const groupCb = groupHeader.querySelector('.anki-group-cb');
+    groupCb.indeterminate = someSel && !allSel;
+
+    groupCb.addEventListener('change', () => {
+      probs.forEach(p => {
+        if (groupCb.checked) ankiSelectedSerials.add(p.serial);
+        else ankiSelectedSerials.delete(p.serial);
+      });
+      updateAnkiSelectedCount();
+      renderAnkiSelector();
+    });
+
+    groupEl.appendChild(groupHeader);
+
+    // Problem rows
+    probs.forEach(p => {
+      const isSelected  = ankiSelectedSerials.has(p.serial);
+      const hasApproach = !!(customNotes[p.serial]?.trim());
+      const hasCode     = !!(customCodeNotes[p.serial]?.trim());
+      const isSolved    = solved.has(p.serial);
+      const isStarred   = starred.has(p.serial);
+
+      const row = document.createElement('label');
+      row.className = `anki-problem-row${isSelected ? ' selected' : ''}`;
+      row.innerHTML = `
+        <input type="checkbox" class="anki-prob-cb" data-serial="${p.serial}" ${isSelected ? 'checked' : ''}>
+        <span class="anki-prob-name">${escHtml(p.name)}</span>
+        <span class="anki-prob-badges">
+          ${isSolved  ? '<span class="anki-badge solved-badge" title="Solved">\u2713</span>' : ''}
+          ${isStarred ? '<span class="anki-badge star-badge"   title="Starred">\u2605</span>' : ''}
+          ${hasApproach ? '<span class="anki-badge note-badge" title="Has Approach Notes">\ud83e\udde0</span>' : ''}
+          ${hasCode   ? '<span class="anki-badge code-badge"   title="Has Code Notes">&lt;/&gt;</span>' : ''}
+          <span class="diff-badge diff-${p.difficulty.toLowerCase()}">${escHtml(p.difficulty)}</span>
+        </span>`;
+
+      const cb = row.querySelector('.anki-prob-cb');
+      cb.addEventListener('change', e => {
+        e.stopPropagation();
+        if (e.target.checked) ankiSelectedSerials.add(p.serial);
+        else ankiSelectedSerials.delete(p.serial);
+        row.classList.toggle('selected', e.target.checked);
+        updateAnkiSelectedCount();
+        // Update group header
+        const gRows  = groupEl.querySelectorAll('.anki-prob-cb');
+        const gAllSel = [...gRows].every(c => c.checked);
+        const gSomeSel = [...gRows].some(c => c.checked);
+        groupCb.checked = gAllSel;
+        groupCb.indeterminate = gSomeSel && !gAllSel;
+        const cnt = groupEl.querySelectorAll('.anki-prob-cb:checked').length;
+        groupEl.querySelector('.anki-group-count').textContent = `${cnt}/${probs.length}`;
+      });
+
+      groupEl.appendChild(row);
+    });
+
+    list.appendChild(groupEl);
+  });
+}
+
+function updateAnkiSelectedCount() {
+  const n = ankiSelectedSerials.size;
+  document.getElementById('ankiSelectedCount').textContent =
+    n === 0 ? 'No problems selected' : `${n} problem${n === 1 ? '' : 's'} selected`;
+  document.getElementById('ankiGenerateBtn').disabled = n === 0;
+}
+
+function openAnkiModal() {
+  ankiSelectedSerials.clear();
+  ankiSearchQ = '';
+  ankiFilterSolved = ankiFilterStarred = ankiFilterHasNotes = false;
+  document.querySelectorAll('.anki-filter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('ankiSearch').value = '';
+  updateAnkiSelectedCount();
+  renderAnkiSelector();
+  document.getElementById('ankiSelectorModal').classList.add('open');
+}
+
+function closeAnkiModal() {
+  document.getElementById('ankiSelectorModal').classList.remove('open');
+}
+
+function openAnkiOutputModal(text) {
+  document.getElementById('ankiOutputText').value = text;
+  document.getElementById('ankiSelectorModal').classList.remove('open');
+  const copyBtn = document.getElementById('ankiCopyBtn');
+  copyBtn.textContent = 'Copy to Clipboard';
+  copyBtn.classList.remove('copied');
+  document.getElementById('ankiOutputModal').classList.add('open');
+}
+
+function closeAnkiOutputModal() {
+  document.getElementById('ankiOutputModal').classList.remove('open');
+}
+
+// Event wiring — Anki
+document.getElementById('ankiExportBtn').addEventListener('click', openAnkiModal);
+document.getElementById('ankiSelectorClose').addEventListener('click', closeAnkiModal);
+document.getElementById('ankiOutputClose').addEventListener('click', closeAnkiOutputModal);
+
+document.getElementById('ankiBackBtn').addEventListener('click', () => {
+  document.getElementById('ankiOutputModal').classList.remove('open');
+  document.getElementById('ankiSelectorModal').classList.add('open');
+});
+
+document.getElementById('ankiSelectorModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('ankiSelectorModal')) closeAnkiModal();
+});
+document.getElementById('ankiOutputModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('ankiOutputModal')) closeAnkiOutputModal();
+});
+
+document.getElementById('ankiSearch').addEventListener('input', e => {
+  ankiSearchQ = e.target.value.trim();
+  renderAnkiSelector();
+});
+
+document.querySelectorAll('.anki-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('active');
+    const f = btn.dataset.filter;
+    if (f === 'solved')    ankiFilterSolved    = btn.classList.contains('active');
+    if (f === 'starred')   ankiFilterStarred   = btn.classList.contains('active');
+    if (f === 'has-notes') ankiFilterHasNotes  = btn.classList.contains('active');
+    renderAnkiSelector();
+  });
+});
+
+document.getElementById('ankiSelectAll').addEventListener('click', () => {
+  getAnkiFilteredProblems().forEach(p => ankiSelectedSerials.add(p.serial));
+  updateAnkiSelectedCount();
+  renderAnkiSelector();
+});
+
+document.getElementById('ankiSelectNone').addEventListener('click', () => {
+  ankiSelectedSerials.clear();
+  updateAnkiSelectedCount();
+  renderAnkiSelector();
+});
+
+document.getElementById('ankiGenerateBtn').addEventListener('click', () => {
+  openAnkiOutputModal(buildAnkiExportText([...ankiSelectedSerials]));
+});
+
+document.getElementById('ankiCopyBtn').addEventListener('click', async () => {
+  const text = document.getElementById('ankiOutputText').value;
+  const btn  = document.getElementById('ankiCopyBtn');
+  const done = () => {
+    btn.textContent = '\u2713 Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy to Clipboard'; btn.classList.remove('copied'); }, 2500);
+  };
+  try {
+    await navigator.clipboard.writeText(text);
+    done();
+  } catch {
+    // Fallback
+    document.getElementById('ankiOutputText').select();
+    document.execCommand('copy');
+    done();
+  }
+});
+
+/* =========================================================
    INIT
    ========================================================= */
 // loadData(); // Now handled by onAuthStateChanged
 
 })();
+
+
