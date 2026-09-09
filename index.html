@@ -26,6 +26,11 @@
           <span class="toggle-label" id="modeLabel">Compact List</span>
         </div>
       </div>
+      <nav class="view-tabs">
+        <button class="view-tab active" id="viewTabSheet" data-view="sheet">Sheet</button>
+        <button class="view-tab" id="viewTab30Day" data-view="plan">30-Day Plan</button>
+        <button class="view-tab" id="viewTabPatterns" data-view="patterns">Patterns</button>
+      </nav>
     </div>
   </header>
 
@@ -35,8 +40,8 @@
     <!-- LEFT: main scroll area -->
     <div class="page-main">
 
-      <!-- TOOLBAR -->
-      <div class="toolbar-wrap">
+      <!-- TOOLBAR (Sheet view only) -->
+      <div class="toolbar-wrap" id="toolbarWrap">
         <div class="toolbar">
           <div class="search-box" id="searchBox">
             <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>

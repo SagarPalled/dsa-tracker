@@ -550,6 +550,9 @@ function starIcon(isStarred) {
 }
 
 function render() {
+  if (activeView === 'plan')     { renderPlanView();     return; }
+  if (activeView === 'patterns') { renderPatternsView(); return; }
+
   const main     = document.getElementById('mainContent');
   const filtered = filterProblems();
   
@@ -876,36 +879,43 @@ function syncExpandAllBtn() {
   const label = document.getElementById('expandAllLabel');
   const icon  = document.getElementById('expandAllIcon');
   if (!btn) return;
-  const cards = document.querySelectorAll('.section-card');
+
+  const cardSel = activeView === 'plan' ? '.plan-day-card'
+                : activeView === 'patterns' ? '.pattern-card'
+                : '.section-card';
+  const cards = document.querySelectorAll(cardSel);
   const anyOpen = [...cards].some(c => c.classList.contains('open'));
   allExpanded = anyOpen;
   if (anyOpen) {
     btn.classList.add('all-open');
     label.textContent = 'Collapse All';
-    // up chevron
     icon.innerHTML = '<polyline points="6 15 12 9 18 15"/>';
   } else {
     btn.classList.remove('all-open');
     label.textContent = 'Expand All';
-    // down chevron
     icon.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
   }
 }
 
 document.getElementById('expandAllBtn')?.addEventListener('click', () => {
-  const cards = document.querySelectorAll('.section-card');
+  // Pick the right card class based on active view
+  const cardSel = activeView === 'plan' ? '.plan-day-card'
+                : activeView === 'patterns' ? '.pattern-card'
+                : '.section-card';
+  const cards = document.querySelectorAll(cardSel);
   const anyOpen = [...cards].some(c => c.classList.contains('open'));
-  // if any open → collapse all; otherwise → expand all
+
   cards.forEach(card => {
-    const heading = card.dataset.heading;
-    if (anyOpen) {
-      card.classList.remove('open');
-      openHeadings.delete(heading);
+    if (activeView === 'sheet') {
+      const heading = card.dataset.heading;
+      if (anyOpen) { card.classList.remove('open'); openHeadings.delete(heading); }
+      else         { card.classList.add('open');    openHeadings.add(heading); }
     } else {
-      card.classList.add('open');
-      openHeadings.add(heading);
+      if (anyOpen) card.classList.remove('open');
+      else         card.classList.add('open');
     }
   });
+
   syncExpandAllBtn();
 });
 
@@ -1167,39 +1177,110 @@ function getAnkiFilteredProblems() {
   });
 }
 
+function ankiPassesFilter(p) {
+  if (ankiSearchQ && !p.name.toLowerCase().includes(ankiSearchQ.toLowerCase())) return false;
+  if (ankiFilterSolved  && !solved.has(p.serial))  return false;
+  if (ankiFilterStarred && !starred.has(p.serial)) return false;
+  if (ankiFilterHasNotes) {
+    const has = !!(customNotes[p.serial]?.trim()) || !!(customCodeNotes[p.serial]?.trim());
+    if (!has) return false;
+  }
+  return true;
+}
+
+/* Build [{label, subLabel, probs}] array depending on active view */
+function getAnkiGroupsForView() {
+  if (activeView === 'plan') {
+    const groups = [];
+    PLAN_DATA.forEach(weekData => {
+      weekData.days.forEach(dayData => {
+        dayData.blocks.forEach(block => {
+          if (!block.problems) return; // skip mock-only blocks
+          const probs = block.problems
+            .map(item => findProblem(item.name))
+            .filter(Boolean)
+            .filter(p => (isCompactMode ? CURATED_LIST.has(p.serial) : true) && ankiPassesFilter(p));
+          if (probs.length === 0) return;
+          groups.push({
+            label: `Day ${dayData.day}`,
+            subLabel: `Block ${block.label} — ${block.title}`,
+            probs,
+          });
+        });
+      });
+    });
+    return groups;
+  }
+
+  if (activeView === 'patterns') {
+    const groups = [];
+    PATTERN_DATA.forEach(patternData => {
+      patternData.groups.forEach(group => {
+        const probs = group.problems
+          .map(item => findProblem(item.name))
+          .filter(Boolean)
+          .filter(p => (isCompactMode ? CURATED_LIST.has(p.serial) : true) && ankiPassesFilter(p));
+        if (probs.length === 0) return;
+        groups.push({
+          label: `${patternData.id}. ${patternData.title}`,
+          subLabel: group.title,
+          probs,
+        });
+      });
+    });
+    return groups;
+  }
+
+  // Default: Sheet view — group by heading
+  const byHeading = {};
+  ALL_PROBLEMS.forEach(p => {
+    if (isCompactMode && !CURATED_LIST.has(p.serial)) return;
+    if (!ankiPassesFilter(p)) return;
+    if (!byHeading[p.heading]) byHeading[p.heading] = [];
+    byHeading[p.heading].push(p);
+  });
+  return Object.entries(byHeading).map(([heading, probs]) => ({
+    label: heading,
+    subLabel: null,
+    probs,
+  }));
+}
+
 function renderAnkiSelector() {
   const list = document.getElementById('ankiProblemList');
-  const problems = getAnkiFilteredProblems();
-
   list.innerHTML = '';
 
-  if (problems.length === 0) {
+  const groups = getAnkiGroupsForView();
+
+  if (groups.length === 0) {
     list.innerHTML = '<div class="anki-empty">No problems match your filters.</div>';
     return;
   }
 
-  // Group by heading
-  const grouped = {};
-  problems.forEach(p => {
-    if (!grouped[p.heading]) grouped[p.heading] = [];
-    grouped[p.heading].push(p);
-  });
-
-  Object.entries(grouped).forEach(([heading, probs]) => {
+  groups.forEach(({ label, subLabel, probs }) => {
     const groupEl = document.createElement('div');
     groupEl.className = 'anki-group';
 
-    // Group header with checkbox
+    const allSel  = probs.every(p => ankiSelectedSerials.has(p.serial));
+    const someSel = probs.some(p  => ankiSelectedSerials.has(p.serial));
+
+    // Build header label — two lines when subLabel exists
+    const subLabelHtml = subLabel
+      ? `<span class="anki-group-sub">${escHtml(subLabel)}</span>`
+      : '';
+
     const groupHeader = document.createElement('div');
     groupHeader.className = 'anki-group-header';
-    const allSel = probs.every(p => ankiSelectedSerials.has(p.serial));
-    const someSel = probs.some(p => ankiSelectedSerials.has(p.serial));
     groupHeader.innerHTML = `
       <label class="anki-group-label">
         <input type="checkbox" class="anki-group-cb" ${allSel ? 'checked' : ''}>
-        <span class="anki-group-name">${escHtml(heading)}</span>
+        <span class="anki-group-name-wrap">
+          <span class="anki-group-name">${escHtml(label)}</span>
+          ${subLabelHtml}
+        </span>
         <span class="anki-group-count">${probs.filter(p => ankiSelectedSerials.has(p.serial)).length}/${probs.length}</span>
       </label>`;
+
     const groupCb = groupHeader.querySelector('.anki-group-cb');
     groupCb.indeterminate = someSel && !allSel;
 
@@ -1228,10 +1309,10 @@ function renderAnkiSelector() {
         <input type="checkbox" class="anki-prob-cb" data-serial="${p.serial}" ${isSelected ? 'checked' : ''}>
         <span class="anki-prob-name">${escHtml(p.name)}</span>
         <span class="anki-prob-badges">
-          ${isSolved  ? '<span class="anki-badge solved-badge" title="Solved">\u2713</span>' : ''}
-          ${isStarred ? '<span class="anki-badge star-badge"   title="Starred">\u2605</span>' : ''}
-          ${hasApproach ? '<span class="anki-badge note-badge" title="Has Approach Notes">\ud83e\udde0</span>' : ''}
-          ${hasCode   ? '<span class="anki-badge code-badge"   title="Has Code Notes">&lt;/&gt;</span>' : ''}
+          ${isSolved    ? '<span class="anki-badge solved-badge" title="Solved">\u2713</span>' : ''}
+          ${isStarred   ? '<span class="anki-badge star-badge"   title="Starred">\u2605</span>' : ''}
+          ${hasApproach ? '<span class="anki-badge note-badge"   title="Has Approach Notes">\ud83e\udde0</span>' : ''}
+          ${hasCode     ? '<span class="anki-badge code-badge"   title="Has Code Notes">&lt;/&gt;</span>' : ''}
           <span class="diff-badge diff-${p.difficulty.toLowerCase()}">${escHtml(p.difficulty)}</span>
         </span>`;
 
@@ -1242,14 +1323,15 @@ function renderAnkiSelector() {
         else ankiSelectedSerials.delete(p.serial);
         row.classList.toggle('selected', e.target.checked);
         updateAnkiSelectedCount();
-        // Update group header
-        const gRows  = groupEl.querySelectorAll('.anki-prob-cb');
-        const gAllSel = [...gRows].every(c => c.checked);
+
+        // Sync group header checkbox
+        const gRows    = groupEl.querySelectorAll('.anki-prob-cb');
+        const gAllSel  = [...gRows].every(c => c.checked);
         const gSomeSel = [...gRows].some(c => c.checked);
-        groupCb.checked = gAllSel;
+        groupCb.checked       = gAllSel;
         groupCb.indeterminate = gSomeSel && !gAllSel;
-        const cnt = groupEl.querySelectorAll('.anki-prob-cb:checked').length;
-        groupEl.querySelector('.anki-group-count').textContent = `${cnt}/${probs.length}`;
+        groupEl.querySelector('.anki-group-count').textContent =
+          `${groupEl.querySelectorAll('.anki-prob-cb:checked').length}/${probs.length}`;
       });
 
       groupEl.appendChild(row);
@@ -1258,6 +1340,7 @@ function renderAnkiSelector() {
     list.appendChild(groupEl);
   });
 }
+
 
 function updateAnkiSelectedCount() {
   const n = ankiSelectedSerials.size;
@@ -1361,6 +1444,1012 @@ document.getElementById('ankiCopyBtn').addEventListener('click', async () => {
     done();
   }
 });
+
+/* =========================================================
+   VIEW SWITCHING
+   ========================================================= */
+let activeView = 'sheet'; // 'sheet' | 'plan' | 'patterns'
+
+function switchView(view) {
+  activeView = view;
+  document.querySelectorAll('.view-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.view === view);
+  });
+
+  const isSheet = view === 'sheet';
+
+  // Elements only relevant in Sheet view
+  ['searchBox', 'filterBtn', 'randomBtn', 'activeFilters'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = isSheet ? '' : 'none';
+  });
+  // Also hide filter panel if switching away
+  const filterPanel = document.getElementById('filterPanel');
+  if (filterPanel && !isSheet) filterPanel.classList.remove('open');
+
+  // Compact toggle is only meaningful in Sheet view
+  const modeToggleWrap = document.querySelector('.mode-toggle-wrap');
+  if (modeToggleWrap) modeToggleWrap.style.display = isSheet ? '' : 'none';
+
+  render();
+}
+
+document.querySelectorAll('.view-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchView(tab.dataset.view));
+});
+
+/* =========================================================
+   NAME → SERIAL LOOKUP (with fix map for md name mismatches)
+   ========================================================= */
+const NAME_FIX_MAP = {
+  'Best time to buy and sell stock IV *(finish/repair if needed)*': 'Best time to buy and sell stock IV',
+  'Binary Search on Answer: Koko eating bananas': 'Koko eating bananas',
+  'Coin Change 2 (DP-22)': 'Coin Change 2 (DP - 22)',
+  'Count Square Submatrices with All Ones (DP-56)': 'Count Square Submatrices with All Ones|(DP-56)',
+  'Find the number that appears once, and other numbers twice': 'Find the number that appears once, and other numbers twice.',
+  'Longest subarray with given sum K (positives)': 'Longest subarray with given sum K(positives)',
+  "Maximum Rectangle Area with all 1's (DP-55)": "Maximum Rectangle Area with all 1's|(DP-55)",
+  'Middle of a LinkedList [Tortoise-Hare Method]': 'Middle of a LinkedList [TortoiseHare Method]',
+  'Minimum Coins (DP-20)': 'Minimum Coins (DP - 20)',
+  'Monotonic Stack: Largest rectangle in a histogram': 'Largest rectangle in a histogram',
+  'Print matrix in spiral manner': 'Print the matrix in spiral manner',
+  'Sliding Window: Minimum Window Substring': 'Minimum Window Substring',
+  'Subset sum equal to target (DP-14)': 'Subset sum equal to target (DP- 14)',
+  'Tree DP: Diameter of Binary Tree': 'Diameter of Binary Tree',
+};
+
+let _problemByName = null;
+function problemByName() {
+  if (!_problemByName) {
+    _problemByName = {};
+    ALL_PROBLEMS.forEach(p => { _problemByName[p.name.toLowerCase()] = p; });
+  }
+  return _problemByName;
+}
+
+function findProblem(mdName) {
+  const canonical = NAME_FIX_MAP[mdName] || mdName;
+  return problemByName()[canonical.toLowerCase()] || null;
+}
+
+/* =========================================================
+   SHARED PROBLEM ROW BUILDER (used by Plan + Patterns views)
+   ========================================================= */
+function buildProblemTable(problems, container) {
+  if (problems.length === 0) return;
+  const colCount = 5 + (showLogicCol ? 1 : 0) + (showCodedCol ? 1 : 0);
+  const table = document.createElement('table');
+  table.className = 'prob-table';
+  let theadHtml = '<thead><tr>';
+  if (showLogicCol) theadHtml += '<th class="th-status" title="Logic solved">🧠</th>';
+  if (showCodedCol) theadHtml += '<th class="th-status" title="Coded solution">💻</th>';
+  theadHtml += '<th class="th-star">STAR</th><th>PROBLEM</th><th class="th-notes" title="Approach Notes">🧠 Notes</th><th class="th-notes" title="Code Tricks">&lt;/&gt; Code</th><th class="th-diff">DIFFICULTY</th></tr></thead>';
+  table.innerHTML = theadHtml;
+  const tbody = document.createElement('tbody');
+
+  problems.forEach(item => {
+    const p = findProblem(item.name);
+    if (!p) return; // problem not in database — skip silently
+
+    const isSolved  = solved.has(p.serial);
+    const isStarred = starred.has(p.serial);
+    const isCoded   = coded.has(p.serial);
+    const approachNote = customNotes[p.serial] || '';
+    const codeNote     = customCodeNotes[p.serial] || '';
+    const hasApproachNotes = approachNote.trim() ? 'has-notes' : '';
+    const hasCodeNotes     = codeNote.trim() ? 'has-notes has-code-notes' : '';
+
+    const tr = document.createElement('tr');
+    tr.className = `prob-row${isSolved ? ' solved' : ''}`;
+
+    const url = (p.link || '').trim();
+    const diffClass = `diff-${p.difficulty.toLowerCase()}`;
+    let nameCell = url
+      ? `<a class="prob-link" href="${escHtml(url)}" target="_blank" rel="noopener">${escHtml(p.name)}</a>`
+      : `<span class="no-link">${escHtml(p.name)}</span>`;
+
+    // Show priority badge from plan/pattern data
+    if (item.priority) {
+      nameCell = `<span class="priority-${item.priority}">${item.priority}</span> ` + nameCell;
+    }
+
+    let rowHtml = '';
+    if (showLogicCol) rowHtml += `<td class="td-check"><input type="checkbox" class="prob-checkbox" data-serial="${p.serial}" ${isSolved ? 'checked' : ''}></td>`;
+    if (showCodedCol) rowHtml += `<td class="td-check"><input type="checkbox" class="coded-checkbox" data-serial="${p.serial}" ${isCoded ? 'checked' : ''}></td>`;
+    rowHtml += `
+      <td class="td-star">
+        <button class="star-btn ${isStarred ? 'starred' : ''}" data-serial="${p.serial}" title="${isStarred ? 'Unstar' : 'Star'}">${starIcon(isStarred)}</button>
+      </td>
+      <td class="td-name">${nameCell}</td>
+      <td class="td-notes">
+        <button class="note-btn approach-note-btn ${hasApproachNotes}" data-serial="${p.serial}" data-note-type="approach" title="Approach Notes">📝</button>
+      </td>
+      <td class="td-notes">
+        <button class="note-btn code-note-btn ${hasCodeNotes}" data-serial="${p.serial}" data-note-type="code" title="Code Tricks &amp; STL">&lt;/&gt;</button>
+      </td>
+      <td><span class="diff-badge ${diffClass}">${escHtml(p.difficulty)}</span></td>
+    `;
+    tr.innerHTML = rowHtml;
+
+    // Note buttons
+    tr.querySelectorAll('.note-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        openNotesModal(p.serial, p.name, btn.dataset.noteType || 'approach');
+      });
+    });
+
+    // Logic checkbox
+    const logicCb = tr.querySelector('.prob-checkbox');
+    if (logicCb) {
+      logicCb.addEventListener('change', e => {
+        if (e.target.checked) { solved.add(p.serial); tr.classList.add('solved'); }
+        else                  { solved.delete(p.serial); tr.classList.remove('solved'); }
+        saveSolved();
+        updateStats();
+        // Update parent card progress text if present
+        const card = tr.closest('.plan-day-card, .pattern-card');
+        if (card) updateCardProgressText(card);
+      });
+    }
+
+    // Coded checkbox
+    const codedCb = tr.querySelector('.coded-checkbox');
+    if (codedCb) {
+      codedCb.addEventListener('change', e => {
+        if (e.target.checked) coded.add(p.serial);
+        else coded.delete(p.serial);
+        saveCoded();
+      });
+    }
+
+    // Star button
+    tr.querySelector('.star-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const btn = e.currentTarget;
+      if (starred.has(p.serial)) { starred.delete(p.serial); btn.classList.remove('starred'); btn.title = 'Star'; }
+      else                       { starred.add(p.serial);    btn.classList.add('starred');    btn.title = 'Unstar'; }
+      btn.innerHTML = starIcon(starred.has(p.serial));
+      saveStarred();
+    });
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  container.appendChild(table);
+}
+
+function updateCardProgressText(card) {
+  const allProblems = [...card.querySelectorAll('.prob-checkbox')].map(cb => parseInt(cb.dataset.serial));
+  const solvedCount = allProblems.filter(s => solved.has(s)).length;
+  const total = allProblems.length;
+  const el = card.querySelector('.plan-day-progress, .pattern-progress');
+  if (el) el.textContent = `${solvedCount}/${total}`;
+}
+
+/* =========================================================
+   30-DAY PLAN DATA
+   ========================================================= */
+const PLAN_DATA = [
+  { week: 1, days: [
+    { day: 1, title: 'Arrays + Binary Search + Stack/Queue foundations', blocks: [
+      { label: 'A', title: 'Array fundamentals', problems: [
+        {priority:'A',name:'Largest Element'},{priority:'A',name:'Remove duplicates from Sorted array'},
+        {priority:'A',name:'Left Rotate Array by K Places'},{priority:'A',name:'Move Zeros to End'},
+        {priority:'B',name:'Union of two sorted arrays'},{priority:'A',name:'Find missing number'},
+        {priority:'A',name:'Find the number that appears once, and other numbers twice'},
+      ]},
+      { label: 'B', title: 'Binary Search fundamentals', problems: [
+        {priority:'A',name:'Search X in sorted array'},{priority:'A',name:'Lower Bound'},
+        {priority:'B',name:'Floor and Ceil in Sorted Array'},{priority:'A',name:'First and last occurrence'},
+      ]},
+      { label: 'C', title: 'Stack/Queue implementation', problems: [
+        {priority:'A',name:'Implement Stack using Arrays'},{priority:'A',name:'Implement Queue using Arrays'},
+        {priority:'A',name:'Implement Queue using Stack'},
+      ]},
+    ]},
+    { day: 2, title: 'Recursion + Binary Trees + Modified Binary Search', blocks: [
+      { label: 'A', title: 'Recursion basics', problems: [
+        {priority:'A',name:'Pow(x, n)'},{priority:'B',name:'Sort a stack using recursion'},
+        {priority:'A',name:'Generate Parentheses'},
+      ]},
+      { label: 'B', title: 'Tree traversal foundation', problems: [
+        {priority:'A',name:'Pre, Post, Inorder in one traversal'},{priority:'A',name:'Preorder Traversal'},
+        {priority:'A',name:'Inorder Traversal of Binary Tree'},{priority:'A',name:'Postorder Traversal'},
+      ]},
+      { label: 'C', title: 'Rotated/modified binary search', problems: [
+        {priority:'A',name:'Search in rotated sorted array-I'},{priority:'B',name:'Search in rotated sorted array-II'},
+        {priority:'A',name:'Find minimum in Rotated Sorted Array'},{priority:'B',name:'Single element in a Sorted Array'},
+        {priority:'B',name:'Find peak element'},
+      ]},
+    ]},
+    { day: 3, title: 'DP foundations + Linked List + Stack patterns', blocks: [
+      { label: 'A', title: '1D DP', problems: [
+        {priority:'A',name:'Climbing stairs'},{priority:'A',name:'Frog Jump'},
+        {priority:'A',name:'House robber'},{priority:'B',name:"Ninja's training"},
+      ]},
+      { label: 'B', title: 'Linked-list pointer basics', problems: [
+        {priority:'A',name:'Insertion at the head of Linked List'},{priority:'B',name:'Reverse a Doubly Linked List'},
+        {priority:'A',name:'Middle of a LinkedList [Tortoise-Hare Method]'},
+        {priority:'A',name:'Reverse a LinkedList [Iterative]'},{priority:'A',name:'Detect a loop in LL'},
+      ]},
+      { label: 'C', title: 'Stack foundations', problems: [
+        {priority:'A',name:'Balanced Paranthesis'},{priority:'A',name:'Implement Min Stack'},
+        {priority:'B',name:'Infix to Postfix Conversion'},{priority:'A',name:'Next Greater Element'},
+      ]},
+    ]},
+    { day: 4, title: 'Bit Manipulation + Prefix Sum/Hashing', blocks: [
+      { label: 'A', title: 'Bit fundamentals', problems: [
+        {priority:'A',name:'Check if the i-th bit is Set or Not'},{priority:'A',name:'Check if a Number is Power of 2 or Not'},
+        {priority:'A',name:'Count the Number of Set Bits'},{priority:'B',name:'Divide two numbers without multiplication and division'},
+        {priority:'A',name:'XOR of numbers in a given range'},{priority:'A',name:'Single Number - III'},
+        {priority:'C',name:'Print Prime Factors of a Number'},{priority:'C',name:'Count primes in range L to R'},
+      ]},
+      { label: 'B', title: 'Subarray state / hashing', problems: [
+        {priority:'A',name:'Longest subarray with given sum K (positives)'},{priority:'A',name:'Longest subarray with sum K'},
+        {priority:'A',name:'Count subarrays with given sum'},{priority:'A',name:'Two Sum'},
+      ]},
+      { label: 'C', title: 'Array partitioning', problems: [
+        {priority:'A',name:"Sort an array of 0's 1's and 2's"},
+      ]},
+    ]},
+    { day: 5, title: 'Strings + Tree Traversal + Backtracking foundations', blocks: [
+      { label: 'A', title: 'String implementation', problems: [
+        {priority:'A',name:'Remove Outermost Parentheses'},{priority:'A',name:'Reverse words in a given string / Palindrome Check'},
+        {priority:'A',name:'Longest Common Prefix'},{priority:'A',name:'Isomorphic String'},
+        {priority:'B',name:'Sort Characters by Frequency'},{priority:'A',name:'Roman to Integer'},
+      ]},
+      { label: 'B', title: 'Iterative tree traversal', problems: [
+        {priority:'A',name:'Level Order Traversal'},{priority:'A',name:'Iterative Preorder Traversal of Binary Tree'},
+        {priority:'A',name:'Iterative Inorder Traversal of Binary Tree'},{priority:'B',name:'Post-order Traversal of Binary Tree using 1 stack'},
+        {priority:'A',name:'Maximum Depth in BT'},
+      ]},
+      { label: 'C', title: 'Backtracking', problems: [
+        {priority:'A',name:'Combination Sum'},{priority:'B',name:'Combination Sum II'},{priority:'A',name:'Subsets I'},
+      ]},
+    ]},
+    { day: 6, title: 'Greedy + Grid DP + Linked List continuation', blocks: [
+      { label: 'A', title: 'Greedy foundations', problems: [
+        {priority:'A',name:'Assign Cookies'},{priority:'A',name:'Fractional Knapsack'},
+        {priority:'A',name:'Valid Paranthesis Checker'},{priority:'A',name:'N meetings in one room'},
+        {priority:'A',name:'Jump Game - I'},{priority:'A',name:'Jump Game II'},
+      ]},
+      { label: 'B', title: 'Grid DP', problems: [
+        {priority:'A',name:'Grid Unique Paths : DP on Grids (DP8)'},{priority:'B',name:'Minimum Falling Path Sum'},
+        {priority:'B',name:'Ninja and his Friends'},
+      ]},
+      { label: 'C', title: 'Linked List', problems: [
+        {priority:'A',name:'Find the starting point in LL'},{priority:'A',name:'Check if LL is palindrome or not'},
+        {priority:'A',name:'Segregate odd and even nodes in Linked List'},{priority:'A',name:'Remove Nth node from the back of the LL'},
+      ]},
+    ]},
+    { day: 7, title: 'Array optimization + Binary Search on Answer + Monotonic Stack', blocks: [
+      { label: 'A', title: 'Array optimization', problems: [
+        {priority:'A',name:'Majority Element-I'},{priority:'A',name:"Kadane's Algorithm"},
+        {priority:'B',name:'Rearrange array elements by sign'},{priority:'A',name:'Next Permutation'},
+        {priority:'A',name:'Longest Consecutive Sequence in an Array'},{priority:'B',name:'Set Matrix Zeroes'},
+      ]},
+      { label: 'B', title: 'Binary Search on Answer', problems: [
+        {priority:'A',name:'Find square root of a number'},{priority:'A',name:'Koko eating bananas'},
+        {priority:'A',name:'Minimum days to make M bouquets'},{priority:'A',name:'Capacity to Ship Packages Within D Days'},
+      ]},
+      { label: 'C', title: 'Monotonic stack', problems: [
+        {priority:'A',name:'Trapping Rainwater'},{priority:'A',name:'Sum of Subarray Minimums'},
+      ]},
+    ]},
+  ]},
+  { week: 2, days: [
+    { day: 8, title: 'BST + Tree recursion + Strings', blocks: [
+      { label: 'A', title: 'BST invariant', problems: [
+        {priority:'A',name:'Search in a Binary Search Tree'},{priority:'A',name:'Floor and Ceil in a BST'},
+        {priority:'A',name:'Insert a given node in BST'},{priority:'B',name:'Delete a node in BST'},
+        {priority:'A',name:'Kth Smallest and Largest element in BST'},{priority:'A',name:'Check if a tree is a BST or not'},
+      ]},
+      { label: 'B', title: 'Tree recursion', problems: [
+        {priority:'A',name:'Check for balanced binary tree'},{priority:'A',name:'Diameter of Binary Tree'},
+        {priority:'A',name:'Maximum path sum'},{priority:'B',name:'Zig Zag or Spiral Traversal'},
+        {priority:'B',name:'Boundary Traversal'},
+      ]},
+      { label: 'C', title: 'String parsing', problems: [
+        {priority:'A',name:'String to Integer (atoi)'},{priority:'A',name:'Longest Palindromic Substring'},
+        {priority:'B',name:'Count and say'},
+      ]},
+    ]},
+    { day: 9, title: 'Sliding Window + Backtracking + Greedy intervals', blocks: [
+      { label: 'A', title: 'Sliding Window core', problems: [
+        {priority:'A',name:'Longest Substring Without Repeating Characters'},{priority:'A',name:'Max Consecutive Ones III'},
+        {priority:'A',name:'Longest Repeating Character Replacement'},
+      ]},
+      { label: 'B', title: 'Backtracking', problems: [
+        {priority:'A',name:'Subsets II'},{priority:'A',name:'Letter Combinations of a Phone Number'},
+        {priority:'A',name:'Palindrome partitioning'},{priority:'A',name:'Word Search'},
+      ]},
+      { label: 'C', title: 'Greedy intervals', problems: [
+        {priority:'A',name:'Minimum number of platforms required for a railway'},{priority:'A',name:'Job sequencing Problem'},
+        {priority:'A',name:'Candy'},{priority:'A',name:'Insert Interval'},{priority:'A',name:'Non-overlapping Intervals'},
+      ]},
+    ]},
+    { day: 10, title: 'Arrays + Advanced Binary Search', blocks: [
+      { label: 'A', title: 'Matrix / array patterns', problems: [
+        {priority:'A',name:'Rotate matrix by 90 degrees'},{priority:'A',name:'Print the matrix in spiral manner'},
+        {priority:'A',name:'Count subarrays with given sum'},{priority:'B',name:"Pascal's Triangle I"},
+        {priority:'A',name:'Majority Element-II'},{priority:'A',name:'3 Sum'},
+      ]},
+      { label: 'B', title: 'Binary Search variants', problems: [
+        {priority:'A',name:'Kth Missing Positive Number'},{priority:'A',name:'Aggressive Cows'},
+        {priority:'B',name:'Minimize Max Distance to Gas Station'},{priority:'B',name:'Median of 2 sorted arrays'},
+      ]},
+      { label: 'C', title: '2D search', problems: [
+        {priority:'A',name:'Search in a 2D matrix'},{priority:'B',name:'Search in 2D matrix - II'},
+      ]},
+    ]},
+    { day: 11, title: 'Tree views/path patterns + BST advanced', blocks: [
+      { label: 'A', title: 'Tree views', problems: [
+        {priority:'B',name:'Vertical Order Traversal'},{priority:'B',name:'Top View of BT'},
+        {priority:'B',name:'Right/Left View of Binary Tree'},{priority:'A',name:'Symmetric Binary Tree'},
+      ]},
+      { label: 'B', title: 'Tree path/ancestor patterns', problems: [
+        {priority:'A',name:'Print root to leaf path in BT'},{priority:'A',name:'LCA in BT'},
+      ]},
+      { label: 'C', title: 'BST advanced', problems: [
+        {priority:'A',name:'LCA in BST'},{priority:'B',name:'Construct a BST from a preorder traversal'},
+        {priority:'B',name:'Inorder Successor/Predecessor in BST'},{priority:'B',name:'Two Sum In BST | Check if there exists a pair with Sum K'},
+        {priority:'C',name:'Correct BST with two nodes swapped'},{priority:'C',name:'Largest BST in Binary Tree'},
+      ]},
+    ]},
+    { day: 12, title: 'Graph fundamentals + Monotonic Stack', blocks: [
+      { label: 'A', title: 'Graph traversal', problems: [
+        {priority:'A',name:'Traversal Techniques'},{priority:'A',name:'DFS'},{priority:'A',name:'Number of provinces'},
+        {priority:'A',name:'Rotten Oranges'},{priority:'A',name:'Cycle Detection in Undirected Graph (bfs)'},
+        {priority:'A',name:'Distance of nearest cell having one'},{priority:'B',name:'Surrounded Regions'},
+        {priority:'A',name:'Number of islands'},
+      ]},
+      { label: 'B', title: 'Graph-on-grid / BFS application', problems: [
+        {priority:'B',name:'Word ladder I'},
+      ]},
+      { label: 'C', title: 'Monotonic stack', problems: [
+        {priority:'A',name:'Asteroid Collision'},{priority:'A',name:'Remove K Digits'},
+        {priority:'A',name:'Largest rectangle in a histogram'},{priority:'A',name:'Maximum Rectangles'},
+      ]},
+    ]},
+    { day: 13, title: 'Subset/Knapsack DP + Sliding Window completion', blocks: [
+      { label: 'A', title: '0/1 subset DP', problems: [
+        {priority:'A',name:'Subset sum equal to target (DP-14)'},{priority:'A',name:'Partition a set into two subsets with minimum absolute sum difference'},
+        {priority:'A',name:'Count subsets with sum K'},
+      ]},
+      { label: 'B', title: 'Unbounded knapsack', problems: [
+        {priority:'A',name:'Minimum Coins (DP-20)'},{priority:'A',name:'Coin Change 2 (DP-22)'},{priority:'B',name:'Unbounded knapsack'},
+      ]},
+      { label: 'C', title: 'Sliding Window advanced', problems: [
+        {priority:'A',name:'Binary Subarrays With Sum'},{priority:'A',name:'Number of Substrings Containing All Three Characters'},
+        {priority:'A',name:'Maximum Points You Can Obtain from Cards'},{priority:'A',name:'Longest Substring With At Most K Distinct Characters'},
+        {priority:'A',name:'Minimum Window Substring'},
+      ]},
+    ]},
+    { day: 14, title: 'Graph cycles/topological sort + Stack/Queue design', blocks: [
+      { label: 'A', title: 'Directed graph patterns', problems: [
+        {priority:'A',name:'Bipartite Graph (DFS)'},{priority:'A',name:'Cycle Detection in Directed Graph (DFS)'},
+        {priority:'A',name:'Topo Sort'},{priority:'A',name:'Topological sort or Kahn\'s algorithm'},
+        {priority:'A',name:'Course Schedule I'},{priority:'A',name:'Find eventual safe states'},{priority:'B',name:'Alien Dictionary'},
+      ]},
+      { label: 'B', title: 'Data-structure design', problems: [
+        {priority:'A',name:'Sliding Window Maximum'},{priority:'B',name:'Celebrity Problem'},{priority:'B',name:'LRU Cache'},
+      ]},
+    ]},
+  ]},
+  { week: 3, days: [
+    { day: 15, title: 'Heaps + String matching + DP strings', blocks: [
+      { label: 'A', title: 'Heap fundamentals', problems: [
+        {priority:'A',name:'Implement Min Heap'},{priority:'A',name:'K-th Largest element in an array'},
+        {priority:'A',name:'Sort K sorted array'},{priority:'A',name:'Merge K sorted Lists'},{priority:'B',name:'Task Scheduler'},
+      ]},
+      { label: 'B', title: 'String pattern matching', problems: [
+        {priority:'B',name:'Rabin Karp Algorithm'},{priority:'B',name:'Z function'},
+        {priority:'A',name:'KMP Algorithm or LPS array'},{priority:'B',name:'Shortest Palindrome'},
+      ]},
+      { label: 'C', title: 'DP transition', problems: [
+        {priority:'A',name:'Longest common subsequence'},{priority:'A',name:'Longest common substring'},
+        {priority:'A',name:'Longest palindromic subsequence'},
+      ]},
+    ]},
+    { day: 16, title: 'Shortest Paths + Heap variants', blocks: [
+      { label: 'A', title: 'Shortest-path progression', problems: [
+        {priority:'A',name:'Shortest path in undirected graph with unit weights'},{priority:'B',name:'Shortest path in DAG'},
+        {priority:'A',name:'Djisktra\'s Algorithm'},{priority:'B',name:'Path with minimum effort'},
+        {priority:'B',name:'Cheapest flight within K stops'},{priority:'B',name:'Number of ways to arrive at destination'},
+      ]},
+      { label: 'B', title: 'Heap applications', problems: [
+        {priority:'B',name:'Design Twitter'},{priority:'A',name:'Kth largest element in a stream of running integers'},
+        {priority:'A',name:'Find Median from Data Stream'},{priority:'A',name:'Top K Frequent Elements'},
+      ]},
+    ]},
+    { day: 17, title: 'All-pairs/negative-weight shortest path + String DP', blocks: [
+      { label: 'A', title: 'Advanced shortest paths', problems: [
+        {priority:'B',name:'Bellman Ford Algorithm'},{priority:'B',name:'Floyd warshall algorithm'},
+        {priority:'B',name:'Find the city with the smallest number of neighbors'},
+      ]},
+      { label: 'B', title: 'MST', problems: [
+        {priority:'A',name:"Prim's Algorithm"},{priority:'A',name:'Disjoint Set'},{priority:'A',name:'Find the MST weight'},
+      ]},
+      { label: 'C', title: 'String DP', problems: [
+        {priority:'A',name:'Minimum insertions or deletions to convert string A to B'},
+      ]},
+    ]},
+    { day: 18, title: 'DSU applications + Graph connectivity', blocks: [
+      { label: 'A', title: 'DSU applications', problems: [
+        {priority:'A',name:'Number of operations to make network connected'},{priority:'A',name:'Most stones removed with same row or column'},
+        {priority:'A',name:'Accounts merge'},{priority:'B',name:'Making a large island'},
+      ]},
+      { label: 'B', title: 'Timed implementation drill', mock: 'Re-implement DSU from scratch:\n- Path compression\n- Union by size/rank\n- Component counting\n\nNo new problem required.' },
+    ]},
+    { day: 19, title: 'Trie + String DP', blocks: [
+      { label: 'A', title: 'Trie', problems: [
+        {priority:'A',name:'Trie Implementation and Operations'},{priority:'B',name:'Longest Word with All Prefixes'},
+        {priority:'B',name:'Number of distinct substrings in a string'},{priority:'B',name:'Maximum XOR of two numbers in an array'},
+        {priority:'B',name:'Maximum Xor with an element from an array'},
+      ]},
+      { label: 'B', title: 'String DP', problems: [
+        {priority:'A',name:'Distinct subsequences'},{priority:'A',name:'Edit distance'},{priority:'B',name:'Wildcard matching'},
+      ]},
+      { label: 'C', title: 'Stock DP', problems: [
+        {priority:'A',name:'Best time to buy and sell stock II'},
+      ]},
+    ]},
+    { day: 20, title: 'Stock DP + LIS family', blocks: [
+      { label: 'A', title: 'Stock state DP', problems: [
+        {priority:'A',name:'Best Time to Buy and Sell Stock with Cooldown'},
+        {priority:'B',name:'Best time to buy and sell stock IV *(finish/repair if needed)*'},
+      ]},
+      { label: 'B', title: 'LIS family', problems: [
+        {priority:'A',name:'Longest Increasing Subsequence'},{priority:'A',name:'Longest Increasing Subsequence |(DP-43)'},
+        {priority:'B',name:'Largest Divisible Subset'},{priority:'B',name:'Longest Bitonic Subsequence'},
+      ]},
+    ]},
+  ]},
+  { week: 4, days: [
+    { day: 21, title: 'Interval DP + mixed high-value reinforcement', blocks: [
+      { label: 'A', title: 'Interval/partition DP', problems: [
+        {priority:'C',name:'Matrix chain multiplication'},{priority:'C',name:'Minimum cost to cut the stick'},{priority:'C',name:'Burst balloons'},
+      ]},
+      { label: 'B', title: 'High-value transfer', mock: 'Solve one from each family with topic label hidden:\n- Binary Search on Answer: Koko eating bananas\n- Sliding Window: Minimum Window Substring\n- Monotonic Stack: Largest rectangle in a histogram\n- Tree DP: Diameter of Binary Tree' },
+      { label: 'C', title: 'Optional advanced DP', mock: 'Study only if Block A and B are secure.' },
+    ]},
+    { day: 22, title: 'Trees: finish structural problems', blocks: [
+      { label: 'A', title: 'Tree structure', problems: [
+        {priority:'A',name:'Maximum Width of BT'},{priority:'A',name:'Print all nodes at a distance of K in BT'},
+        {priority:'B',name:'Count total nodes in a complete BT'},
+      ]},
+      { label: 'B', title: 'Construction / serialization', problems: [
+        {priority:'B',name:'Construct a BT from Preorder and Inorder'},{priority:'B',name:'Serialize and De-serialize BT'},
+        {priority:'B',name:'Flatten Binary Tree to Linked List'},
+      ]},
+      { label: 'C', title: 'Advanced traversal', problems: [
+        {priority:'C',name:'Morris Preorder Traversal of a Binary Tree'},
+      ]},
+    ]},
+    { day: 23, title: 'Arrays: high-value advanced family', blocks: [
+      { label: 'A', title: 'Prefix/XOR/interval', problems: [
+        {priority:'A',name:'Count subarrays with given xor K'},{priority:'A',name:'Merge Overlapping Subintervals'},
+        {priority:'B',name:'Merge two sorted arrays without extra space'},
+      ]},
+      { label: 'B', title: 'Transfer drill', mock: 'Solve one unseen/less-familiar problem from your completed list with the topic label hidden.' },
+    ]},
+    { day: 24, title: 'Arrays: advanced algorithms', blocks: [
+      { label: 'A', title: 'Advanced array', problems: [
+        {priority:'B',name:'Find the repeating and missing number'},{priority:'C',name:'Reverse Pairs'},
+        {priority:'B',name:'Maximum Product Subarray in an Array'},
+      ]},
+      { label: 'B', title: 'Placement-style mixed set', mock: 'Solve 3 problems chosen randomly from your completed list, with topic labels hidden.' },
+    ]},
+    { day: 25, title: 'Linked List: advanced manipulation', blocks: [
+      { label: 'A', title: 'Advanced LL', problems: [
+        {priority:'B',name:'Sort LL'},{priority:'A',name:'Find the intersection point of Y LL'},
+        {priority:'B',name:'Add two numbers in Linked List'},
+      ]},
+      { label: 'B', title: 'LL patterns', problems: [
+        {priority:'B',name:'Reverse LL in group of given size K'},{priority:'B',name:'Rotate a LL'},
+        {priority:'C',name:'Flattening of LL'},
+      ]},
+    ]},
+    { day: 26, title: 'Advanced Linked List + Backtracking reserve', blocks: [
+      { label: 'A', title: 'Advanced LL structure', problems: [
+        {priority:'C',name:'Clone a LL with random and next pointer'},
+      ]},
+      { label: 'B', title: 'Backtracking reserve', problems: [
+        {priority:'B',name:'N Queen'},{priority:'B',name:'Word Break'},
+        {priority:'C',name:'M Coloring Problem'},{priority:'C',name:'Sudoku Solver'},
+      ]},
+      { label: 'C', title: 'Short timed mixed set', mock: 'Solve 2 randomly selected A/B problems from earlier weeks with topic labels hidden.' },
+    ]},
+    { day: 27, title: 'Graph advanced connectivity + DP finish', blocks: [
+      { label: 'A', title: 'Advanced graph', problems: [
+        {priority:'B',name:'Swim in Rising Water'},{priority:'C',name:'Bridges in graph'},
+        {priority:'C',name:'Articulation point in graph'},{priority:"C",name:"Kosaraju's algorithm"},
+      ]},
+      { label: 'B', title: 'DP finish', problems: [
+        {priority:'C',name:'Palindrome partitioning II'},{priority:'B',name:"Maximum Rectangle Area with all 1's (DP-55)"},
+        {priority:'B',name:'Count Square Submatrices with All Ones (DP-56)'},
+      ]},
+      { label: 'C', title: 'Mixed test', mock: 'Solve 3 topic-hidden problems from your A/B pool.' },
+    ]},
+    { day: 28, title: 'Placement Mock 1', blocks: [
+      { label: 'A', title: 'Timed mock — 6 problems', mock: 'Complete a timed mixed set of 6 problems (topic labels hidden):\n1. Array / Hashing\n2. Binary Search\n3. Sliding Window / Two Pointer\n4. Stack / Heap / Linked List\n5. Tree / Graph\n6. DP\n\nAfter the mock, classify every failure:\n- Pattern not recognized\n- Correct pattern, wrong implementation\n- Edge-case error\n- Complexity error\n- Incomplete DP transition\n- Time-management failure' },
+    ]},
+    { day: 29, title: 'Placement Mock 2 + targeted repair', blocks: [
+      { label: 'A', title: 'Timed mock — 6 problems', mock: 'Complete 6 topic-hidden problems. Use a different difficulty mix from Day 28.' },
+      { label: 'B', title: 'Repair', mock: 'For every problem missed in Day 28/29:\n1. State the pattern in one sentence.\n2. State the invariant/state/transition.\n3. Re-code the solution from scratch.' },
+    ]},
+    { day: 30, title: 'Final placement simulation', blocks: [
+      { label: 'A', title: 'Final mock — 8 problems', mock: 'Complete 8 topic-hidden problems under realistic placement conditions:\n1. Arrays / Hashing\n2. Binary Search\n3. Sliding Window / Two Pointer\n4. Stack / Queue / Heap\n5. Linked List\n6. Trees / BST\n7. Graphs\n8. DP' },
+      { label: 'B', title: 'Final pattern audit', mock: 'Write down the patterns you can recognize without prompting.\n\nYour final revision list should be based on patterns you still fail to recognize — not on the raw number of problems solved.' },
+    ]},
+  ]},
+];
+
+/* =========================================================
+   PATTERN DATA
+   ========================================================= */
+const PATTERN_DATA = [
+  { id: 1, title: 'Arrays & Hashing', groups: [
+    { title: 'In-place array manipulation / partitioning', problems: [
+      {priority:'A',name:'Remove duplicates from Sorted array'},{priority:'A',name:'Move Zeros to End'},
+      {priority:'A',name:"Sort an array of 0's 1's and 2's"},{priority:'B',name:'Rearrange array elements by sign'},
+      {priority:'A',name:'Next Permutation'},{priority:'A',name:'Left Rotate Array by K Places'},
+    ]},
+    { title: 'Hash lookup / complement / prefix-state lookup', cue: 'The current answer depends on information seen earlier; ask whether a hash table can remember the needed state.', problems: [
+      {priority:'A',name:'Two Sum'},{priority:'A',name:'Longest subarray with given sum K (positives)'},
+      {priority:'A',name:'Longest subarray with sum K'},{priority:'A',name:'Count subarrays with given sum'},
+      {priority:'A',name:'Count subarrays with given xor K'},{priority:'A',name:'Longest Consecutive Sequence in an Array'},
+    ]},
+    { title: 'Kadane / running subarray optimum', problems: [
+      {priority:'A',name:"Kadane's Algorithm"},{priority:'B',name:'Maximum Product Subarray in an Array'},
+    ]},
+    { title: 'Majority / voting', problems: [
+      {priority:'A',name:'Majority Element-I'},{priority:'A',name:'Majority Element-II'},
+    ]},
+    { title: 'Matrix manipulation / simulation', problems: [
+      {priority:'B',name:'Set Matrix Zeroes'},{priority:'A',name:'Rotate matrix by 90 degrees'},
+      {priority:'A',name:'Print the matrix in spiral manner'},{priority:'B',name:"Pascal's Triangle I"},
+    ]},
+    { title: 'Sorting / merging / intervals', problems: [
+      {priority:'A',name:'Merge Overlapping Subintervals'},{priority:'A',name:'Merge two sorted arrays without extra space'},
+    ]},
+    { title: 'Missing / repeating / XOR tricks', problems: [
+      {priority:'A',name:'Find missing number'},{priority:'A',name:'Find the number that appears once, and other numbers twice'},
+      {priority:'B',name:'Find the repeating and missing number'},
+    ]},
+    { title: 'Advanced array algorithms', problems: [
+      {priority:'C',name:'Reverse Pairs'},{priority:'A',name:'3 Sum'},
+      {priority:'A',name:'Largest Element'},{priority:'B',name:'Union of two sorted arrays'},
+    ]},
+  ]},
+  { id: 2, title: 'Binary Search', groups: [
+    { title: 'Basic boundary search', problems: [
+      {priority:'A',name:'Search X in sorted array'},{priority:'A',name:'Lower Bound'},
+      {priority:'B',name:'Floor and Ceil in Sorted Array'},{priority:'A',name:'First and last occurrence'},
+    ]},
+    { title: 'Rotated / modified sorted arrays', problems: [
+      {priority:'A',name:'Search in rotated sorted array-I'},{priority:'B',name:'Search in rotated sorted array-II'},
+      {priority:'A',name:'Find minimum in Rotated Sorted Array'},{priority:'B',name:'Single element in a Sorted Array'},
+      {priority:'B',name:'Find peak element'},
+    ]},
+    { title: 'Binary search over a 2D / search space', problems: [
+      {priority:'A',name:'Search in a 2D matrix'},{priority:'B',name:'Search in 2D matrix - II'},
+      {priority:'B',name:'Median of 2 sorted arrays'},
+    ]},
+    { title: 'Binary search on answer / monotonic feasibility', cue: 'The answer itself is hard to construct directly, but you can efficiently test whether a candidate answer is feasible, and feasibility changes monotonically.', problems: [
+      {priority:'A',name:'Find square root of a number'},{priority:'A',name:'Koko eating bananas'},
+      {priority:'A',name:'Minimum days to make M bouquets'},{priority:'A',name:'Capacity to Ship Packages Within D Days'},
+      {priority:'A',name:'Kth Missing Positive Number'},{priority:'A',name:'Aggressive Cows'},
+      {priority:'B',name:'Minimize Max Distance to Gas Station'},
+    ]},
+  ]},
+  { id: 3, title: 'Sliding Window & Two Pointers', groups: [
+    { title: 'Variable sliding window', problems: [
+      {priority:'A',name:'Longest Substring Without Repeating Characters'},{priority:'A',name:'Max Consecutive Ones III'},
+      {priority:'A',name:'Longest Repeating Character Replacement'},{priority:'A',name:'Longest Substring With At Most K Distinct Characters'},
+      {priority:'A',name:'Minimum Window Substring'},
+    ]},
+    { title: 'Counting / exact-window variants', problems: [
+      {priority:'A',name:'Binary Subarrays With Sum'},{priority:'A',name:'Number of Substrings Containing All Three Characters'},
+    ]},
+    { title: 'Complement / shrinking-window variant', problems: [
+      {priority:'A',name:'Maximum Points You Can Obtain from Cards'},
+    ]},
+    { title: 'Two-pointer array reasoning', cue: 'Maintain a contiguous or ordered region and update it incrementally instead of recomputing the whole range.', problems: [
+      {priority:'A',name:'3 Sum'},{priority:'B',name:'Merge two sorted arrays without extra space'},
+    ]},
+  ]},
+  { id: 4, title: 'Strings', groups: [
+    { title: 'Parsing / simulation', problems: [
+      {priority:'A',name:'Remove Outermost Parentheses'},{priority:'A',name:'Reverse words in a given string / Palindrome Check'},
+      {priority:'A',name:'Roman to Integer'},{priority:'A',name:'String to Integer (atoi)'},{priority:'B',name:'Count and say'},
+    ]},
+    { title: 'Character mapping / frequency', problems: [
+      {priority:'A',name:'Isomorphic String'},{priority:'B',name:'Sort Characters by Frequency'},{priority:'A',name:'Longest Common Prefix'},
+    ]},
+    { title: 'Palindrome', problems: [
+      {priority:'A',name:'Longest Palindromic Substring'},{priority:'B',name:'Shortest Palindrome'},
+    ]},
+    { title: 'String pattern matching', cue: 'Substring/pattern occurrence problem where naive repeated matching is too slow.', problems: [
+      {priority:'B',name:'Rabin Karp Algorithm'},{priority:'B',name:'Z function'},{priority:'A',name:'KMP Algorithm or LPS array'},
+    ]},
+  ]},
+  { id: 5, title: 'Linked List', groups: [
+    { title: 'Fast/slow pointer', problems: [
+      {priority:'A',name:'Middle of a LinkedList [Tortoise-Hare Method]'},{priority:'A',name:'Detect a loop in LL'},
+      {priority:'A',name:'Find the starting point in LL'},{priority:'A',name:'Check if LL is palindrome or not'},
+      {priority:'A',name:'Remove Nth node from the back of the LL'},
+    ]},
+    { title: 'Reversal / pointer rewiring', problems: [
+      {priority:'A',name:'Reverse a LinkedList [Iterative]'},{priority:'B',name:'Reverse a Doubly Linked List'},
+      {priority:'B',name:'Reverse LL in group of given size K'},{priority:'B',name:'Rotate a LL'},
+    ]},
+    { title: 'Intersection / merge / ordering', problems: [
+      {priority:'A',name:'Find the intersection point of Y LL'},{priority:'B',name:'Sort LL'},
+      {priority:'A',name:'Segregate odd and even nodes in Linked List'},
+    ]},
+    { title: 'Arithmetic / simulation', problems: [
+      {priority:'B',name:'Add two numbers in Linked List'},
+    ]},
+    { title: 'Basic / advanced structure', cue: 'Think pointer invariants first; dummy node, fast/slow pointers, reversal, or pointer splicing usually drives the solution.', problems: [
+      {priority:'A',name:'Insertion at the head of Linked List'},{priority:'C',name:'Flattening of LL'},
+      {priority:'C',name:'Clone a LL with random and next pointer'},
+    ]},
+  ]},
+  { id: 6, title: 'Recursion & Backtracking', groups: [
+    { title: 'Pure recursion', problems: [
+      {priority:'A',name:'Pow(x, n)'},{priority:'B',name:'Sort a stack using recursion'},
+    ]},
+    { title: 'Pick / skip / generate', problems: [
+      {priority:'A',name:'Generate Parentheses'},{priority:'A',name:'Subsets I'},{priority:'A',name:'Subsets II'},
+      {priority:'A',name:'Combination Sum'},{priority:'B',name:'Combination Sum II'},
+      {priority:'A',name:'Letter Combinations of a Phone Number'},
+    ]},
+    { title: 'Constraint backtracking', problems: [
+      {priority:'B',name:'N Queen'},{priority:'C',name:'Sudoku Solver'},{priority:'C',name:'M Coloring Problem'},
+      {priority:'A',name:'Word Search'},
+    ]},
+    { title: 'Partition / segmentation recursion', cue: 'Make a choice → recurse on the remaining state → undo/advance the choice. Add memoization when the same state repeats.', problems: [
+      {priority:'A',name:'Palindrome partitioning'},{priority:'B',name:'Word Break'},
+    ]},
+  ]},
+  { id: 7, title: 'Bit Manipulation', groups: [
+    { title: 'Basic bit operations', problems: [
+      {priority:'A',name:'Check if the i-th bit is Set or Not'},{priority:'A',name:'Check if a Number is Power of 2 or Not'},
+      {priority:'A',name:'Count the Number of Set Bits'},{priority:'B',name:'Divide two numbers without multiplication and division'},
+    ]},
+    { title: 'XOR', problems: [
+      {priority:'A',name:'XOR of numbers in a given range'},{priority:'A',name:'Single Number - III'},
+    ]},
+    { title: 'Number theory / utility', problems: [
+      {priority:'C',name:'Print Prime Factors of a Number'},{priority:'C',name:'Count primes in range L to R'},
+    ]},
+  ]},
+  { id: 8, title: 'Stack & Queue', groups: [
+    { title: 'Basic data structures', problems: [
+      {priority:'A',name:'Implement Stack using Arrays'},{priority:'A',name:'Implement Queue using Arrays'},
+      {priority:'A',name:'Implement Queue using Stack'},{priority:'A',name:'Implement Min Stack'},
+    ]},
+    { title: 'Parentheses / expressions', problems: [
+      {priority:'A',name:'Balanced Paranthesis'},{priority:'B',name:'Infix to Postfix Conversion'},
+      {priority:'A',name:'Valid Paranthesis Checker'},
+    ]},
+    { title: 'Monotonic stack', cue: 'When the problem repeatedly asks for next greater/smaller information or a contribution from the nearest dominating element, consider a monotonic structure.', problems: [
+      {priority:'A',name:'Next Greater Element'},{priority:'A',name:'Trapping Rainwater'},
+      {priority:'A',name:'Sum of Subarray Minimums'},{priority:'A',name:'Asteroid Collision'},
+      {priority:'A',name:'Remove K Digits'},{priority:'A',name:'Largest rectangle in a histogram'},
+      {priority:'A',name:'Maximum Rectangles'},
+    ]},
+    { title: 'Monotonic deque', problems: [
+      {priority:'A',name:'Sliding Window Maximum'},
+    ]},
+    { title: 'Design', problems: [
+      {priority:'B',name:'LRU Cache'},{priority:'B',name:'Celebrity Problem'},
+    ]},
+  ]},
+  { id: 9, title: 'Heaps', groups: [
+    { title: 'Top-K / Kth element', problems: [
+      {priority:'A',name:'K-th Largest element in an array'},{priority:'A',name:'Kth largest element in a stream of running integers'},
+      {priority:'A',name:'Top K Frequent Elements'},
+    ]},
+    { title: 'K-way merge / partially sorted input', problems: [
+      {priority:'A',name:'Sort K sorted array'},{priority:'A',name:'Merge K sorted Lists'},
+    ]},
+    { title: 'Two heaps', problems: [
+      {priority:'A',name:'Find Median from Data Stream'},
+    ]},
+    { title: 'Heap-based scheduling / design', problems: [
+      {priority:'B',name:'Task Scheduler'},{priority:'B',name:'Design Twitter'},
+    ]},
+    { title: 'Heap mechanics', cue: 'Repeatedly need the current minimum/maximum among changing candidates, top K elements, or the next item from multiple sorted sources.', problems: [
+      {priority:'A',name:'Implement Min Heap'},
+    ]},
+  ]},
+  { id: 10, title: 'Greedy', groups: [
+    { title: 'Interval scheduling', problems: [
+      {priority:'A',name:'N meetings in one room'},{priority:'A',name:'Insert Interval'},
+      {priority:'A',name:'Non-overlapping Intervals'},{priority:'A',name:'Minimum number of platforms required for a railway'},
+    ]},
+    { title: 'Resource allocation', problems: [
+      {priority:'A',name:'Job sequencing Problem'},{priority:'A',name:'Fractional Knapsack'},{priority:'A',name:'Assign Cookies'},
+    ]},
+    { title: 'Reachability / jump greedy', problems: [
+      {priority:'A',name:'Jump Game - I'},{priority:'A',name:'Jump Game II'},
+    ]},
+    { title: 'Other greedy-choice problems', cue: 'After sorting or establishing an invariant, a locally optimal decision can be shown to preserve the global optimum.', problems: [
+      {priority:'A',name:'Valid Paranthesis Checker'},{priority:'A',name:'Candy'},
+    ]},
+  ]},
+  { id: 11, title: 'Binary Trees', groups: [
+    { title: 'Traversal family', problems: [
+      {priority:'A',name:'Preorder Traversal'},{priority:'A',name:'Inorder Traversal of Binary Tree'},
+      {priority:'A',name:'Postorder Traversal'},{priority:'A',name:'Pre, Post, Inorder in one traversal'},
+      {priority:'A',name:'Iterative Preorder Traversal of Binary Tree'},{priority:'A',name:'Iterative Inorder Traversal of Binary Tree'},
+      {priority:'B',name:'Post-order Traversal of Binary Tree using 1 stack'},{priority:'A',name:'Level Order Traversal'},
+      {priority:'C',name:'Morris Preorder Traversal of a Binary Tree'},
+    ]},
+    { title: 'Tree DFS state / "what do I return to my parent?"', cue: 'Recurse on children, decide what information the child returns, combine it at the current node, and return the state needed by the parent.', problems: [
+      {priority:'A',name:'Maximum Depth in BT'},{priority:'A',name:'Check for balanced binary tree'},
+      {priority:'A',name:'Diameter of Binary Tree'},{priority:'A',name:'Maximum path sum'},
+      {priority:'A',name:'Symmetric Binary Tree'},{priority:'A',name:'Maximum Width of BT'},
+      {priority:'B',name:'Count total nodes in a complete BT'},
+    ]},
+    { title: 'Views / traversal plus ordering', problems: [
+      {priority:'B',name:'Zig Zag or Spiral Traversal'},{priority:'B',name:'Boundary Traversal'},
+      {priority:'B',name:'Vertical Order Traversal'},{priority:'B',name:'Top View of BT'},
+      {priority:'B',name:'Right/Left View of Binary Tree'},
+    ]},
+    { title: 'Path / ancestor queries', problems: [
+      {priority:'A',name:'Print root to leaf path in BT'},{priority:'A',name:'LCA in BT'},
+      {priority:'A',name:'Print all nodes at a distance of K in BT'},
+    ]},
+    { title: 'Construction / serialization / transformation', problems: [
+      {priority:'B',name:'Construct a BT from Preorder and Inorder'},{priority:'B',name:'Serialize and De-serialize BT'},
+      {priority:'B',name:'Flatten Binary Tree to Linked List'},
+    ]},
+  ]},
+  { id: 12, title: 'Binary Search Trees', groups: [
+    { title: 'BST-property operations', problems: [
+      {priority:'A',name:'Search in a Binary Search Tree'},{priority:'A',name:'Insert a given node in BST'},
+      {priority:'B',name:'Delete a node in BST'},{priority:'A',name:'Floor and Ceil in a BST'},
+    ]},
+    { title: 'BST + inorder / recursion boundaries', cue: 'Core invariant: inorder traversal of a BST is sorted.', problems: [
+      {priority:'A',name:'Check if a tree is a BST or not'},{priority:'A',name:'Kth Smallest and Largest element in BST'},
+      {priority:'A',name:'LCA in BST'},{priority:'B',name:'Inorder Successor/Predecessor in BST'},
+      {priority:'B',name:'Construct a BST from a preorder traversal'},
+    ]},
+    { title: 'Advanced BST', problems: [
+      {priority:'B',name:'Two Sum In BST | Check if there exists a pair with Sum K'},
+      {priority:'C',name:'Correct BST with two nodes swapped'},{priority:'C',name:'Largest BST in Binary Tree'},
+    ]},
+  ]},
+  { id: 13, title: 'Graphs', groups: [
+    { title: 'BFS / DFS foundations', problems: [
+      {priority:'A',name:'Traversal Techniques'},{priority:'A',name:'DFS'},{priority:'A',name:'Number of provinces'},
+    ]},
+    { title: 'Grid as an implicit graph', problems: [
+      {priority:'A',name:'Rotten Oranges'},{priority:'A',name:'Distance of nearest cell having one'},
+      {priority:'B',name:'Surrounded Regions'},{priority:'A',name:'Number of islands'},
+      {priority:'B',name:'Making a large island'},{priority:'B',name:'Swim in Rising Water'},
+    ]},
+    { title: 'Cycle / bipartite detection', problems: [
+      {priority:'A',name:'Cycle Detection in Undirected Graph (bfs)'},{priority:'A',name:'Bipartite Graph (DFS)'},
+      {priority:'A',name:'Cycle Detection in Directed Graph (DFS)'},
+    ]},
+    { title: 'Topological ordering / dependencies', problems: [
+      {priority:'A',name:'Topo Sort'},{priority:'A',name:"Topological sort or Kahn's algorithm"},
+      {priority:'A',name:'Course Schedule I'},{priority:'A',name:'Find eventual safe states'},{priority:'B',name:'Alien Dictionary'},
+    ]},
+    { title: 'BFS shortest path on an implicit graph', problems: [
+      {priority:'B',name:'Word ladder I'},
+    ]},
+    { title: 'Shortest paths', cue: 'Unweighted → BFS · dependency → topo sort · nonneg weighted → Dijkstra · negative edges → Bellman-Ford · all-pairs → Floyd-Warshall · merging components → DSU', problems: [
+      {priority:'A',name:'Shortest path in undirected graph with unit weights'},{priority:'B',name:'Shortest path in DAG'},
+      {priority:'A',name:"Djisktra's Algorithm"},{priority:'B',name:'Path with minimum effort'},
+      {priority:'B',name:'Cheapest flight within K stops'},{priority:'B',name:'Number of ways to arrive at destination'},
+      {priority:'B',name:'Bellman Ford Algorithm'},{priority:'B',name:'Floyd warshall algorithm'},
+      {priority:'B',name:'Find the city with the smallest number of neighbors'},
+    ]},
+    { title: 'MST / DSU', problems: [
+      {priority:'A',name:"Prim's Algorithm"},{priority:'A',name:'Disjoint Set'},{priority:'A',name:'Find the MST weight'},
+      {priority:'A',name:'Number of operations to make network connected'},{priority:'A',name:'Most stones removed with same row or column'},
+      {priority:'A',name:'Accounts merge'},
+    ]},
+    { title: 'Advanced connectivity', problems: [
+      {priority:'C',name:'Bridges in graph'},{priority:'C',name:'Articulation point in graph'},
+      {priority:'C',name:"Kosaraju's algorithm"},
+    ]},
+  ]},
+  { id: 14, title: 'Dynamic Programming', groups: [
+    { title: '1D DP / small state', problems: [
+      {priority:'A',name:'Climbing stairs'},{priority:'A',name:'Frog Jump'},
+      {priority:'A',name:'House robber'},{priority:'B',name:"Ninja's training"},
+    ]},
+    { title: 'Grid / multi-dimensional state', problems: [
+      {priority:'A',name:'Grid Unique Paths : DP on Grids (DP8)'},{priority:'B',name:'Minimum Falling Path Sum'},
+      {priority:'B',name:'Ninja and his Friends'},
+    ]},
+    { title: 'Subset / 0-1 knapsack family', problems: [
+      {priority:'A',name:'Subset sum equal to target (DP-14)'},{priority:'A',name:'Partition a set into two subsets with minimum absolute sum difference'},
+      {priority:'A',name:'Count subsets with sum K'},
+    ]},
+    { title: 'Unbounded knapsack family', problems: [
+      {priority:'A',name:'Minimum Coins (DP-20)'},{priority:'A',name:'Coin Change 2 (DP-22)'},{priority:'A',name:'Unbounded knapsack'},
+    ]},
+    { title: 'Two-string DP', problems: [
+      {priority:'A',name:'Longest common subsequence'},{priority:'A',name:'Longest common substring'},
+      {priority:'A',name:'Longest palindromic subsequence'},{priority:'A',name:'Minimum insertions or deletions to convert string A to B'},
+      {priority:'A',name:'Distinct subsequences'},{priority:'A',name:'Edit distance'},{priority:'B',name:'Wildcard matching'},
+    ]},
+    { title: 'Stock state DP', problems: [
+      {priority:'A',name:'Best time to buy and sell stock II'},{priority:'B',name:'Best time to buy and sell stock IV *(finish/repair if needed)*'},
+      {priority:'A',name:'Best Time to Buy and Sell Stock with Cooldown'},
+    ]},
+    { title: 'LIS family', problems: [
+      {priority:'A',name:'Longest Increasing Subsequence'},{priority:'A',name:'Longest Increasing Subsequence |(DP-43)'},
+      {priority:'B',name:'Largest Divisible Subset'},{priority:'B',name:'Longest Bitonic Subsequence'},
+    ]},
+    { title: 'Interval / partition DP', problems: [
+      {priority:'C',name:'Matrix chain multiplication'},{priority:'C',name:'Minimum cost to cut the stick'},
+      {priority:'C',name:'Burst balloons'},{priority:'C',name:'Palindrome partitioning II'},
+    ]},
+    { title: 'Matrix DP / histogram connection', cue: 'Identify the smallest state that completely summarizes the past, then define transition + base case. Do not memorize isolated formulas.', problems: [
+      {priority:'B',name:"Maximum Rectangle Area with all 1's (DP-55)"},{priority:'B',name:'Count Square Submatrices with All Ones (DP-56)'},
+    ]},
+  ]},
+  { id: 15, title: 'Tries', groups: [
+    { title: 'Prefix trie', problems: [
+      {priority:'A',name:'Trie Implementation and Operations'},{priority:'B',name:'Longest Word with All Prefixes'},
+      {priority:'B',name:'Number of distinct substrings in a string'},
+    ]},
+    { title: 'Bitwise trie / XOR', cue: 'When the problem asks about prefixes or maximizing XOR under bitwise choices, think trie.', problems: [
+      {priority:'B',name:'Maximum XOR of two numbers in an array'},{priority:'B',name:'Maximum Xor with an element from an array'},
+    ]},
+  ]},
+];
+
+/* =========================================================
+   PLAN VIEW RENDERER
+   ========================================================= */
+function renderPlanView() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '';
+  document.getElementById('loadingMsg')?.remove();
+
+  PLAN_DATA.forEach(weekData => {
+    const weekEl = document.createElement('div');
+    weekEl.className = 'plan-week';
+    weekEl.innerHTML = `<div class="plan-week-label">Week ${weekData.week}</div>`;
+
+    weekData.days.forEach(dayData => {
+      // Collect all problems for this day (non-mock blocks only)
+      const allProbs = dayData.blocks.flatMap(b => b.problems || []);
+      const resolved = allProbs.map(item => findProblem(item.name)).filter(Boolean);
+      const solvedCount = resolved.filter(p => solved.has(p.serial)).length;
+      const total = resolved.length;
+
+      const card = document.createElement('div');
+      card.className = 'plan-day-card';
+      card.innerHTML = `
+        <div class="plan-day-header">
+          <span class="plan-day-chevron">▶</span>
+          <span class="plan-day-num">Day ${dayData.day}</span>
+          <span class="plan-day-title">${escHtml(dayData.title)}</span>
+          <span class="plan-day-progress">${solvedCount}/${total}</span>
+        </div>
+        <div class="plan-day-body"></div>
+      `;
+
+      card.querySelector('.plan-day-header').addEventListener('click', () => {
+        card.classList.toggle('open');
+      });
+
+      const body = card.querySelector('.plan-day-body');
+
+      dayData.blocks.forEach(block => {
+        const blockEl = document.createElement('div');
+        blockEl.className = 'plan-block';
+        blockEl.innerHTML = `<div class="plan-block-label">Block ${block.label} — ${escHtml(block.title)}</div>`;
+
+        if (block.mock) {
+          const note = document.createElement('p');
+          note.className = 'plan-mock-note';
+          note.textContent = block.mock;
+          blockEl.appendChild(note);
+        } else if (block.problems && block.problems.length > 0) {
+          buildProblemTable(block.problems, blockEl);
+        }
+
+        body.appendChild(blockEl);
+      });
+
+      weekEl.appendChild(card);
+    });
+
+    main.appendChild(weekEl);
+  });
+
+  syncExpandAllBtn();
+}
+
+/* =========================================================
+   PATTERNS VIEW RENDERER
+   ========================================================= */
+function renderPatternsView() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '';
+  document.getElementById('loadingMsg')?.remove();
+
+  PATTERN_DATA.forEach(patternData => {
+    // Count solved across all groups
+    const allProbs = patternData.groups.flatMap(g => g.problems);
+    const resolved = allProbs.map(item => findProblem(item.name)).filter(Boolean);
+    const solvedCount = resolved.filter(p => solved.has(p.serial)).length;
+    const total = resolved.length;
+
+    const card = document.createElement('div');
+    card.className = 'pattern-card';
+    card.innerHTML = `
+      <div class="pattern-header">
+        <span class="pattern-chevron">▶</span>
+        <span class="pattern-num">${patternData.id}.</span>
+        <span class="pattern-title">${escHtml(patternData.title)}</span>
+        <span class="pattern-progress">${solvedCount}/${total}</span>
+      </div>
+      <div class="pattern-body"></div>
+    `;
+
+    card.querySelector('.pattern-header').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+
+    const body = card.querySelector('.pattern-body');
+
+    patternData.groups.forEach(group => {
+      const groupEl = document.createElement('div');
+      groupEl.className = 'pattern-group';
+
+      const groupResolved = group.problems.map(item => findProblem(item.name)).filter(Boolean);
+      const groupSolved = groupResolved.filter(p => solved.has(p.serial)).length;
+
+      groupEl.innerHTML = `
+        <div class="pattern-group-header">
+          <span class="pattern-group-chevron">▶</span>
+          <span class="pattern-group-title">${escHtml(group.title)}</span>
+          <span class="pattern-group-count">${groupSolved}/${groupResolved.length}</span>
+        </div>
+        <div class="pattern-group-body"></div>
+      `;
+
+      groupEl.querySelector('.pattern-group-header').addEventListener('click', () => {
+        groupEl.classList.toggle('open');
+        // Also update parent pattern card progress
+        const allCbs = card.querySelectorAll('.prob-checkbox');
+        const solvedNow = [...allCbs].filter(cb => solved.has(parseInt(cb.dataset.serial))).length;
+        card.querySelector('.pattern-progress').textContent = `${solvedNow}/${total}`;
+      });
+
+      const groupBody = groupEl.querySelector('.pattern-group-body');
+
+      if (group.cue) {
+        const cueEl = document.createElement('div');
+        cueEl.className = 'recognition-cue';
+        cueEl.textContent = group.cue;
+        groupBody.appendChild(cueEl);
+      }
+
+      buildProblemTable(group.problems, groupBody);
+
+      body.appendChild(groupEl);
+    });
+
+    main.appendChild(card);
+  });
+
+  syncExpandAllBtn();
+}
 
 /* =========================================================
    INIT

@@ -993,3 +993,145 @@ input:checked ~ .toggle-label { color: var(--brand); }
   .anki-problem-row { padding-left: 20px; }
 }
 
+
+/* =============================================
+   VIEW TABS (header nav)
+   ============================================= */
+.view-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3px;
+}
+.view-tab {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.view-tab:hover { color: var(--text); background: var(--surface-2); }
+.view-tab.active { background: var(--surface-3); color: var(--text); font-weight: 600; }
+
+/* =============================================
+   PLAN VIEW
+   ============================================= */
+.plan-week { margin-bottom: 8px; }
+.plan-week-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 8px 0 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.plan-day-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.plan-day-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--transition);
+}
+.plan-day-header:hover { background: var(--surface-2); }
+.plan-day-chevron { font-size: 10px; color: var(--text-dim); transition: transform 200ms ease; flex-shrink: 0; }
+.plan-day-card.open .plan-day-chevron { transform: rotate(90deg); }
+.plan-day-num { font-size: 12px; font-weight: 700; color: var(--brand); min-width: 42px; flex-shrink: 0; }
+.plan-day-title { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; min-width: 0; }
+.plan-day-progress { font-size: 12px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
+.plan-day-body { display: none; }
+.plan-day-card.open .plan-day-body { display: block; }
+
+.plan-block { padding: 0 16px 12px; }
+.plan-block-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 10px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.plan-block-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.priority-A { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; background: rgba(0,210,106,0.15); color: var(--easy); }
+.priority-B { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; background: rgba(245,166,35,0.15); color: var(--medium); }
+.priority-C { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; background: rgba(255,255,255,0.07); color: var(--text-dim); }
+.plan-mock-note { font-size: 13px; color: var(--text-muted); line-height: 1.6; padding: 8px 0 4px; white-space: pre-line; }
+
+/* =============================================
+   PATTERNS VIEW
+   ============================================= */
+.pattern-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.pattern-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--transition);
+}
+.pattern-header:hover { background: var(--surface-2); }
+.pattern-chevron { font-size: 10px; color: var(--text-dim); transition: transform 200ms ease; flex-shrink: 0; }
+.pattern-card.open .pattern-chevron { transform: rotate(90deg); }
+.pattern-num { font-size: 11px; font-weight: 700; color: var(--text-dim); min-width: 20px; flex-shrink: 0; }
+.pattern-title { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+.pattern-progress { font-size: 12px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
+.pattern-body { display: none; padding: 0 16px 12px; }
+.pattern-card.open .pattern-body { display: block; }
+
+.pattern-group { margin-bottom: 4px; }
+.pattern-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  cursor: pointer;
+  user-select: none;
+}
+.pattern-group-chevron { font-size: 9px; color: var(--text-dim); transition: transform 200ms ease; flex-shrink: 0; }
+.pattern-group.open .pattern-group-chevron { transform: rotate(90deg); }
+.pattern-group-title { font-size: 12px; font-weight: 500; color: var(--text-muted); flex: 1; }
+.pattern-group-count { font-size: 11px; color: var(--text-dim); white-space: nowrap; }
+.pattern-group-body { display: none; padding-left: 12px; }
+.pattern-group.open .pattern-group-body { display: block; }
+
+.recognition-cue {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-style: italic;
+  line-height: 1.5;
+  padding: 8px 10px;
+  border-left: 2px solid var(--border);
+  margin: 8px 0 4px;
+}
+.recognition-cue::before { content: "\1F4A1  "; }
+
+/* Anki modal: view-aware group labels */
+.anki-group-name-wrap { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+.anki-group-sub { font-size: 11px; font-weight: 400; color: var(--text-dim); }
