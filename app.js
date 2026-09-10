@@ -910,6 +910,15 @@ document.getElementById('expandAllBtn')?.addEventListener('click', () => {
       const heading = card.dataset.heading;
       if (anyOpen) { card.classList.remove('open'); openHeadings.delete(heading); }
       else         { card.classList.add('open');    openHeadings.add(heading); }
+    } else if (activeView === 'patterns') {
+      // Expand/collapse both the pattern-card AND all inner pattern-groups
+      if (anyOpen) {
+        card.classList.remove('open');
+        card.querySelectorAll('.pattern-group').forEach(g => g.classList.remove('open'));
+      } else {
+        card.classList.add('open');
+        card.querySelectorAll('.pattern-group').forEach(g => g.classList.add('open'));
+      }
     } else {
       if (anyOpen) card.classList.remove('open');
       else         card.classList.add('open');
@@ -1458,14 +1467,19 @@ function switchView(view) {
 
   const isSheet = view === 'sheet';
 
-  // Elements only relevant in Sheet view
+  // Show search + filter + random in all views; hide Sheet-only elements when needed
+  // (All three views benefit from search/filter/random)
   ['searchBox', 'filterBtn', 'randomBtn', 'activeFilters'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.style.display = isSheet ? '' : 'none';
+    if (el) el.style.display = '';
   });
-  // Also hide filter panel if switching away
+  // Always close filter panel when switching views
   const filterPanel = document.getElementById('filterPanel');
-  if (filterPanel && !isSheet) filterPanel.classList.remove('open');
+  if (filterPanel) filterPanel.classList.remove('open');
+
+  // Topic filter is only meaningful in Sheet view — hide it in other views
+  const topicFilterRow = document.getElementById('topicFilter')?.closest('.filter-row');
+  if (topicFilterRow) topicFilterRow.style.display = isSheet ? '' : 'none';
 
   // Compact toggle is only meaningful in Sheet view
   const modeToggleWrap = document.querySelector('.mode-toggle-wrap');
@@ -2313,22 +2327,57 @@ const PATTERN_DATA = [
 /* =========================================================
    PLAN VIEW RENDERER
    ========================================================= */
+function planProblemMatchesFilters(p) {
+  if (!p) return false;
+  const checks = [];
+  if (searchQ) checks.push(p.name.toLowerCase().includes(searchQ.toLowerCase()));
+  if (filterDiffs.size > 0) checks.push(filterDiffs.has(p.difficulty));
+  if (filterStatuses.size > 0) {
+    const isSolved  = solved.has(p.serial);
+    const isStarred = starred.has(p.serial);
+    const sub = [];
+    if (filterStatuses.has('solved'))  sub.push(isSolved);
+    if (filterStatuses.has('todo'))    sub.push(!isSolved);
+    if (filterStatuses.has('starred')) sub.push(isStarred);
+    checks.push(sub.some(Boolean));
+  }
+  if (filterHasNotes) checks.push(
+    !!(customNotes[p.serial] && customNotes[p.serial].trim()) ||
+    !!(customCodeNotes[p.serial] && customCodeNotes[p.serial].trim())
+  );
+  if (checks.length === 0) return true;
+  return filterMatch === 'all' ? checks.every(Boolean) : checks.some(Boolean);
+}
+
 function renderPlanView() {
   const main = document.getElementById('mainContent');
   main.innerHTML = '';
   document.getElementById('loadingMsg')?.remove();
 
+  let anyVisible = false;
+
   PLAN_DATA.forEach(weekData => {
     const weekEl = document.createElement('div');
     weekEl.className = 'plan-week';
     weekEl.innerHTML = `<div class="plan-week-label">Week ${weekData.week}</div>`;
+    let weekHasCards = false;
 
     weekData.days.forEach(dayData => {
-      // Collect all problems for this day (non-mock blocks only)
+      // Collect all problems for this day (non-mock blocks only), applying filters
       const allProbs = dayData.blocks.flatMap(b => b.problems || []);
-      const resolved = allProbs.map(item => findProblem(item.name)).filter(Boolean);
-      const solvedCount = resolved.filter(p => solved.has(p.serial)).length;
-      const total = resolved.length;
+      const resolved = allProbs.map(item => findProblem(item.name)).filter(p => planProblemMatchesFilters(p));
+      const allResolved = allProbs.map(item => findProblem(item.name)).filter(Boolean);
+      const solvedCount = allResolved.filter(p => solved.has(p.serial)).length;
+      const total = allResolved.length;
+
+      // Check if day has any matching content (mock blocks always show if no search/filter)
+      const hasMockBlocks = dayData.blocks.some(b => b.mock);
+      const hasMatchingProblems = resolved.length > 0;
+      const hasFilters = searchQ || filterDiffs.size > 0 || filterStatuses.size > 0 || filterHasNotes;
+      if (!hasMatchingProblems && !(hasMockBlocks && !hasFilters)) return;
+
+      weekHasCards = true;
+      anyVisible = true;
 
       const card = document.createElement('div');
       card.className = 'plan-day-card';
@@ -2344,11 +2393,24 @@ function renderPlanView() {
 
       card.querySelector('.plan-day-header').addEventListener('click', () => {
         card.classList.toggle('open');
+        syncExpandAllBtn();
       });
 
       const body = card.querySelector('.plan-day-body');
 
       dayData.blocks.forEach(block => {
+        // Filter problems in this block
+        const filteredProblems = (block.problems || []).filter(item => {
+          const p = findProblem(item.name);
+          return planProblemMatchesFilters(p);
+        });
+        const hasMock = !!block.mock;
+        const hasFilters = searchQ || filterDiffs.size > 0 || filterStatuses.size > 0 || filterHasNotes;
+
+        // Skip blocks with no matching problems (unless it's a mock block with no active filter)
+        if (!hasMock && filteredProblems.length === 0) return;
+        if (hasMock && hasFilters) return; // hide mock blocks when filtering
+
         const blockEl = document.createElement('div');
         blockEl.className = 'plan-block';
         blockEl.innerHTML = `<div class="plan-block-label">Block ${block.label} — ${escHtml(block.title)}</div>`;
@@ -2358,8 +2420,8 @@ function renderPlanView() {
           note.className = 'plan-mock-note';
           note.textContent = block.mock;
           blockEl.appendChild(note);
-        } else if (block.problems && block.problems.length > 0) {
-          buildProblemTable(block.problems, blockEl);
+        } else if (filteredProblems.length > 0) {
+          buildProblemTable(filteredProblems, blockEl);
         }
 
         body.appendChild(blockEl);
@@ -2368,8 +2430,12 @@ function renderPlanView() {
       weekEl.appendChild(card);
     });
 
-    main.appendChild(weekEl);
+    if (weekHasCards) main.appendChild(weekEl);
   });
+
+  if (!anyVisible) {
+    main.innerHTML = `<div class="no-results"><span>🔍</span>No problems match your filters.</div>`;
+  }
 
   syncExpandAllBtn();
 }
@@ -2382,12 +2448,22 @@ function renderPatternsView() {
   main.innerHTML = '';
   document.getElementById('loadingMsg')?.remove();
 
+  let anyVisible = false;
+
   PATTERN_DATA.forEach(patternData => {
-    // Count solved across all groups
+    // Count solved across all groups (using full unfiltered list for progress display)
     const allProbs = patternData.groups.flatMap(g => g.problems);
     const resolved = allProbs.map(item => findProblem(item.name)).filter(Boolean);
     const solvedCount = resolved.filter(p => solved.has(p.serial)).length;
     const total = resolved.length;
+
+    // Check if pattern has any problems matching filters
+    const hasMatchingGroups = patternData.groups.some(group =>
+      group.problems.some(item => planProblemMatchesFilters(findProblem(item.name)))
+    );
+    if (!hasMatchingGroups) return;
+
+    anyVisible = true;
 
     const card = document.createElement('div');
     card.className = 'pattern-card';
@@ -2403,15 +2479,20 @@ function renderPatternsView() {
 
     card.querySelector('.pattern-header').addEventListener('click', () => {
       card.classList.toggle('open');
+      syncExpandAllBtn();
     });
 
     const body = card.querySelector('.pattern-body');
 
     patternData.groups.forEach(group => {
+      // Filter problems in this group
+      const filteredItems = group.problems.filter(item => planProblemMatchesFilters(findProblem(item.name)));
+      if (filteredItems.length === 0) return;
+
       const groupEl = document.createElement('div');
       groupEl.className = 'pattern-group';
 
-      const groupResolved = group.problems.map(item => findProblem(item.name)).filter(Boolean);
+      const groupResolved = filteredItems.map(item => findProblem(item.name)).filter(Boolean);
       const groupSolved = groupResolved.filter(p => solved.has(p.serial)).length;
 
       groupEl.innerHTML = `
@@ -2425,6 +2506,7 @@ function renderPatternsView() {
 
       groupEl.querySelector('.pattern-group-header').addEventListener('click', () => {
         groupEl.classList.toggle('open');
+        syncExpandAllBtn();
         // Also update parent pattern card progress
         const allCbs = card.querySelectorAll('.prob-checkbox');
         const solvedNow = [...allCbs].filter(cb => solved.has(parseInt(cb.dataset.serial))).length;
@@ -2440,13 +2522,17 @@ function renderPatternsView() {
         groupBody.appendChild(cueEl);
       }
 
-      buildProblemTable(group.problems, groupBody);
+      buildProblemTable(filteredItems, groupBody);
 
       body.appendChild(groupEl);
     });
 
     main.appendChild(card);
   });
+
+  if (!anyVisible) {
+    main.innerHTML = `<div class="no-results"><span>🔍</span>No problems match your filters.</div>`;
+  }
 
   syncExpandAllBtn();
 }
